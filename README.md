@@ -18,6 +18,6 @@ A home page to visualize work and maybe add triggers for starting and stopping H
 
 # Clean up
 
-1. `npm run remove-deploy`
+1. `npm run disable-deploy`
 2. Wait a few minutes
 3. Go to AWS CloudFront and delete distribution
