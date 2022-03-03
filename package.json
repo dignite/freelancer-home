@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "test": "echo TODO",
     "start": "next start",
     "deploy": "serverless",
     "disable-deploy": "serverless remove"
