@@ -5,7 +5,9 @@ A home page to visualize work and maybe add triggers for starting and stopping H
 # Deployment
 
 1. Edit domain in serverless.yml to a domain you own controlled in AWS Route 53
-2. `npm run deploy`
+2. Create S3 bucket in us-east-1
+3. `cp .env.example .env.local` and fix values
+4. `npm run deploy`
 
 # Troubleshooting
 
