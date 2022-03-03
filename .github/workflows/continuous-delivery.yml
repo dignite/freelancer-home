@@ -1,0 +1,31 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy to AWS Lambda (prod)
+    runs-on: ubuntu-latest
+    environment: prod
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - name: Serverless AWS authentication
+        run: npx serverless config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+      - name: Create env file
+        run: |
+          cat > .env << EOF
+
+          EOF
+      - run: npm run deploy
