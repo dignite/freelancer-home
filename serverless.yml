@@ -1,4 +1,14 @@
 freelancer-home:
   component: "@sls-next/serverless-component@3.6.0"
   inputs:
+    enableHTTPCompression: true
+    authentication:
+      username: "${env.USER_NAME}"
+      password: "${env.PASSWORD}"
     domain: ["home", "dignat.se"]
+    cloudfront:
+      defaults:
+        forward:
+          queryString: false
+          cookies: ["Auth"]
+          headers: ["Authorization"]

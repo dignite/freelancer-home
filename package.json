@@ -7,10 +7,11 @@
     "build": "next build",
     "test": "echo TODO",
     "start": "next start",
-    "deploy": "serverless",
-    "disable-deploy": "serverless remove"
+    "deploy": "env-cmd --file .env.local --fallback serverless",
+    "disable-deploy": "env-cmd --file .env.local --fallback serverless remove"
   },
   "dependencies": {
+    "env-cmd": "^10.1.0",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
