@@ -28,6 +28,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - name: Create env file
+        run: |
+          cat > .env << EOF
+
+          EOF
       - name: Download `.serverless` state from S3
         run: aws s3 sync s3://${{secrets.SERVERLESS_STATE_S3_BUCKET}}/prod/.serverless .serverless --region us-east-1 --delete
       - run: npm run deploy
