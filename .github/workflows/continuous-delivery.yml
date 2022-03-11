@@ -18,6 +18,8 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_KEY}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET}}
+      USER_NAME: ${{secrets.USER_NAME}}
+      PASSWORD: ${{secrets.PASSWORD}}
 
     steps:
       - uses: actions/checkout@v2
@@ -26,11 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - name: Create env file
-        run: |
-          cat > .env << EOF
-
-          EOF
       - name: Download `.serverless` state from S3
         run: aws s3 sync s3://${{secrets.SERVERLESS_STATE_S3_BUCKET}}/prod/.serverless .serverless --region us-east-1 --delete
       - run: npm run deploy
