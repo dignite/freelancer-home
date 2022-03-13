@@ -7,8 +7,8 @@
     "build": "next build",
     "test": "echo TODO",
     "start": "next start",
-    "deploy": "env-cmd --file .env.local --fallback serverless",
-    "disable-deploy": "env-cmd --file .env.local --fallback serverless remove"
+    "deploy": "env-cmd --file .env.serverless serverless",
+    "disable-deploy": "env-cmd --file .env.serverless serverless remove"
   },
   "dependencies": {
     "env-cmd": "^10.1.0",

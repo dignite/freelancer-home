@@ -15,12 +15,6 @@ jobs:
       matrix:
         node-version: [14.x]
 
-    env:
-      AWS_ACCESS_KEY_ID: ${{secrets.AWS_KEY}}
-      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET}}
-      USER_NAME: ${{secrets.USER_NAME}}
-      PASSWORD: ${{secrets.PASSWORD}}
-
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -28,6 +22,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - name: Create .env.serverless file, adding secrets needed by serverless and serverless.yml
+        run: |
+          cat > .env.serverless << EOF
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET}}
+          USER_NAME: ${{secrets.USER_NAME}}
+          PASSWORD: ${{secrets.PASSWORD}}
+          EOF
       - name: Create env file, adding secrets needed by the application
         run: |
           cat > .env << EOF
