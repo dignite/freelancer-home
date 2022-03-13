@@ -20,6 +20,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET}}
       USER_NAME: ${{secrets.USER_NAME}}
       PASSWORD: ${{secrets.PASSWORD}}
+      HARVEST_REPORT_LAMBDA_HOURS_URL: ${{secrets.HARVEST_REPORT_LAMBDA_HOURS_URL}}
 
     steps:
       - uses: actions/checkout@v2
