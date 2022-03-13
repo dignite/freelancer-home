@@ -20,7 +20,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET}}
       USER_NAME: ${{secrets.USER_NAME}}
       PASSWORD: ${{secrets.PASSWORD}}
-      HARVEST_REPORT_LAMBDA_HOURS_URL: ${{secrets.HARVEST_REPORT_LAMBDA_HOURS_URL}}
 
     steps:
       - uses: actions/checkout@v2
@@ -29,10 +28,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - name: Create env file
+      - name: Create env file, adding secrets needed by the application
         run: |
           cat > .env << EOF
-
+          HARVEST_REPORT_LAMBDA_HOURS_URL: ${{secrets.HARVEST_REPORT_LAMBDA_HOURS_URL}}
           EOF
       - name: Download `.serverless` state from S3
         run: aws s3 sync s3://${{secrets.SERVERLESS_STATE_S3_BUCKET}}/prod/.serverless .serverless --region us-east-1 --delete
