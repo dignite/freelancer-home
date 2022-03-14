@@ -11,6 +11,9 @@
     "disable-deploy": "env-cmd --file ./.env.serverless serverless remove"
   },
   "dependencies": {
+    "@mantine/core": "^4.0.4",
+    "@mantine/hooks": "^4.0.4",
+    "@mantine/next": "^4.0.4",
     "env-cmd": "^10.1.0",
     "next": "latest",
     "react": "^17.0.2",
