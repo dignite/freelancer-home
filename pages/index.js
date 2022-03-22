@@ -4,9 +4,13 @@ export default function IndexPage({ data }) {
   return (
     <div>
       <h1>Freelancer Home</h1>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
+      <ul>
+        <li>
+          <Link href="/about">
+            <a>About</a>
+          </Link>
+        </li>
+      </ul>
       <h2>Unbilled invoice</h2>
       <p>{data.meta.unbilledInvoice.excludingVAT} excluding VAT</p>
       <h2>Total unbilled hours per week</h2>
