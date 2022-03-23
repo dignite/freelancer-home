@@ -1,30 +1,36 @@
 import Link from "next/link";
-import { Paragraph } from "../components/vertical-rhythm";
+import {
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+} from "../components/vertical-rhythm";
 
 export default function IndexPage({ data }) {
   return (
     <div>
       <h1>Freelancer Home</h1>
-      <ul>
-        <li>
+      <UnorderedList>
+        <UnorderedListItem>
           <Link href="/about">
             <a>About</a>
           </Link>
-        </li>
-      </ul>
+        </UnorderedListItem>
+      </UnorderedList>
       <h2>Unbilled invoice</h2>
       <Paragraph>
         {data.meta.unbilledInvoice.excludingVAT} excluding VAT
       </Paragraph>
       <h2>Total unbilled hours per week</h2>
-      <ul>
+      <UnorderedList>
         {Object.keys(data.meta.totalUnbilledHoursPerWeek).map((week) => (
-          <li key={week}>
+          <UnorderedListItem key={week}>
             {week}: {data.meta.totalUnbilledHoursPerWeek[week]}
-          </li>
+          </UnorderedListItem>
         ))}
-        <li>Total: {data.meta.totalUnbilledHours}</li>
-      </ul>
+        <UnorderedListItem>
+          Total: {data.meta.totalUnbilledHours}
+        </UnorderedListItem>
+      </UnorderedList>
     </div>
   );
 }
