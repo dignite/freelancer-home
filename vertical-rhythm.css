@@ -22,10 +22,6 @@ html {
   font-size: var(--typography__fontSize);
 }
 
-body {
-  margin: var(--rhythm2);
-}
-
 p {
   margin-top: 0;
   line-height: var(--rhythm2);
