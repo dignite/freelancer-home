@@ -22,13 +22,6 @@ html {
   font-size: var(--typography__fontSize);
 }
 
-p {
-  margin-top: 0;
-  line-height: var(--rhythm2);
-  padding-top: var(--typography__pOffset);
-  margin-bottom: calc(var(--rhythm2) - var(--typography__pOffset));
-}
-
 ul,
 ol {
   margin-top: 0;

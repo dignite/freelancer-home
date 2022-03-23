@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Paragraph } from "../components/vertical-rhythm";
 
 export default function IndexPage({ data }) {
   return (
@@ -12,7 +13,9 @@ export default function IndexPage({ data }) {
         </li>
       </ul>
       <h2>Unbilled invoice</h2>
-      <p>{data.meta.unbilledInvoice.excludingVAT} excluding VAT</p>
+      <Paragraph>
+        {data.meta.unbilledInvoice.excludingVAT} excluding VAT
+      </Paragraph>
       <h2>Total unbilled hours per week</h2>
       <ul>
         {Object.keys(data.meta.totalUnbilledHoursPerWeek).map((week) => (
