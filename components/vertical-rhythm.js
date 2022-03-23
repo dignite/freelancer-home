@@ -37,6 +37,34 @@ export const Heading = ({ children }) => (
   </h2>
 );
 
+export const SubHeading = ({ children }) => (
+  <h3>
+    <style jsx>{`
+      h3 {
+        margin-top: 0;
+        line-height: var(--rhythm2);
+        padding-top: var(--typography__h3Offset);
+        margin-bottom: calc(var(--rhythm2) - var(--typography__h3Offset));
+      }
+    `}</style>
+    {children}
+  </h3>
+);
+
+export const SubSubHeading = ({ children }) => (
+  <h4>
+    <style jsx>{`
+      h4 {
+        margin-top: 0;
+        line-height: var(--rhythm2);
+        padding-top: var(--typography__h4Offset);
+        margin-bottom: calc(var(--rhythm2) - var(--typography__h4Offset));
+      }
+    `}</style>
+    {children}
+  </h4>
+);
+
 export const Paragraph = ({ children }) => (
   <p>
     <style jsx>{`
