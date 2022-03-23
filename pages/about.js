@@ -1,3 +1,5 @@
+import { MainHeading } from "../components/vertical-rhythm";
+
 export default function AboutPage() {
-  return <div>About us</div>
+  return <MainHeading>About us</MainHeading>;
 }
