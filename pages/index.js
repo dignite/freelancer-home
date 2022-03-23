@@ -1,5 +1,7 @@
 import Link from "next/link";
 import {
+  Heading,
+  MainHeading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
@@ -8,7 +10,7 @@ import {
 export default function IndexPage({ data }) {
   return (
     <div>
-      <h1>Freelancer Home</h1>
+      <MainHeading>Freelancer Home</MainHeading>
       <UnorderedList>
         <UnorderedListItem>
           <Link href="/about">
@@ -16,11 +18,11 @@ export default function IndexPage({ data }) {
           </Link>
         </UnorderedListItem>
       </UnorderedList>
-      <h2>Unbilled invoice</h2>
+      <Heading>Unbilled invoice</Heading>
       <Paragraph>
         {data.meta.unbilledInvoice.excludingVAT} excluding VAT
       </Paragraph>
-      <h2>Total unbilled hours per week</h2>
+      <Heading>Total unbilled hours per week</Heading>
       <UnorderedList>
         {Object.keys(data.meta.totalUnbilledHoursPerWeek).map((week) => (
           <UnorderedListItem key={week}>

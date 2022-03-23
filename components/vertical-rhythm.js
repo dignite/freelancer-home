@@ -9,6 +9,34 @@ export const ApplicationContainer = ({ children }) => (
   </div>
 );
 
+export const MainHeading = ({ children }) => (
+  <h1>
+    <style jsx>{`
+      h1 {
+        margin-top: 0;
+        line-height: calc(var(--rhythm3));
+        padding-top: var(--typography__h1Offset);
+        margin-bottom: calc(var(--rhythm2) - var(--typography__h1Offset));
+      }
+    `}</style>
+    {children}
+  </h1>
+);
+
+export const Heading = ({ children }) => (
+  <h2>
+    <style jsx>{`
+      h2 {
+        margin-top: 0;
+        line-height: var(--rhythm2);
+        padding-top: var(--typography__h2Offset);
+        margin-bottom: calc(var(--rhythm2) - var(--typography__h2Offset));
+      }
+    `}</style>
+    {children}
+  </h2>
+);
+
 export const Paragraph = ({ children }) => (
   <p>
     <style jsx>{`
