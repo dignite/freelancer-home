@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   Heading,
   MainHeading,
@@ -9,15 +8,8 @@ import {
 
 export default function IndexPage({ data }) {
   return (
-    <div>
+    <>
       <MainHeading>Freelancer Home 🕚</MainHeading>
-      <UnorderedList>
-        <UnorderedListItem>
-          <Link href="/about">
-            <a>About</a>
-          </Link>
-        </UnorderedListItem>
-      </UnorderedList>
       <Heading>Unbilled invoice</Heading>
       <Paragraph>
         {data.meta.unbilledInvoice.excludingVAT} excluding VAT
@@ -33,7 +25,7 @@ export default function IndexPage({ data }) {
           Total: {data.meta.totalUnbilledHours}
         </UnorderedListItem>
       </UnorderedList>
-    </div>
+    </>
   );
 }
 
