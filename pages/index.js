@@ -2,6 +2,10 @@ import {
   Heading,
   MainHeading,
   Paragraph,
+  Table,
+  TableData,
+  TableHeader,
+  TableRow,
   UnorderedList,
   UnorderedListItem,
 } from "../components/vertical-rhythm";
@@ -15,16 +19,22 @@ export default function IndexPage({ data }) {
         {data.meta.unbilledInvoice.excludingVAT} excluding VAT
       </Paragraph>
       <Heading>Total unbilled hours per week</Heading>
-      <UnorderedList>
+      <Table>
+        <TableRow>
+          <TableHeader>Week</TableHeader>
+          <TableHeader>Hours</TableHeader>
+        </TableRow>
         {Object.keys(data.meta.totalUnbilledHoursPerWeek).map((week) => (
-          <UnorderedListItem key={week}>
-            {week}: {data.meta.totalUnbilledHoursPerWeek[week]}
-          </UnorderedListItem>
+          <TableRow key={week}>
+            <TableData>{week}</TableData>
+            <TableData>{data.meta.totalUnbilledHoursPerWeek[week]}</TableData>
+          </TableRow>
         ))}
-        <UnorderedListItem>
-          Total: {data.meta.totalUnbilledHours}
-        </UnorderedListItem>
-      </UnorderedList>
+        <TableRow>
+          <TableData>Total</TableData>
+          <TableData>{data.meta.totalUnbilledHours}</TableData>
+        </TableRow>
+      </Table>
     </>
   );
 }
