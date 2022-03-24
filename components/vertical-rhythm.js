@@ -94,3 +94,71 @@ export const UnorderedList = ({ children }) => (
 );
 
 export const UnorderedListItem = ({ children }) => <li>{children}</li>;
+
+export const Table = ({ children }) => (
+  <div>
+    <style jsx>{`
+      div {
+        --border-size: 2px;
+        --cell-padding: 4px;
+        padding-top: var(--typography__tableOffset);
+        margin-bottom: calc(
+          -1 * var(--typography__tableOffset) - var(--border-size)
+        );
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 4px;
+        margin-top: var(--rhythm2);
+        line-height: var(--rhythm2);
+        width: 100%;
+        border-top: var(--border-size) solid gray;
+      }
+    `}</style>
+    <table>{children}</table>
+  </div>
+);
+
+export const TableRow = ({ children }) => (
+  <tr>
+    <style jsx>{`
+      tr {
+        border-right: var(--border-size) solid gray;
+        border-bottom: var(--border-size) solid gray;
+      }
+    `}</style>
+    {children}
+  </tr>
+);
+
+export const TableHeader = ({ children }) => (
+  <th>
+    <style jsx>{`
+      th {
+        padding: var(--cell-padding);
+        line-height: calc(
+          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+            var(--border-size)
+        );
+        border-left: var(--border-size) solid gray;
+      }
+    `}</style>
+    {children}
+  </th>
+);
+
+export const TableData = ({ children }) => (
+  <td>
+    <style jsx>{`
+      td {
+        padding: 4px;
+        line-height: calc(
+          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+            var(--border-size)
+        );
+        border-left: var(--border-size) solid gray;
+      }
+    `}</style>
+    {children}
+  </td>
+);

@@ -9,6 +9,7 @@
   --typography__h3Offset: 5px;
   --typography__h4Offset: 6px;
   --typography__pOffset: 6px;
+  --typography__tableOffset: 4px;
 
   /* Calculations */
   --rhythm1: var(--rhythmUnit);
