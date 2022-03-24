@@ -3,6 +3,7 @@ export const ApplicationContainer = ({ children }) => (
     <style jsx>{`
       div {
         margin: var(--rhythm2);
+        max-width: 50em;
       }
     `}</style>
     {children}
