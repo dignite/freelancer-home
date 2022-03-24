@@ -1,11 +1,12 @@
 :root {
   /* Base values */
+  --typography__font: Arial;
   --typography__fontSize: 18px;
   --rhythmUnit: 0.66666666rem; /* 12px rhythm */
 
   --typography__h1Offset: 6px;
-  --typography__h2Offset: 3px;
-  --typography__h3Offset: 6px;
+  --typography__h2Offset: 2px;
+  --typography__h3Offset: 5px;
   --typography__h4Offset: 6px;
   --typography__pOffset: 6px;
 
@@ -19,5 +20,6 @@
 }
 
 html {
+  font-family: var(--typography__font);
   font-size: var(--typography__fontSize);
 }
