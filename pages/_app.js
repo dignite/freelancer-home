@@ -1,5 +1,6 @@
 import "normalize.css";
 import "../vertical-rhythm.css";
+import "../colors.css";
 
 import {
   ApplicationContainer,
