@@ -10,7 +10,7 @@ import {
 export default function IndexPage({ data }) {
   return (
     <div>
-      <MainHeading>Freelancer Home</MainHeading>
+      <MainHeading>Freelancer Home 🕚</MainHeading>
       <UnorderedList>
         <UnorderedListItem>
           <Link href="/about">
