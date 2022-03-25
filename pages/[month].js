@@ -6,7 +6,7 @@ import {
   Paragraph,
 } from "../modules/layout/vertical-rhythm";
 
-export default function MonthPage({ hours }) {
+export default function MonthPage({ hours, unbilledInvoice }) {
   const router = useRouter();
   const { month } = router.query;
   return (
@@ -14,7 +14,7 @@ export default function MonthPage({ hours }) {
       <MainHeading>Freelancer Home 🕚</MainHeading>
       <Heading>Unbilled invoice</Heading>
       <Paragraph>
-        {hours.meta.unbilledInvoice.excludingVAT} excluding VAT
+        {unbilledInvoice.totalUnbilledExcludingVAT} excluding VAT
       </Paragraph>
       <UnbilledHoursPerWeek meta={hours.meta} />
     </>
@@ -28,11 +28,19 @@ export async function getServerSideProps(context) {
   }
 
   const hours = await getHours();
-  return { props: { hours } };
+  const unbilledInvoice = await getUnbilledInvoice();
+  return { props: { hours, unbilledInvoice } };
 }
 
 const getHours = async () => {
   const res = await fetch(process.env.HARVEST_REPORT_LAMBDA_HOURS_URL);
+  return await res.json();
+};
+
+const getUnbilledInvoice = async () => {
+  const res = await fetch(
+    `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/unbilled-invoice`
+  );
   return await res.json();
 };
 
