@@ -24,6 +24,7 @@ export default function MonthPage({ data }) {
 export async function getServerSideProps(context) {
   const { month } = context.query;
   if (!isValidMonthSlug(month)) {
+    return getCurrentMonthRedirect();
   }
 
   const res = await fetch(process.env.HARVEST_REPORT_LAMBDA_HOURS_URL);
