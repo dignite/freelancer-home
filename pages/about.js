@@ -4,7 +4,7 @@ import {
   Paragraph,
   SubHeading,
   SubSubHeading,
-} from "../components/vertical-rhythm";
+} from "../modules/layout/vertical-rhythm";
 
 export default function AboutPage() {
   return (

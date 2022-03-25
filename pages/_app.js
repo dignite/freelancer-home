@@ -7,7 +7,7 @@ import {
   Heading,
   UnorderedList,
   UnorderedListItem,
-} from "../components/vertical-rhythm";
+} from "../modules/layout/vertical-rhythm";
 import Link from "next/link";
 
 export default function FreelancerHome({ Component, pageProps }) {
