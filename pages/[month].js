@@ -5,6 +5,8 @@ import {
   MainHeading,
   Paragraph,
 } from "../modules/layout/vertical-rhythm";
+import { getHours } from "./api/hours";
+import { getUnbilledInvoice } from "./api/unbilled-invoice";
 
 export default function MonthPage({ hours, unbilledInvoice }) {
   const router = useRouter();
@@ -33,18 +35,6 @@ export async function getServerSideProps(context) {
   ]);
   return { props: { hours, unbilledInvoice } };
 }
-
-const getHours = async () => {
-  const res = await fetch(process.env.HARVEST_REPORT_LAMBDA_HOURS_URL);
-  return await res.json();
-};
-
-const getUnbilledInvoice = async () => {
-  const res = await fetch(
-    `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/unbilled-invoice`
-  );
-  return await res.json();
-};
 
 export const isValidMonthSlug = (month) => month.length === 7;
 
