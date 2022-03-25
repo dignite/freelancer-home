@@ -27,8 +27,10 @@ export async function getServerSideProps(context) {
     return getCurrentMonthRedirect();
   }
 
-  const hours = await getHours();
-  const unbilledInvoice = await getUnbilledInvoice();
+  const [hours, unbilledInvoice] = await Promise.all([
+    getHours(),
+    getUnbilledInvoice(),
+  ]);
   return { props: { hours, unbilledInvoice } };
 }
 
