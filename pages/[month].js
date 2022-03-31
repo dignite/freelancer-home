@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { UnbilledHoursPerWeek } from "../modules/hours/unbilled-hours-per-week";
 import {
   Heading,
@@ -8,7 +9,14 @@ import {
 import { getHours } from "./api/hours";
 import { getUnbilledInvoice } from "./api/unbilled-invoice";
 
-export default function MonthPage({ hours, unbilledInvoice }) {
+export default function MonthPage({
+  serverSideHours,
+  serverSideUnbilledInvoice,
+}) {
+  const [hours, setHours] = useState(serverSideHours);
+  const [unbilledInvoice, setUnbilledInvoice] = useState(
+    serverSideUnbilledInvoice
+  );
   const router = useRouter();
   const { month } = router.query;
   return (
@@ -29,11 +37,11 @@ export async function getServerSideProps(context) {
     return getCurrentMonthRedirect();
   }
 
-  const [hours, unbilledInvoice] = await Promise.all([
+  const [serverSideHours, serverSideUnbilledInvoice] = await Promise.all([
     getHours(),
     getUnbilledInvoice(),
   ]);
-  return { props: { hours, unbilledInvoice } };
+  return { props: { serverSideHours, serverSideUnbilledInvoice } };
 }
 
 export const isValidMonthSlug = (month) => month.length === 7;
