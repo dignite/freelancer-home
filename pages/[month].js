@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UnbilledHoursPerWeek } from "../modules/hours/unbilled-hours-per-week";
 import {
   Heading,
@@ -13,9 +13,13 @@ export default function MonthPage({
   serverSideHours,
   serverSideUnbilledInvoice,
 }) {
-  const [hours, setHours] = useState(serverSideHours);
-  const [unbilledInvoice, setUnbilledInvoice] = useState(
-    serverSideUnbilledInvoice
+  const [hours, updateHours] = useStateWithUpdateCallback(
+    serverSideHours,
+    getHours
+  );
+  const [unbilledInvoice, updateUnbilledInvoice] = useStateWithUpdateCallback(
+    serverSideUnbilledInvoice,
+    getUnbilledInvoice
   );
   const router = useRouter();
   const { month } = router.query;
@@ -26,7 +30,17 @@ export default function MonthPage({
       <Paragraph>
         {unbilledInvoice.totalUnbilledExcludingVAT} excluding VAT
       </Paragraph>
+      <Paragraph>
+        <a href="#" onClick={updateUnbilledInvoice}>
+          Refresh unbilled invoice
+        </a>
+      </Paragraph>
       <UnbilledHoursPerWeek meta={hours.meta} />
+      <Paragraph>
+        <a href="#" onClick={updateHours}>
+          Refresh hours
+        </a>
+      </Paragraph>
     </>
   );
 }
@@ -52,3 +66,11 @@ export const getCurrentMonthRedirect = () => ({
     permanent: false,
   },
 });
+
+const useStateWithUpdateCallback = (initialState, getRefreshedState) => {
+  const [state, setState] = useState(initialState);
+  const updateState = useCallback(async () => {
+    setState(await getRefreshedState());
+  }, setState);
+  return [state, updateState];
+};
