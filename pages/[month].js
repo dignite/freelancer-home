@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { UnbilledHoursPerWeek } from "../modules/hours/unbilled-hours-per-week";
 import {
+  Button,
   Heading,
   MainHeading,
   Paragraph,
@@ -30,17 +31,9 @@ export default function MonthPage({
       <Paragraph>
         {unbilledInvoice.totalUnbilledExcludingVAT} excluding VAT
       </Paragraph>
-      <Paragraph>
-        <a href="#" onClick={updateUnbilledInvoice}>
-          Refresh unbilled invoice
-        </a>
-      </Paragraph>
+      <Button onClick={updateUnbilledInvoice}>Refresh unbilled invoice</Button>
       <UnbilledHoursPerWeek meta={hours.meta} />
-      <Paragraph>
-        <a href="#" onClick={updateHours}>
-          Refresh hours
-        </a>
-      </Paragraph>
+      <Button onClick={updateHours}>Refresh hours</Button>
     </>
   );
 }
