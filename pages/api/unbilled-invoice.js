@@ -4,8 +4,11 @@ export default async function handler(req, res) {
 }
 
 export const getUnbilledInvoice = async () => {
-  const res = await fetch(
-    `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/unbilled-invoice`
-  );
+  const res =
+    typeof window === "undefined"
+      ? await fetch(
+          `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/unbilled-invoice`
+        )
+      : await fetch("/api/unbilled-invoice");
   return await res.json();
 };
