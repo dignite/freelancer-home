@@ -163,3 +163,21 @@ export const TableData = ({ children }) => (
     {children}
   </td>
 );
+
+export const Button = ({ onClick, children }) => (
+  <button onClick={onClick}>
+    <style jsx>{`
+      button {
+        display: block;
+        margin-top: var(--rhythm2);
+        height: var(--rhythm2);
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 100%;
+      }
+    `}</style>
+    {children}
+  </button>
+);
