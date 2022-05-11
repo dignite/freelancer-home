@@ -7,17 +7,26 @@ import {
   MainHeading,
   Paragraph,
 } from "../modules/layout/vertical-rhythm";
-import { getHours } from "./api/hours";
+import { getHours } from "./api/hours/[startDate]/[endDate]";
 import { getInvoice } from "./api/invoice";
 
-export default function MonthPage({ serverSideHours, serverSideInvoice }) {
+export default function MonthPage({
+  serverSideHours,
+  serverSideInvoice,
+  formattedFirstDayOfMonth,
+  formattedLastDayOfMonth,
+}) {
   const [hours, updateHours] = useStateWithUpdateCallback(
     serverSideHours,
-    getHours
+    getHours,
+    formattedFirstDayOfMonth,
+    formattedLastDayOfMonth
   );
   const [invoice, updateInvoice] = useStateWithUpdateCallback(
     serverSideInvoice,
-    getInvoice
+    getInvoice,
+    formattedFirstDayOfMonth,
+    formattedLastDayOfMonth
   );
   const router = useRouter();
   const { month } = router.query;
@@ -27,7 +36,7 @@ export default function MonthPage({ serverSideHours, serverSideInvoice }) {
       <Heading>Invoice</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
       <Button onClick={updateInvoice}>Refresh invoice</Button>
-      <BillableHoursPerWeek meta={hours.meta} />
+      <BillableHoursPerWeek hours={hours} />
       <Button onClick={updateHours}>Refresh hours</Button>
     </>
   );
@@ -39,11 +48,25 @@ export async function getServerSideProps(context) {
     return getCurrentMonthRedirect();
   }
 
+  const formattedFirstDayOfMonth = `${month}-01`;
+  const formattedLastDayOfMonth = lastDayOfMonth(
+    new Date(Date.parse(formattedFirstDayOfMonth))
+  )
+    .toISOString()
+    .slice(0, 10);
+
   const [serverSideHours, serverSideInvoice] = await Promise.all([
-    getHours(),
+    getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
     getInvoice(),
   ]);
-  return { props: { serverSideHours, serverSideInvoice } };
+  return {
+    props: {
+      serverSideHours,
+      serverSideInvoice,
+      formattedFirstDayOfMonth,
+      formattedLastDayOfMonth,
+    },
+  };
 }
 
 export const isValidMonthSlug = (month) => month.length === 7;
@@ -55,10 +78,23 @@ export const getCurrentMonthRedirect = () => ({
   },
 });
 
-const useStateWithUpdateCallback = (initialState, getRefreshedState) => {
+export const lastDayOfMonth = (dayInMonth) => {
+  return new Date(
+    Date.UTC(dayInMonth.getFullYear(), dayInMonth.getMonth() + 1, 0)
+  );
+};
+
+const useStateWithUpdateCallback = (
+  initialState,
+  getRefreshedState,
+  formattedFirstDayOfMonth,
+  formattedLastDayOfMonth
+) => {
   const [state, setState] = useState(initialState);
   const updateState = useCallback(async () => {
-    setState(await getRefreshedState());
-  }, setState);
+    setState(
+      await getRefreshedState(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+    );
+  }, [setState, formattedFirstDayOfMonth, formattedLastDayOfMonth]);
   return [state, updateState];
 };
