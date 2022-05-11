@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
-import { UnbilledHoursPerWeek } from "../modules/hours/unbilled-hours-per-week";
+import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
 import {
   Button,
   Heading,
@@ -8,31 +8,26 @@ import {
   Paragraph,
 } from "../modules/layout/vertical-rhythm";
 import { getHours } from "./api/hours";
-import { getUnbilledInvoice } from "./api/unbilled-invoice";
+import { getInvoice } from "./api/invoice";
 
-export default function MonthPage({
-  serverSideHours,
-  serverSideUnbilledInvoice,
-}) {
+export default function MonthPage({ serverSideHours, serverSideInvoice }) {
   const [hours, updateHours] = useStateWithUpdateCallback(
     serverSideHours,
     getHours
   );
-  const [unbilledInvoice, updateUnbilledInvoice] = useStateWithUpdateCallback(
-    serverSideUnbilledInvoice,
-    getUnbilledInvoice
+  const [invoice, updateInvoice] = useStateWithUpdateCallback(
+    serverSideInvoice,
+    getInvoice
   );
   const router = useRouter();
   const { month } = router.query;
   return (
     <>
       <MainHeading>Freelancer Home 🕚</MainHeading>
-      <Heading>Unbilled invoice</Heading>
-      <Paragraph>
-        {unbilledInvoice.totalUnbilledExcludingVAT} excluding VAT
-      </Paragraph>
-      <Button onClick={updateUnbilledInvoice}>Refresh unbilled invoice</Button>
-      <UnbilledHoursPerWeek meta={hours.meta} />
+      <Heading>Invoice</Heading>
+      <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Button onClick={updateInvoice}>Refresh invoice</Button>
+      <BillableHoursPerWeek meta={hours.meta} />
       <Button onClick={updateHours}>Refresh hours</Button>
     </>
   );
@@ -44,11 +39,11 @@ export async function getServerSideProps(context) {
     return getCurrentMonthRedirect();
   }
 
-  const [serverSideHours, serverSideUnbilledInvoice] = await Promise.all([
+  const [serverSideHours, serverSideInvoice] = await Promise.all([
     getHours(),
-    getUnbilledInvoice(),
+    getInvoice(),
   ]);
-  return { props: { serverSideHours, serverSideUnbilledInvoice } };
+  return { props: { serverSideHours, serverSideInvoice } };
 }
 
 export const isValidMonthSlug = (month) => month.length === 7;

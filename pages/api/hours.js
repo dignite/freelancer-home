@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 export const getHours = async () => {
   const res =
     typeof window === "undefined"
-      ? await fetch(process.env.HARVEST_REPORT_LAMBDA_HOURS_URL)
+      ? await fetch(`${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/hours`)
       : await fetch("/api/hours");
   return await res.json();
 };
