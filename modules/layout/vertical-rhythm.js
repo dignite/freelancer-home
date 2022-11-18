@@ -120,6 +120,19 @@ export const Table = ({ children }) => (
   </div>
 );
 
+export const TableHead = ({ children }) => <thead>{children}</thead>;
+export const TableBody = ({ children }) => <tbody>{children}</tbody>;
+export const TableFooter = ({ children }) => (
+  <tfoot>
+    <style jsx>{`
+      tfoot {
+        font-weight: bold;
+      }
+    `}</style>
+    {children}
+  </tfoot>
+);
+
 export const TableRow = ({ children }) => (
   <tr>
     <style jsx>{`
