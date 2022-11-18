@@ -161,8 +161,8 @@ export const TableRow = ({ children }) => (
   </tr>
 );
 
-export const TableData = ({ children }) => (
-  <td>
+export const TableData = ({ colSpan, children }) => (
+  <td colSpan={colSpan}>
     <style jsx>{`
       td {
         padding: 4px;

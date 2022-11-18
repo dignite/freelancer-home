@@ -17,6 +17,7 @@ export const VAB = ({ vab }) => (
         <TableRow>
           <TableHeader>Date</TableHeader>
           <TableHeader>Hours</TableHeader>
+          <TableHeader>Comment</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -24,13 +25,14 @@ export const VAB = ({ vab }) => (
           <TableRow key={vabDay.id}>
             <TableData>{vabDay.date}</TableData>
             <TableData>???</TableData>
+            <TableData>{vabDay.comment}</TableData>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
           <TableData>Total</TableData>
-          <TableData>???</TableData>
+          <TableData colSpan={2}>???</TableData>
         </TableRow>
       </TableFooter>
     </Table>
