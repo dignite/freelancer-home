@@ -133,18 +133,6 @@ export const TableFooter = ({ children }) => (
   </tfoot>
 );
 
-export const TableRow = ({ children }) => (
-  <tr>
-    <style jsx>{`
-      tr {
-        border-right: var(--border-size) solid gray;
-        border-bottom: var(--border-size) solid gray;
-      }
-    `}</style>
-    {children}
-  </tr>
-);
-
 export const TableHeader = ({ children }) => (
   <th>
     <style jsx>{`
@@ -159,6 +147,18 @@ export const TableHeader = ({ children }) => (
     `}</style>
     {children}
   </th>
+);
+
+export const TableRow = ({ children }) => (
+  <tr>
+    <style jsx>{`
+      tr {
+        border-right: var(--border-size) solid gray;
+        border-bottom: var(--border-size) solid gray;
+      }
+    `}</style>
+    {children}
+  </tr>
 );
 
 export const TableData = ({ children }) => (
