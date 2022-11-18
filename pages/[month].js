@@ -8,7 +8,7 @@ import {
   Paragraph,
 } from "../modules/layout/vertical-rhythm";
 import { getHours } from "./api/hours/[startDate]/[endDate]";
-import { getInvoice } from "./api/invoice";
+import { getInvoice } from "./api/invoice/[startDate]/[endDate]";
 
 export default function MonthPage({
   serverSideHours,
@@ -57,7 +57,7 @@ export async function getServerSideProps(context) {
 
   const [serverSideHours, serverSideInvoice] = await Promise.all([
     getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-    getInvoice(),
+    getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
   ]);
   return {
     props: {
