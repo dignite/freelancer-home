@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
+import { VAB } from "../modules/hours/vab";
 import {
   Button,
   Heading,
@@ -10,10 +11,12 @@ import {
 } from "../modules/layout/vertical-rhythm";
 import { getHours } from "./api/hours/[startDate]/[endDate]";
 import { getInvoice } from "./api/invoice/[startDate]/[endDate]";
+import { getVAB } from "./api/vab/[startDate]/[endDate]";
 
 export default function MonthPage({
   serverSideHours,
   serverSideInvoice,
+  serverSideVAB,
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth,
   isCurrentMonth,
@@ -27,6 +30,12 @@ export default function MonthPage({
   const [invoice, updateInvoice] = useStateWithUpdateCallback(
     serverSideInvoice,
     getInvoice,
+    formattedFirstDayOfMonth,
+    formattedLastDayOfMonth
+  );
+  const [vab, updateVAB] = useStateWithUpdateCallback(
+    serverSideVAB,
+    getVAB,
     formattedFirstDayOfMonth,
     formattedLastDayOfMonth
   );
@@ -45,6 +54,7 @@ export default function MonthPage({
       <Button onClick={updateInvoice}>Refresh invoice</Button>
       <BillableHoursPerWeek hours={hours} />
       <Button onClick={updateHours}>Refresh hours</Button>
+      <VAB vab={vab} />
     </>
   );
 }
@@ -62,10 +72,13 @@ export async function getServerSideProps(context) {
     .toISOString()
     .slice(0, 10);
 
-  const [serverSideHours, serverSideInvoice] = await Promise.all([
-    getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-    getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-  ]);
+  const [serverSideHours, serverSideInvoice, serverSideVAB] = await Promise.all(
+    [
+      getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
+      getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
+      getVAB(formattedFirstDayOfMonth, formattedLastDayOfMonth),
+    ]
+  );
 
   const isCurrentMonth = getCurrentMonthSlug() === month;
 
@@ -73,6 +86,7 @@ export async function getServerSideProps(context) {
     props: {
       serverSideHours,
       serverSideInvoice,
+      serverSideVAB,
       formattedFirstDayOfMonth,
       formattedLastDayOfMonth,
       isCurrentMonth,
