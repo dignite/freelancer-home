@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
 import {
@@ -15,6 +16,7 @@ export default function MonthPage({
   serverSideInvoice,
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth,
+  isCurrentMonth,
 }) {
   const [hours, updateHours] = useStateWithUpdateCallback(
     serverSideHours,
@@ -33,6 +35,11 @@ export default function MonthPage({
   return (
     <>
       <MainHeading>Freelancer Home 🕚</MainHeading>
+      {isCurrentMonth ? null : (
+        <Paragraph>
+          <Link href="/">Jump to current month</Link>
+        </Paragraph>
+      )}
       <Heading>Invoice</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
       <Button onClick={updateInvoice}>Refresh invoice</Button>
@@ -59,12 +66,16 @@ export async function getServerSideProps(context) {
     getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
     getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
   ]);
+
+  const isCurrentMonth = getCurrentMonthSlug() === month;
+
   return {
     props: {
       serverSideHours,
       serverSideInvoice,
       formattedFirstDayOfMonth,
       formattedLastDayOfMonth,
+      isCurrentMonth,
     },
   };
 }
@@ -73,10 +84,12 @@ export const isValidMonthSlug = (month) => month.length === 7;
 
 export const getCurrentMonthRedirect = () => ({
   redirect: {
-    destination: `/${new Date().toISOString().slice(0, 7)}`,
+    destination: `/${getCurrentMonthSlug()}`,
     permanent: false,
   },
 });
+
+const getCurrentMonthSlug = () => new Date().toISOString().slice(0, 7);
 
 export const lastDayOfMonth = (dayInMonth) => {
   return new Date(
