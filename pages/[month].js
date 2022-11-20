@@ -53,6 +53,7 @@ export default function MonthPage({
       <BillableHoursPerWeek hours={hours} />
       <Button onClick={updateHours}>Refresh hours</Button>
       <VAB vab={vab} />
+      <Button onClick={updateVAB}>Refresh VAB</Button>
     </>
   );
 }
