@@ -39,8 +39,6 @@ export default function MonthPage({
     formattedFirstDayOfMonth,
     formattedLastDayOfMonth
   );
-  const router = useRouter();
-  const { month } = router.query;
   return (
     <>
       <MainHeading>Freelancer Home 🕚</MainHeading>
