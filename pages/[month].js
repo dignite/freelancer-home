@@ -1,6 +1,5 @@
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
 import { VAB } from "../modules/hours/vab";
 import {
@@ -122,5 +121,6 @@ const useStateWithUpdateCallback = (
       await getRefreshedState(formattedFirstDayOfMonth, formattedLastDayOfMonth)
     );
   }, [setState, formattedFirstDayOfMonth, formattedLastDayOfMonth]);
+  useEffect(updateState, [updateState]);
   return [state, updateState];
 };
