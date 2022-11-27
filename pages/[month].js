@@ -11,7 +11,7 @@ import {
 } from "../modules/layout/vertical-rhythm";
 import { getHours } from "./api/hours/[startDate]/[endDate]";
 import { getInvoice } from "./api/invoice/[startDate]/[endDate]";
-import { getVAB } from "./api/vab/[startDate]/[endDate]";
+import { getVAB } from "./api/by-name/VAB/[startDate]/[endDate]";
 
 export default function MonthPage({
   serverSideHours,
