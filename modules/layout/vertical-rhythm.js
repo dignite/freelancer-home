@@ -14,10 +14,14 @@ export const MainHeading = ({ children }) => (
   <h1>
     <style jsx>{`
       h1 {
-        margin-top: var(--rhythm3);
-        line-height: calc(var(--rhythm3));
-        padding-top: var(--typography__h1Offset);
+        line-height: var(--rhythm3);
+        padding-top: calc(var(--rhythm2) + var(--typography__h1Offset));
         margin-bottom: calc(-1 * var(--typography__h1Offset));
+        background-color: var(--heading-background);
+        padding-bottom: var(--rhythm2);
+        padding-left: var(--rhythm1);
+        margin-left: calc(-1 * var(--rhythm1));
+        margin-right: calc(-1 * var(--rhythm2));
       }
     `}</style>
     {children}
@@ -29,9 +33,13 @@ export const Heading = ({ children }) => (
     <style jsx>{`
       h2 {
         margin-top: var(--rhythm3);
-        line-height: var(--rhythm2);
+        line-height: var(--rhythm4);
         padding-top: var(--typography__h2Offset);
         margin-bottom: calc(-1 * var(--typography__h2Offset));
+        background-color: var(--heading-background);
+        padding-left: var(--rhythm1);
+        margin-left: calc(-1 * var(--rhythm1));
+        margin-right: calc(-1 * var(--rhythm2));
       }
     `}</style>
     {children}
