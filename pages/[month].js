@@ -115,12 +115,26 @@ const useStateWithUpdateCallback = (
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth
 ) => {
+  const [initialFormattedFirstDayOfMonth] = useState(formattedFirstDayOfMonth);
+  const [initialFormattedLastDayOfMonth] = useState(formattedLastDayOfMonth);
   const [state, setState] = useState(initialState);
   const updateState = useCallback(async () => {
+    if (
+      formattedFirstDayOfMonth === initialFormattedFirstDayOfMonth &&
+      formattedLastDayOfMonth === initialFormattedLastDayOfMonth
+    ) {
+      return;
+    }
     setState(
       await getRefreshedState(formattedFirstDayOfMonth, formattedLastDayOfMonth)
     );
-  }, [setState, formattedFirstDayOfMonth, formattedLastDayOfMonth]);
+  }, [
+    setState,
+    initialFormattedFirstDayOfMonth,
+    formattedFirstDayOfMonth,
+    initialFormattedLastDayOfMonth,
+    formattedLastDayOfMonth,
+  ]);
   useEffect(updateState, [updateState]);
   return [state, updateState];
 };
