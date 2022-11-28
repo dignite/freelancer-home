@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
-  const invoice = await getInvoice();
+  const { startDate, endDate } = req.query;
+  const invoice = await getInvoice(startDate, endDate);
   res.status(200).json(invoice);
 }
 
