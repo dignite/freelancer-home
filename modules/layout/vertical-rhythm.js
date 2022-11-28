@@ -136,7 +136,7 @@ export const TableHeader = ({ alignRight, children }) => (
       th {
         padding: var(--cell-padding);
         line-height: calc(
-          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+          var(--rhythm3) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
         ${alignRight ? "text-align: right;" : ""}
@@ -150,7 +150,7 @@ export const TableRow = ({ children }) => (
   <tr>
     <style jsx>{`
       tr {
-        border-bottom: var(--border-size) solid var(--foreground);
+        border-bottom: var(--border-size) solid var(--foreground-weak);
       }
     `}</style>
     {children}
@@ -163,7 +163,7 @@ export const TableData = ({ colSpan, alignRight, children }) => (
       td {
         padding: 4px;
         line-height: calc(
-          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+          var(--rhythm3) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
         ${alignRight ? "text-align: right;" : ""}
