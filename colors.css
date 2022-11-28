@@ -1,6 +1,7 @@
 :root {
   --background: #121212;
   --foreground: #f5eded;
+  --foreground-weak: #f5eded81;
   --primary: #6790ff;
   --primary-hover: #3d6beb;
   --primary-visited: #ed67ff;
