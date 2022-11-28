@@ -1,6 +1,9 @@
 :root {
   --background: #121212;
   --foreground: #f5eded;
+  --primary: #6790ff;
+  --primary-hover: #3d6beb;
+  --primary-visited: #ed67ff;
 }
 
 html {
@@ -9,14 +12,14 @@ html {
 }
 
 a {
-  color: #6790ff;
+  color: var(--primary);
   text-underline-offset: 4px;
 }
 
 a:visited {
-  color: #ed67ff;
+  color: var(--primary-hover);
 }
 
 a:hover {
-  color: #3d6beb;
+  color: var(--primary-visited);
 }

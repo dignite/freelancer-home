@@ -179,12 +179,25 @@ export const Button = ({ onClick, children }) => (
       button {
         display: block;
         margin-top: var(--rhythm2);
-        height: var(--rhythm2);
+        height: var(--rhythm3);
 
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 100%;
+        width: 320px;
+
+        border: 1px solid var(--primary);
+        background-color: var(--background);
+        color: var(--primary);
+      }
+      button:hover {
+        border-color: var(--primary-hover);
+        color: var(--primary-hover);
+        cursor: pointer;
+      }
+      button:active {
+        transform: scale(0.98);
       }
     `}</style>
     {children}
