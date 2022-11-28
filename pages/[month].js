@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useCallback, useState, useEffect } from "react";
 import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
+import { BillableHoursClipboardButton } from "../modules/hours/billable-hours-clipboard-button";
 import { VAB } from "../modules/hours/vab";
 import {
   Button,
@@ -50,6 +51,11 @@ export default function MonthPage({
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
       <Button onClick={updateInvoice}>Refresh invoice</Button>
       <BillableHoursPerWeek hours={hours} />
+      <BillableHoursClipboardButton
+        hours={hours}
+        formattedFirstDayOfMonth={formattedFirstDayOfMonth}
+        formattedLastDayOfMonth={formattedLastDayOfMonth}
+      />
       <Button onClick={updateHours}>Refresh hours</Button>
       <VAB vab={vab} />
       <Button onClick={updateVAB}>Refresh VAB</Button>
