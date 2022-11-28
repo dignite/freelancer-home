@@ -103,9 +103,7 @@ export const Table = ({ children }) => (
         --border-size: 2px;
         --cell-padding: 4px;
         padding-top: var(--typography__tableOffset);
-        margin-bottom: calc(
-          -1 * var(--typography__tableOffset) - var(--border-size)
-        );
+        margin-bottom: calc(-1 * var(--typography__tableOffset));
       }
       table {
         border-collapse: collapse;
@@ -113,7 +111,6 @@ export const Table = ({ children }) => (
         margin-top: var(--rhythm2);
         line-height: var(--rhythm2);
         width: 100%;
-        border-top: var(--border-size) solid gray;
       }
     `}</style>
     <table>{children}</table>
@@ -133,7 +130,7 @@ export const TableFooter = ({ children }) => (
   </tfoot>
 );
 
-export const TableHeader = ({ children }) => (
+export const TableHeader = ({ alignRight, children }) => (
   <th>
     <style jsx>{`
       th {
@@ -142,7 +139,7 @@ export const TableHeader = ({ children }) => (
           var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
-        border-left: var(--border-size) solid gray;
+        ${alignRight ? "text-align: right;" : ""}
       }
     `}</style>
     {children}
@@ -153,15 +150,14 @@ export const TableRow = ({ children }) => (
   <tr>
     <style jsx>{`
       tr {
-        border-right: var(--border-size) solid gray;
-        border-bottom: var(--border-size) solid gray;
+        border-bottom: var(--border-size) solid var(--foreground);
       }
     `}</style>
     {children}
   </tr>
 );
 
-export const TableData = ({ colSpan, children }) => (
+export const TableData = ({ colSpan, alignRight, children }) => (
   <td colSpan={colSpan}>
     <style jsx>{`
       td {
@@ -170,7 +166,7 @@ export const TableData = ({ colSpan, children }) => (
           var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
-        border-left: var(--border-size) solid gray;
+        ${alignRight ? "text-align: right;" : ""}
       }
     `}</style>
     {children}

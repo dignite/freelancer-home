@@ -16,21 +16,23 @@ export const BillableHoursPerWeek = ({ hours }) => (
       <TableHead>
         <TableRow>
           <TableHeader>Week</TableHeader>
-          <TableHeader>Hours</TableHeader>
+          <TableHeader alignRight>Hours</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
         {Object.keys(hours.totalBillableHoursPerWeek).map((week) => (
           <TableRow key={week}>
             <TableData>{week}</TableData>
-            <TableData>{hours.totalBillableHoursPerWeek[week]}</TableData>
+            <TableData alignRight>
+              {hours.totalBillableHoursPerWeek[week]}
+            </TableData>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
           <TableData>Total</TableData>
-          <TableData>{hours.totalBillableHours}</TableData>
+          <TableData alignRight>{hours.totalBillableHours}</TableData>
         </TableRow>
       </TableFooter>
     </Table>
