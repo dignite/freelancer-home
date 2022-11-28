@@ -193,7 +193,7 @@ export const Button = ({ onClick, children }) => (
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 100%;
-        width: 320px;
+        width: 364px;
 
         border: 1px solid var(--primary);
         background-color: var(--background);
