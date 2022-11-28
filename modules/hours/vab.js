@@ -18,7 +18,7 @@ export const VAB = ({ vab }) => (
         <TableHead>
           <TableRow>
             <TableHeader>Date</TableHeader>
-            <TableHeader>Hours</TableHeader>
+            <TableHeader alignRight>Hours</TableHeader>
             <TableHeader>Comment</TableHeader>
           </TableRow>
         </TableHead>
@@ -26,7 +26,7 @@ export const VAB = ({ vab }) => (
           {vab.map((vabDay) => (
             <TableRow key={vabDay.id}>
               <TableData>{vabDay.date}</TableData>
-              <TableData>{vabDay.hours}</TableData>
+              <TableData alignRight>{vabDay.hours}</TableData>
               <TableData>{vabDay.comment}</TableData>
             </TableRow>
           ))}
@@ -34,7 +34,7 @@ export const VAB = ({ vab }) => (
         <TableFooter>
           <TableRow>
             <TableData>Total</TableData>
-            <TableData colSpan={2}>
+            <TableData alignRight colSpan={2}>
               {vab.reduce(
                 (accumulator, currentValue) => accumulator + currentValue.hours,
                 0

@@ -14,10 +14,14 @@ export const MainHeading = ({ children }) => (
   <h1>
     <style jsx>{`
       h1 {
-        margin-top: var(--rhythm3);
-        line-height: calc(var(--rhythm3));
-        padding-top: var(--typography__h1Offset);
+        line-height: var(--rhythm3);
+        padding-top: calc(var(--rhythm2) + var(--typography__h1Offset));
         margin-bottom: calc(-1 * var(--typography__h1Offset));
+        background-color: var(--heading-background);
+        padding-bottom: var(--rhythm2);
+        padding-left: var(--rhythm1);
+        margin-left: calc(-1 * var(--rhythm1));
+        margin-right: calc(-1 * var(--rhythm2));
       }
     `}</style>
     {children}
@@ -29,9 +33,13 @@ export const Heading = ({ children }) => (
     <style jsx>{`
       h2 {
         margin-top: var(--rhythm3);
-        line-height: var(--rhythm2);
+        line-height: var(--rhythm4);
         padding-top: var(--typography__h2Offset);
         margin-bottom: calc(-1 * var(--typography__h2Offset));
+        background-color: var(--heading-background);
+        padding-left: var(--rhythm1);
+        margin-left: calc(-1 * var(--rhythm1));
+        margin-right: calc(-1 * var(--rhythm2));
       }
     `}</style>
     {children}
@@ -136,7 +144,7 @@ export const TableHeader = ({ alignRight, children }) => (
       th {
         padding: var(--cell-padding);
         line-height: calc(
-          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+          var(--rhythm3) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
         ${alignRight ? "text-align: right;" : ""}
@@ -150,7 +158,7 @@ export const TableRow = ({ children }) => (
   <tr>
     <style jsx>{`
       tr {
-        border-bottom: var(--border-size) solid var(--foreground);
+        border-bottom: var(--border-size) solid var(--foreground-weak);
       }
     `}</style>
     {children}
@@ -163,7 +171,7 @@ export const TableData = ({ colSpan, alignRight, children }) => (
       td {
         padding: 4px;
         line-height: calc(
-          var(--rhythm2) - var(--cell-padding) - var(--cell-padding) -
+          var(--rhythm3) - var(--cell-padding) - var(--cell-padding) -
             var(--border-size)
         );
         ${alignRight ? "text-align: right;" : ""}
@@ -179,12 +187,25 @@ export const Button = ({ onClick, children }) => (
       button {
         display: block;
         margin-top: var(--rhythm2);
-        height: var(--rhythm2);
+        height: var(--rhythm3);
 
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 100%;
+        width: 364px;
+
+        border: 1px solid var(--primary);
+        background-color: var(--background);
+        color: var(--primary);
+      }
+      button:hover {
+        border-color: var(--primary-hover);
+        color: var(--primary-hover);
+        cursor: pointer;
+      }
+      button:active {
+        transform: scale(0.98);
       }
     `}</style>
     {children}

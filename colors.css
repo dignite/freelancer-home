@@ -1,9 +1,27 @@
 :root {
-  --background: #f7f7f7;
-  --foreground: #131313;
+  --background: #121212;
+  --heading-background: #1b2133;
+  --foreground: #f5eded;
+  --foreground-weak: #f5eded81;
+  --primary: #6790ff;
+  --primary-hover: #3d6beb;
+  --primary-visited: #ed67ff;
 }
 
 html {
   background-color: var(--background);
   color: var(--foreground);
+}
+
+a {
+  color: var(--primary);
+  text-underline-offset: 4px;
+}
+
+a:visited {
+  color: var(--primary-hover);
+}
+
+a:hover {
+  color: var(--primary-visited);
 }
