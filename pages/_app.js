@@ -17,10 +17,14 @@ export default function FreelancerHome({ Component, pageProps }) {
       <Heading>Navigation</Heading>
       <UnorderedList>
         <UnorderedListItem>
-          <Link href="/">Home</Link>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
         </UnorderedListItem>
         <UnorderedListItem>
-          <Link href="/about">About</Link>
+          <Link href="/about">
+            <a>About</a>
+          </Link>
         </UnorderedListItem>
       </UnorderedList>
     </ApplicationContainer>
