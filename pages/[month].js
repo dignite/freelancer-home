@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
 import { BillableHoursClipboardButton } from "../modules/hours/billable-hours-clipboard-button";
 import { VAB } from "../modules/hours/vab";
@@ -121,26 +121,19 @@ const useStateWithUpdateCallback = (
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth
 ) => {
-  const [initialFormattedFirstDayOfMonth] = useState(formattedFirstDayOfMonth);
-  const [initialFormattedLastDayOfMonth] = useState(formattedLastDayOfMonth);
+  const initialRender = useRef(true);
   const [state, setState] = useState(initialState);
   const updateState = useCallback(async () => {
-    if (
-      formattedFirstDayOfMonth === initialFormattedFirstDayOfMonth &&
-      formattedLastDayOfMonth === initialFormattedLastDayOfMonth
-    ) {
-      return;
-    }
     setState(
       await getRefreshedState(formattedFirstDayOfMonth, formattedLastDayOfMonth)
     );
-  }, [
-    setState,
-    initialFormattedFirstDayOfMonth,
-    formattedFirstDayOfMonth,
-    initialFormattedLastDayOfMonth,
-    formattedLastDayOfMonth,
-  ]);
-  useEffect(updateState, [updateState]);
+  }, [setState, formattedFirstDayOfMonth, formattedLastDayOfMonth]);
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      updateState();
+    }
+  }, [updateState]);
   return [state, updateState];
 };
