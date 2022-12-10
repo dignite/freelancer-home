@@ -1,5 +1,5 @@
 freelancer-home:
-  component: "@sls-next/serverless-component@3.7.0-alpha.11"
+  component: "@sls-next/serverless-component@3.7.0"
   inputs:
     enableHTTPCompression: true
     authentication:
