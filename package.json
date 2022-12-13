@@ -7,16 +7,15 @@
     "build": "next build",
     "test": "echo TODO",
     "start": "next start",
-    "deploy": "env-cmd --file ./.env.serverless serverless",
-    "disable-deploy": "env-cmd --file ./.env.serverless serverless remove"
+    "deploy": "echo 'App is deployed automatically by vercel if you open a PR'",
+    "disable-deploy": "echo 'Remove deploy by using the vercel UI @ https://vercel.com/dignite/freelancer-home/deployments'"
   },
   "dependencies": {
     "env-cmd": "^10.1.0",
     "next": "^12.1.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "serverless": "^2.72.2"
+    "react-dom": "^17.0.2"
   },
   "license": "MIT"
 }
