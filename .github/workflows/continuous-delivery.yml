@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to AWS Lambda (prod)
+    name: Uninstall AWS Lambda (prod)
     runs-on: ubuntu-latest
     environment: prod
 
@@ -40,7 +40,7 @@ jobs:
           cat > ./.env.local << EOF
           HARVEST_REPORT_LAMBDA_HOURS_URL=${{secrets.HARVEST_REPORT_LAMBDA_HOURS_URL}}
           EOF
-      - run: npm run deploy
+      - run: npm run disable-deploy
       - name: Upload `.serverless` state to S3
         run: aws s3 sync .serverless s3://${{secrets.SERVERLESS_STATE_S3_BUCKET}}/prod/.serverless --region us-east-1 --delete
         env:
