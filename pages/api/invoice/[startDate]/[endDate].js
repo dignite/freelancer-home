@@ -1,3 +1,5 @@
+import { invoice } from "../../../../harvest-report-api/index";
+
 export default async function handler(req, res) {
   const { startDate, endDate } = req.query;
   const invoice = await getInvoice(startDate, endDate);
@@ -6,11 +8,9 @@ export default async function handler(req, res) {
 
 export const getInvoice = async (startDate, endDate) => {
   const commonRelativePath = `invoice/${startDate}/${endDate}`;
-  const res =
+  const json =
     typeof window === "undefined"
-      ? await fetch(
-          `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/${commonRelativePath}`
-        )
-      : await fetch(`/api/${commonRelativePath}`);
-  return await res.json();
+      ? await invoice(startDate, endDate)
+      : await (await fetch(`/api/${commonRelativePath}`)).json();
+  return json;
 };
