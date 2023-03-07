@@ -1,3 +1,5 @@
+import { byName } from "../../../../../harvest-report-api/index";
+
 export default async function handler(req, res) {
   const { startDate, endDate } = req.query;
   const hours = await getVAB(startDate, endDate);
@@ -6,11 +8,9 @@ export default async function handler(req, res) {
 
 export const getVAB = async (startDate, endDate) => {
   const commonRelativePath = `by-name/VAB/${startDate}/${endDate}`;
-  const res =
+  const json =
     typeof window === "undefined"
-      ? await fetch(
-          `${process.env.HARVEST_REPORT_LAMBDA_HOURS_URL}/${commonRelativePath}`
-        )
-      : await fetch(`/api/${commonRelativePath}`);
-  return await res.json();
+      ? await byName(startDate, endDate, "VAB")
+      : await (await fetch(`/api/${commonRelativePath}`)).json();
+  return json;
 };
