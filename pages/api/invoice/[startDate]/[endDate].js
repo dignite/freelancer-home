@@ -1,4 +1,4 @@
-import { invoice } from "../../../../harvest-report-api/index";
+import { invoice } from "../../../../modules/harvest-report-api/index";
 
 export default async function handler(req, res) {
   const { startDate, endDate } = req.query;
