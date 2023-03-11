@@ -1,4 +1,4 @@
-import { hours } from "../../../../harvest-report-api/index";
+import { hours } from "../../../../modules/harvest-report-api/index";
 
 export default async function handler(req, res) {
   const { startDate, endDate } = req.query;
