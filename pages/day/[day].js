@@ -1,0 +1,36 @@
+import {
+  Heading,
+  MainHeading,
+  Paragraph,
+} from "../../modules/layout/vertical-rhythm";
+import { getHoursSingleDay } from "../api/hours/single-day/[date]";
+import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
+
+export default function Day({ serverSideHours, serverSideInvoice, day }) {
+  return (
+    <>
+      <MainHeading>Single day ({day})</MainHeading>
+      <Heading>Time</Heading>
+      <Paragraph>{serverSideHours} hours</Paragraph>
+      <Heading>Money</Heading>
+      <Paragraph>{serverSideInvoice.totalExcludingVAT} excluding VAT</Paragraph>
+    </>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const { day } = context.params;
+
+  const [serverSideHours, serverSideInvoice] = await Promise.all([
+    getHoursSingleDay(day),
+    getInvoice(day, day),
+  ]);
+
+  return {
+    props: {
+      serverSideHours,
+      serverSideInvoice,
+      day,
+    },
+  };
+}
