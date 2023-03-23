@@ -20,6 +20,9 @@ export default function Day({ serverSideHours, serverSideInvoice, day }) {
 
 export async function getServerSideProps(context) {
   const { day } = context.params;
+  if (!isValidDaySlug(day)) {
+    return getCurrentDayRedirect();
+  }
 
   const [serverSideHours, serverSideInvoice] = await Promise.all([
     getHoursSingleDay(day),
@@ -34,6 +37,8 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export const isValidDaySlug = (day) => day.length === 10;
 
 export const getCurrentDayRedirect = () => ({
   redirect: {
