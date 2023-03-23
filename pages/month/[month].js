@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { useCallback, useState, useEffect, useRef } from "react";
-import { BillableHoursPerWeek } from "../modules/hours/billable-hours-per-week";
-import { BillableHoursClipboardButton } from "../modules/hours/billable-hours-clipboard-button";
-import { VAB } from "../modules/hours/vab";
+import { BillableHoursPerWeek } from "../../modules/hours/billable-hours-per-week";
+import { BillableHoursClipboardButton } from "../../modules/hours/billable-hours-clipboard-button";
+import { VAB } from "../../modules/hours/vab";
 import {
   Button,
   Heading,
   MainHeading,
   Paragraph,
-} from "../modules/layout/vertical-rhythm";
-import { getHours } from "./api/hours/[startDate]/[endDate]";
-import { getInvoice } from "./api/invoice/[startDate]/[endDate]";
-import { getVAB } from "./api/by-name/VAB/[startDate]/[endDate]";
+} from "../../modules/layout/vertical-rhythm";
+import { getHours } from "../api/hours/[startDate]/[endDate]";
+import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
+import { getVAB } from "../api/by-name/VAB/[startDate]/[endDate]";
 
 export default function MonthPage({
   serverSideHours,
@@ -102,7 +102,7 @@ export const isValidMonthSlug = (month) => month.length === 7;
 
 export const getCurrentMonthRedirect = () => ({
   redirect: {
-    destination: `/${getCurrentMonthSlug()}`,
+    destination: `/month/${getCurrentMonthSlug()}`,
     permanent: false,
   },
 });

@@ -34,3 +34,12 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export const getCurrentDayRedirect = () => ({
+  redirect: {
+    destination: `/day/${getCurrentDaySlug()}`,
+    permanent: false,
+  },
+});
+
+const getCurrentDaySlug = () => new Date().toISOString().slice(0, 10);
