@@ -11,6 +11,6 @@ export const getHoursSingleDay = async (date) => {
   const json =
     typeof window === "undefined"
       ? await singleDayHours(date)
-      : await (await fetch(`/api/ ${commonRelativePath}`)).json();
+      : await (await fetch(`/api/${commonRelativePath}`)).json();
   return json;
 };
