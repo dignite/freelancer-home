@@ -18,17 +18,17 @@ export default function FreelancerHome({ Component, pageProps }) {
       <UnorderedList>
         <UnorderedListItem>
           <Link href="/">
-            <a>Home</a>
+            Home
           </Link>
         </UnorderedListItem>
         <UnorderedListItem>
           <Link href="/day">
-            <a>Day</a>
+            Day
           </Link>
         </UnorderedListItem>
         <UnorderedListItem>
           <Link href="/month">
-            <a>Month</a>
+            Month
           </Link>
         </UnorderedListItem>
       </UnorderedList>
