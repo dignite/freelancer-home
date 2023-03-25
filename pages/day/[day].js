@@ -1,19 +1,31 @@
 import Link from "next/link";
 import {
+  Button,
   Heading,
   MainHeading,
   Paragraph,
 } from "../../modules/layout/vertical-rhythm";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getHoursSingleDay } from "../api/hours/single-day/[date]";
 import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
 
-export default function Day({
-  serverSideHours,
-  serverSideInvoice,
-  day,
-  isCurrentDay,
-}) {
+export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
+  const {
+    data: hours,
+    isSuccess: hoursSuccess,
+    refetch: updateHours,
+  } = useQuery(["hoursSingleDay", day], () => getHoursSingleDay(day));
+  const {
+    data: invoice,
+    isSuccess: invoiceSuccess,
+    refetch: updateInvoice,
+  } = useQuery(["invoiceSingleDay", day], () => getInvoice(day, day));
+
+  if (!hoursSuccess || !invoiceSuccess) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <MainHeading>
@@ -25,9 +37,11 @@ export default function Day({
         </Paragraph>
       )}
       <Heading>Time</Heading>
-      <Paragraph>{serverSideHours} hours</Paragraph>
+      <Paragraph>{hours} hours</Paragraph>
+      <Button onClick={updateHours}>Refresh hours</Button>
       <Heading>Money</Heading>
-      <Paragraph>{serverSideInvoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Button onClick={updateInvoice}>Refresh invoice</Button>
     </>
   );
 }
@@ -38,19 +52,24 @@ export async function getServerSideProps(context) {
     return getCurrentDayRedirect();
   }
 
-  const [serverSideHours, serverSideInvoice] = await Promise.all([
-    getHoursSingleDay(day),
-    getInvoice(day, day),
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(["hoursSingleDay", day], () =>
+      getHoursSingleDay(day)
+    ),
+    queryClient.prefetchQuery(["invoiceSingleDay", day], () =>
+      getInvoice(day, day)
+    ),
   ]);
 
   const isCurrentDay = getCurrentDaySlug() === day;
 
   return {
     props: {
-      serverSideHours,
-      serverSideInvoice,
       day,
       isCurrentDay,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 }
