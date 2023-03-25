@@ -20,7 +20,9 @@ export default function MonthPage({
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth,
   isCurrentMonth,
+  month,
 }) {
+  const monthName = useMonthName(month);
   const [hours, updateHours] = useStateWithUpdateCallback(
     serverSideHours,
     getHours,
@@ -41,7 +43,9 @@ export default function MonthPage({
   );
   return (
     <>
-      <MainHeading>Freelancer Home 🕚</MainHeading>
+      <MainHeading>
+        🕚 {monthName} {month}
+      </MainHeading>
       {isCurrentMonth ? null : (
         <Paragraph>
           <Link href="/">Jump to current month</Link>
@@ -94,6 +98,7 @@ export async function getServerSideProps(context) {
       formattedFirstDayOfMonth,
       formattedLastDayOfMonth,
       isCurrentMonth,
+      month,
     },
   };
 }
@@ -108,6 +113,12 @@ export const getCurrentMonthRedirect = () => ({
 });
 
 const getCurrentMonthSlug = () => new Date().toISOString().slice(0, 7);
+
+const useMonthName = (month) => {
+  return new Date(Date.parse(`${month}-01`)).toLocaleString("default", {
+    month: "long",
+  });
+};
 
 export const lastDayOfMonth = (dayInMonth) => {
   return new Date(
