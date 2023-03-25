@@ -10,9 +10,11 @@ import {
   TableRow,
 } from "../layout/vertical-rhythm";
 
-export const VAB = ({ vab }) => (
+export const VAB = ({ vab, startDate, endDate }) => (
   <>
-    <Heading>VAB for the month</Heading>
+    <Heading>
+      VAB between {startDate} and {endDate}
+    </Heading>
     {vab.length ? (
       <Table>
         <TableHead>

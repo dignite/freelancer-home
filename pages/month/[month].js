@@ -19,6 +19,8 @@ export default function MonthPage({
   serverSideVAB,
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth,
+  formattedFirstDayOfLastMonth,
+  formattedLastDayOfLastMonth,
   isCurrentMonth,
   month,
 }) {
@@ -38,8 +40,8 @@ export default function MonthPage({
   const [vab, updateVAB] = useStateWithUpdateCallback(
     serverSideVAB,
     getVAB,
-    formattedFirstDayOfMonth,
-    formattedLastDayOfMonth
+    formattedFirstDayOfLastMonth,
+    formattedLastDayOfLastMonth
   );
   return (
     <>
@@ -61,7 +63,11 @@ export default function MonthPage({
         formattedLastDayOfMonth={formattedLastDayOfMonth}
       />
       <Button onClick={updateHours}>Refresh hours</Button>
-      <VAB vab={vab} />
+      <VAB
+        startDate={formattedFirstDayOfLastMonth}
+        endDate={formattedLastDayOfLastMonth}
+        vab={vab}
+      />
       <Button onClick={updateVAB}>Refresh VAB</Button>
     </>
   );
@@ -79,12 +85,22 @@ export async function getServerSideProps(context) {
   )
     .toISOString()
     .slice(0, 10);
+  const formattedFirstDayOfLastMonth = firstDayOfLastMonth(
+    new Date(Date.parse(formattedFirstDayOfMonth))
+  )
+    .toISOString()
+    .slice(0, 10);
+  const formattedLastDayOfLastMonth = lastDayOfMonth(
+    new Date(Date.parse(formattedFirstDayOfLastMonth))
+  )
+    .toISOString()
+    .slice(0, 10);
 
   const [serverSideHours, serverSideInvoice, serverSideVAB] = await Promise.all(
     [
       getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
       getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-      getVAB(formattedFirstDayOfMonth, formattedLastDayOfMonth),
+      getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth),
     ]
   );
 
@@ -97,6 +113,8 @@ export async function getServerSideProps(context) {
       serverSideVAB,
       formattedFirstDayOfMonth,
       formattedLastDayOfMonth,
+      formattedFirstDayOfLastMonth,
+      formattedLastDayOfLastMonth,
       isCurrentMonth,
       month,
     },
@@ -123,6 +141,12 @@ const useMonthName = (month) => {
 export const lastDayOfMonth = (dayInMonth) => {
   return new Date(
     Date.UTC(dayInMonth.getFullYear(), dayInMonth.getMonth() + 1, 0)
+  );
+};
+
+const firstDayOfLastMonth = (dayInNextMonth) => {
+  return new Date(
+    Date.UTC(dayInNextMonth.getFullYear(), dayInNextMonth.getMonth() - 1, 1)
   );
 };
 
