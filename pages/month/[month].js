@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCallback, useState, useEffect, useRef } from "react";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import { BillableHoursPerWeek } from "../../modules/hours/billable-hours-per-week";
 import { BillableHoursClipboardButton } from "../../modules/hours/billable-hours-clipboard-button";
 import { VAB } from "../../modules/hours/vab";
@@ -14,9 +14,6 @@ import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
 import { getVAB } from "../api/by-name/VAB/[startDate]/[endDate]";
 
 export default function MonthPage({
-  serverSideHours,
-  serverSideInvoice,
-  serverSideVAB,
   formattedFirstDayOfMonth,
   formattedLastDayOfMonth,
   formattedFirstDayOfLastMonth,
@@ -25,24 +22,32 @@ export default function MonthPage({
   month,
 }) {
   const monthName = useMonthName(month);
-  const [hours, updateHours] = useStateWithUpdateCallback(
-    serverSideHours,
-    getHours,
-    formattedFirstDayOfMonth,
-    formattedLastDayOfMonth
+  const {
+    data: hours,
+    isSuccess: hoursSuccess,
+    refetch: updateHours,
+  } = useQuery(["hours", month], () =>
+    getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth)
   );
-  const [invoice, updateInvoice] = useStateWithUpdateCallback(
-    serverSideInvoice,
-    getInvoice,
-    formattedFirstDayOfMonth,
-    formattedLastDayOfMonth
+  const {
+    data: invoice,
+    isSuccess: invoiceSuccess,
+    refetch: updateInvoice,
+  } = useQuery(["invoice", month], () =>
+    getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth)
   );
-  const [vab, updateVAB] = useStateWithUpdateCallback(
-    serverSideVAB,
-    getVAB,
-    formattedFirstDayOfLastMonth,
-    formattedLastDayOfLastMonth
+  const {
+    data: vab,
+    isSuccess: vabSuccess,
+    refetch: updateVAB,
+  } = useQuery(["vabLastMonth", month], () =>
+    getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth)
   );
+
+  if (!hoursSuccess || !invoiceSuccess || !vabSuccess) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <MainHeading>
@@ -75,6 +80,7 @@ export default function MonthPage({
 
 export async function getServerSideProps(context) {
   const { month } = context.query;
+  const queryClient = new QueryClient();
   if (!isValidMonthSlug(month)) {
     return getCurrentMonthRedirect();
   }
@@ -96,27 +102,29 @@ export async function getServerSideProps(context) {
     .toISOString()
     .slice(0, 10);
 
-  const [serverSideHours, serverSideInvoice, serverSideVAB] = await Promise.all(
-    [
-      getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-      getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth),
-      getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth),
-    ]
-  );
+  await Promise.all([
+    queryClient.prefetchQuery(["hours", month], () =>
+      getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+    ),
+    queryClient.prefetchQuery(["invoice", month], () =>
+      getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+    ),
+    queryClient.prefetchQuery(["vabLastMonth", month], () =>
+      getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth)
+    ),
+  ]);
 
   const isCurrentMonth = getCurrentMonthSlug() === month;
 
   return {
     props: {
-      serverSideHours,
-      serverSideInvoice,
-      serverSideVAB,
       formattedFirstDayOfMonth,
       formattedLastDayOfMonth,
       formattedFirstDayOfLastMonth,
       formattedLastDayOfLastMonth,
       isCurrentMonth,
       month,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 }
@@ -148,27 +156,4 @@ const firstDayOfLastMonth = (dayInNextMonth) => {
   return new Date(
     Date.UTC(dayInNextMonth.getFullYear(), dayInNextMonth.getMonth() - 1, 1)
   );
-};
-
-const useStateWithUpdateCallback = (
-  initialState,
-  getRefreshedState,
-  formattedFirstDayOfMonth,
-  formattedLastDayOfMonth
-) => {
-  const initialRender = useRef(true);
-  const [state, setState] = useState(initialState);
-  const updateState = useCallback(async () => {
-    setState(
-      await getRefreshedState(formattedFirstDayOfMonth, formattedLastDayOfMonth)
-    );
-  }, [setState, formattedFirstDayOfMonth, formattedLastDayOfMonth]);
-  useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-    } else {
-      updateState();
-    }
-  }, [updateState]);
-  return [state, updateState];
 };
