@@ -7,9 +7,12 @@ import { getHoursSingleDay } from "../api/hours/single-day/[date]";
 import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
 
 export default function Day({ serverSideHours, serverSideInvoice, day }) {
+  const dayName = useDayName(day);
   return (
     <>
-      <MainHeading>Single day ({day})</MainHeading>
+      <MainHeading>
+        🕚 {dayName} {day}
+      </MainHeading>
       <Heading>Time</Heading>
       <Paragraph>{serverSideHours} hours</Paragraph>
       <Heading>Money</Heading>
@@ -48,3 +51,19 @@ export const getCurrentDayRedirect = () => ({
 });
 
 const getCurrentDaySlug = () => new Date().toISOString().slice(0, 10);
+
+const useDayName = (day) => {
+  if (getCurrentDaySlug() === day) return "Today";
+
+  const dayOfWeek = new Date(Date.parse(day)).getDay();
+  const dayOfWeekName = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ][dayOfWeek];
+  return dayOfWeekName;
+};

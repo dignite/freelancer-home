@@ -9,7 +9,7 @@ import {
 export default function IndexPage() {
   return (
     <>
-      <MainHeading>Freelancer Home 🕚</MainHeading>
+      <MainHeading>🕚 Freelancer Home</MainHeading>
       <Heading>Goals</Heading>
       <SubHeading>1. Visualize Money and Time (IN PROGRESS)</SubHeading>
       <SubSubHeading>1.1. Money (TODO)</SubSubHeading>
