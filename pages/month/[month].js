@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { dehydrate, useQuery } from "react-query";
+import { createClient } from "../../modules/react-query-client";
 import { BillableHoursPerWeek } from "../../modules/hours/billable-hours-per-week";
 import { BillableHoursClipboardButton } from "../../modules/hours/billable-hours-clipboard-button";
 import { VAB } from "../../modules/hours/vab";
@@ -9,9 +10,6 @@ import {
   MainHeading,
   Paragraph,
 } from "../../modules/layout/vertical-rhythm";
-import { getHours } from "../api/hours/[startDate]/[endDate]";
-import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
-import { getVAB } from "../api/by-name/VAB/[startDate]/[endDate]";
 
 export default function MonthPage({
   formattedFirstDayOfMonth,
@@ -26,22 +24,20 @@ export default function MonthPage({
     data: hours,
     isSuccess: hoursSuccess,
     refetch: updateHours,
-  } = useQuery(["hours", month], () =>
-    getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth)
-  );
+  } = useQuery(`hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`);
   const {
     data: invoice,
     isSuccess: invoiceSuccess,
     refetch: updateInvoice,
-  } = useQuery(["invoice", month], () =>
-    getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+  } = useQuery(
+    `invoice/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
   );
   const {
     data: vab,
     isSuccess: vabSuccess,
     refetch: updateVAB,
-  } = useQuery(["vabLastMonth", month], () =>
-    getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth)
+  } = useQuery(
+    `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
   );
 
   if (!hoursSuccess || !invoiceSuccess || !vabSuccess) {
@@ -80,7 +76,7 @@ export default function MonthPage({
 
 export async function getServerSideProps(context) {
   const { month } = context.query;
-  const queryClient = new QueryClient();
+  const queryClient = createClient();
   if (!isValidMonthSlug(month)) {
     return getCurrentMonthRedirect();
   }
@@ -103,14 +99,14 @@ export async function getServerSideProps(context) {
     .slice(0, 10);
 
   await Promise.all([
-    queryClient.prefetchQuery(["hours", month], () =>
-      getHours(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+    queryClient.prefetchQuery(
+      `hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
     ),
-    queryClient.prefetchQuery(["invoice", month], () =>
-      getInvoice(formattedFirstDayOfMonth, formattedLastDayOfMonth)
+    queryClient.prefetchQuery(
+      `invoice/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
     ),
-    queryClient.prefetchQuery(["vabLastMonth", month], () =>
-      getVAB(formattedFirstDayOfLastMonth, formattedLastDayOfLastMonth)
+    queryClient.prefetchQuery(
+      `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
     ),
   ]);
 

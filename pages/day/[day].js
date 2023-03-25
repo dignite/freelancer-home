@@ -5,9 +5,8 @@ import {
   MainHeading,
   Paragraph,
 } from "../../modules/layout/vertical-rhythm";
-import { dehydrate, QueryClient, useQuery } from "react-query";
-import { getHoursSingleDay } from "../api/hours/single-day/[date]";
-import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
+import { dehydrate, useQuery } from "react-query";
+import { createClient } from "../../modules/react-query-client";
 
 export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
@@ -15,12 +14,12 @@ export default function Day({ day, isCurrentDay }) {
     data: hours,
     isSuccess: hoursSuccess,
     refetch: updateHours,
-  } = useQuery(["hoursSingleDay", day], () => getHoursSingleDay(day));
+  } = useQuery(`hours/single-day/${day}`);
   const {
     data: invoice,
     isSuccess: invoiceSuccess,
     refetch: updateInvoice,
-  } = useQuery(["invoiceSingleDay", day], () => getInvoice(day, day));
+  } = useQuery(`invoice/${day}/${day}`);
 
   if (!hoursSuccess || !invoiceSuccess) {
     return <div>Loading...</div>;
@@ -52,15 +51,11 @@ export async function getServerSideProps(context) {
     return getCurrentDayRedirect();
   }
 
-  const queryClient = new QueryClient();
+  const queryClient = createClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(["hoursSingleDay", day], () =>
-      getHoursSingleDay(day)
-    ),
-    queryClient.prefetchQuery(["invoiceSingleDay", day], () =>
-      getInvoice(day, day)
-    ),
+    queryClient.prefetchQuery(`hours/single-day/${day}`),
+    queryClient.prefetchQuery(`invoice/${day}/${day}`),
   ]);
 
   const isCurrentDay = getCurrentDaySlug() === day;

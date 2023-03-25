@@ -10,10 +10,11 @@ import {
 } from "../modules/layout/vertical-rhythm";
 import Link from "next/link";
 import { useState } from "react";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { Hydrate, QueryClientProvider } from "react-query";
+import { createClient } from "../modules/react-query-client";
 
 export default function FreelancerHome({ Component, pageProps }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(createClient);
 
   return (
     <QueryClientProvider client={queryClient}>
