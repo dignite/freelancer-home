@@ -48,7 +48,7 @@ export default function MonthPage({
       </MainHeading>
       {isCurrentMonth ? null : (
         <Paragraph>
-          <Link href="/">Jump to current month</Link>
+          <Link href="/month">Jump to current month</Link>
         </Paragraph>
       )}
       <Heading>Invoice</Heading>
