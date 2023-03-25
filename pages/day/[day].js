@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Heading,
   MainHeading,
@@ -6,13 +7,23 @@ import {
 import { getHoursSingleDay } from "../api/hours/single-day/[date]";
 import { getInvoice } from "../api/invoice/[startDate]/[endDate]";
 
-export default function Day({ serverSideHours, serverSideInvoice, day }) {
+export default function Day({
+  serverSideHours,
+  serverSideInvoice,
+  day,
+  isCurrentDay,
+}) {
   const dayName = useDayName(day);
   return (
     <>
       <MainHeading>
         🕚 {dayName} {day}
       </MainHeading>
+      {isCurrentDay ? null : (
+        <Paragraph>
+          <Link href="/day">Jump to today</Link>
+        </Paragraph>
+      )}
       <Heading>Time</Heading>
       <Paragraph>{serverSideHours} hours</Paragraph>
       <Heading>Money</Heading>
@@ -32,11 +43,14 @@ export async function getServerSideProps(context) {
     getInvoice(day, day),
   ]);
 
+  const isCurrentDay = getCurrentDaySlug() === day;
+
   return {
     props: {
       serverSideHours,
       serverSideInvoice,
       day,
+      isCurrentDay,
     },
   };
 }
