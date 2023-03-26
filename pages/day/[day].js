@@ -7,9 +7,15 @@ import {
 } from "../../modules/layout/vertical-rhythm";
 import { dehydrate, useQuery } from "react-query";
 import { createClient } from "../../modules/react-query-client";
+import { useState, useEffect } from "react";
 
 export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
+  const {
+    data: isRunningState,
+    isSuccess: isRunningStateSuccess,
+    refetch: updateIsRunningState,
+  } = useQuery(`is-running`);
   const {
     data: hours,
     isSuccess: hoursSuccess,
@@ -21,7 +27,7 @@ export default function Day({ day, isCurrentDay }) {
     refetch: updateInvoice,
   } = useQuery(`invoice/${day}/${day}`);
 
-  if (!hoursSuccess || !invoiceSuccess) {
+  if (!isRunningStateSuccess || !hoursSuccess || !invoiceSuccess) {
     return <div>Loading...</div>;
   }
 
@@ -40,6 +46,10 @@ export default function Day({ day, isCurrentDay }) {
       <Button onClick={updateHours}>Refresh hours</Button>
       <Heading>Money</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Paragraph>
+        {isRunningState.isRunning ? "Running" : "Not running"}{" "}
+        {isRunningState.billableRate} {isRunningState.lastTick}
+      </Paragraph>
       <Button onClick={updateInvoice}>Refresh invoice</Button>
     </>
   );
@@ -54,6 +64,7 @@ export async function getServerSideProps(context) {
   const queryClient = createClient();
 
   await Promise.all([
+    queryClient.prefetchQuery(`is-running`),
     queryClient.prefetchQuery(`hours/single-day/${day}`),
     queryClient.prefetchQuery(`invoice/${day}/${day}`),
   ]);
