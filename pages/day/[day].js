@@ -46,6 +46,10 @@ export default function Day({ day, isCurrentDay }) {
       <Button onClick={updateHours}>Refresh hours</Button>
       <Heading>Money</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Paragraph>
+        {isRunningState.isRunning ? "Running" : "Not running"}{" "}
+        {isRunningState.billableRate} {isRunningState.lastTick}
+      </Paragraph>
       <Button onClick={updateInvoice}>Refresh invoice</Button>
     </>
   );
