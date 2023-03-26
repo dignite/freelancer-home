@@ -12,6 +12,21 @@ export const singleDayHours = async (date: string): Promise<number> => {
   return totalSum(relevantTimeEntries);
 };
 
+export const isRunning = async (): Promise<{
+  isRunning: HarvestReportLambdaTimeEntry["isRunning"];
+  billableRate: HarvestReportLambdaTimeEntry["billableRate"];
+  lastTick: HarvestReportLambdaTimeEntry["lastTick"];
+}> => {
+  const today = new Date();
+  const relevantTimeEntries = await get(today, today);
+  const runningTimeEntry = relevantTimeEntries.find((x) => x.isRunning);
+  return {
+    isRunning: !!runningTimeEntry,
+    billableRate: runningTimeEntry ? runningTimeEntry.billableRate : 0,
+    lastTick: runningTimeEntry?.lastTick,
+  };
+};
+
 export const hours = async (
   startDate: string,
   endDate: string

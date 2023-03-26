@@ -10,6 +10,8 @@ export interface SimplifiedUnbilledTimeEntry {
   id: components["schemas"]["TimeEntry"]["id"];
   isBilled: components["schemas"]["TimeEntry"]["is_billed"];
   name: string;
+  isRunning: components["schemas"]["TimeEntry"]["is_running"];
+  startedTime: components["schemas"]["TimeEntry"]["started_time"];
 }
 
 type NonNullable<T> = Exclude<T, null | undefined>;
@@ -66,6 +68,8 @@ export const getTimeEntriesForMonth = async (
             id: timeEntry.id,
             isBilled: timeEntry.is_billed,
             name: timeEntry.task?.name || "Unnamed",
+            isRunning: timeEntry.is_running,
+            startedTime: timeEntry.started_time,
           },
         ]
       : []

@@ -12,12 +12,16 @@ export interface HarvestReportLambdaTimeEntry {
   hours: number;
   cost: number;
   comment: SimplifiedUnbilledTimeEntry["comment"];
+  isRunning: SimplifiedUnbilledTimeEntry["isRunning"];
+  billableRate: SimplifiedUnbilledTimeEntry["billableRate"];
+  lastTick: SimplifiedUnbilledTimeEntry["startedTime"];
 }
 
 export const get = async (
   startOfMonth: Date,
   lastDayOfMonth: Date
 ): Promise<HarvestReportLambdaTimeEntry[]> => {
+  const now = new Date();
   const timeEntries = await getTimeEntriesForMonth(
     startOfMonth,
     lastDayOfMonth
@@ -28,6 +32,7 @@ export const get = async (
       : 0;
     const billableHours =
       timeEntry.billable && timeEntry.billableRate ? hours : 0;
+
     return {
       id: timeEntry.id,
       date: timeEntry.date,
@@ -36,6 +41,21 @@ export const get = async (
       hours: hours,
       cost: SEK(billableHours).multiply(timeEntry.billableRate).getAmount(),
       comment: timeEntry.comment,
+      isRunning: timeEntry.isRunning,
+      billableRate: timeEntry.billableRate,
+      // Add hours to startedTime to get the time when the time entry was last ticked
+      lastTick: new Date(
+        new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          parseInt(timeEntry.startedTime?.substring(0, 2), 10),
+          parseInt(timeEntry.startedTime?.substring(3, 5), 10),
+          0,
+          0
+        ).getTime() +
+          hours * 60 * 60 * 1000
+      ),
     };
   });
   return timeEntriesWithCost;
