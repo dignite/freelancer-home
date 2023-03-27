@@ -20,17 +20,14 @@ export default function MonthPage({
   month,
 }) {
   const monthName = useMonthName(month);
-  const { data: hours, isSuccess: hoursSuccess } = useQuery(
-    `hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
-  );
-  const { data: invoice, isSuccess: invoiceSuccess } = useQuery(
-    `invoice/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+  const { data: summary, isSuccess: summarySuccess } = useQuery(
+    `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
   );
   const { data: vab, isSuccess: vabSuccess } = useQuery(
     `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
   );
 
-  if (!hoursSuccess || !invoiceSuccess || !vabSuccess) {
+  if (!summarySuccess || !vabSuccess) {
     return <div>Loading...</div>;
   }
 
@@ -45,10 +42,12 @@ export default function MonthPage({
         </Paragraph>
       )}
       <Heading>Invoice</Heading>
-      <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
-      <BillableHoursPerWeek hours={hours} />
+      <Paragraph>
+        {summary.invoice.totalExcludingVATFormatted} excluding VAT
+      </Paragraph>
+      <BillableHoursPerWeek hours={summary.hours} />
       <BillableHoursClipboardButton
-        hours={hours}
+        hours={summary.hours}
         formattedFirstDayOfMonth={formattedFirstDayOfMonth}
         formattedLastDayOfMonth={formattedLastDayOfMonth}
       />
@@ -87,10 +86,7 @@ export async function getServerSideProps(context) {
 
   await Promise.all([
     queryClient.prefetchQuery(
-      `hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
-    ),
-    queryClient.prefetchQuery(
-      `invoice/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+      `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
     ),
     queryClient.prefetchQuery(
       `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
