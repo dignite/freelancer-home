@@ -4,13 +4,6 @@ import {
   hoursMetaSlim,
   MetaSlim,
 } from "./meta/index";
-import { totalSum } from "./meta/time-summary";
-
-export const singleDayHours = async (date: string): Promise<number> => {
-  const parsedDate = new Date(Date.parse(date));
-  const relevantTimeEntries = await get(parsedDate, parsedDate);
-  return totalSum(relevantTimeEntries);
-};
 
 export const hours = async (
   startDate: string,
