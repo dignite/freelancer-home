@@ -14,7 +14,7 @@ export const MainHeading = ({ children }) => (
   <h1>
     <style jsx>{`
       h1 {
-        line-height: var(--rhythm3);
+        line-height: var(--typography__h1LineHeight);
         padding-top: calc(var(--rhythm2) + var(--typography__h1Offset));
         margin-bottom: calc(-1 * var(--typography__h1Offset));
         background-color: var(--heading-background);
@@ -33,7 +33,7 @@ export const Heading = ({ children }) => (
     <style jsx>{`
       h2 {
         margin-top: var(--rhythm3);
-        line-height: var(--rhythm4);
+        line-height: var(--typography__h2LineHeight);
         padding-top: var(--typography__h2Offset);
         margin-bottom: calc(-1 * var(--typography__h2Offset));
         background-color: var(--heading-background);
@@ -51,7 +51,7 @@ export const SubHeading = ({ children }) => (
     <style jsx>{`
       h3 {
         margin-top: var(--rhythm2);
-        line-height: var(--rhythm2);
+        line-height: var(--typography__h3LineHeight);
         padding-top: var(--typography__h3Offset);
         margin-bottom: calc(-1 * var(--typography__h3Offset));
       }
@@ -65,7 +65,7 @@ export const SubSubHeading = ({ children }) => (
     <style jsx>{`
       h4 {
         margin-top: var(--rhythm2);
-        line-height: var(--rhythm2);
+        line-height: var(--typography__h4LineHeight);
         padding-top: var(--typography__h4Offset);
         margin-bottom: calc(-1 * var(--typography__h4Offset));
       }
