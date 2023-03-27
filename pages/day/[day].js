@@ -10,7 +10,7 @@ import { createClient } from "../../modules/react-query-client";
 export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
   const { data: hours, isSuccess: hoursSuccess } = useQuery(
-    `hours/single-day/${day}`
+    `hours/${day}/${day}`
   );
   const { data: invoice, isSuccess: invoiceSuccess } = useQuery(
     `invoice/${day}/${day}`
@@ -31,7 +31,7 @@ export default function Day({ day, isCurrentDay }) {
         </Paragraph>
       )}
       <Heading>Time</Heading>
-      <Paragraph>{hours} hours</Paragraph>
+      <Paragraph>{hours.totalBillableHours} hours</Paragraph>
       <Heading>Money</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
     </>
