@@ -26,16 +26,6 @@ export const summary = async (
   };
 };
 
-export const hours = async (
-  startDate: string,
-  endDate: string
-): Promise<MetaSlim> => {
-  const parsedStartDate = new Date(Date.parse(startDate));
-  const parsedEndDate = new Date(Date.parse(endDate));
-  const relevantTimeEntries = await get(parsedStartDate, parsedEndDate);
-  return hoursMetaSlim(relevantTimeEntries);
-};
-
 export const byName = async (
   startDate: string,
   endDate: string,
@@ -45,16 +35,4 @@ export const byName = async (
   const parsedEndDate = new Date(Date.parse(endDate));
   const relevantTimeEntries = await get(parsedStartDate, parsedEndDate);
   return relevantTimeEntries.filter((x) => x.name === name);
-};
-
-export const invoice = async (
-  startDate: string,
-  endDate: string
-): Promise<{ totalExcludingVAT: string }> => {
-  const parsedStartDate = new Date(Date.parse(startDate));
-  const parsedEndDate = new Date(Date.parse(endDate));
-  const relevantTimeEntries = await get(parsedStartDate, parsedEndDate);
-  return {
-    totalExcludingVAT: getInvoiceSumExcludingVAT(relevantTimeEntries),
-  };
 };
