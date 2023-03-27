@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Button,
   Heading,
   MainHeading,
   Paragraph,
@@ -10,16 +9,12 @@ import { createClient } from "../../modules/react-query-client";
 
 export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
-  const {
-    data: hours,
-    isSuccess: hoursSuccess,
-    refetch: updateHours,
-  } = useQuery(`hours/single-day/${day}`);
-  const {
-    data: invoice,
-    isSuccess: invoiceSuccess,
-    refetch: updateInvoice,
-  } = useQuery(`invoice/${day}/${day}`);
+  const { data: hours, isSuccess: hoursSuccess } = useQuery(
+    `hours/single-day/${day}`
+  );
+  const { data: invoice, isSuccess: invoiceSuccess } = useQuery(
+    `invoice/${day}/${day}`
+  );
 
   if (!hoursSuccess || !invoiceSuccess) {
     return <div>Loading...</div>;
@@ -37,10 +32,8 @@ export default function Day({ day, isCurrentDay }) {
       )}
       <Heading>Time</Heading>
       <Paragraph>{hours} hours</Paragraph>
-      <Button onClick={updateHours}>Refresh hours</Button>
       <Heading>Money</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
-      <Button onClick={updateInvoice}>Refresh invoice</Button>
     </>
   );
 }

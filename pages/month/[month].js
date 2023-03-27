@@ -20,23 +20,13 @@ export default function MonthPage({
   month,
 }) {
   const monthName = useMonthName(month);
-  const {
-    data: hours,
-    isSuccess: hoursSuccess,
-    refetch: updateHours,
-  } = useQuery(`hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`);
-  const {
-    data: invoice,
-    isSuccess: invoiceSuccess,
-    refetch: updateInvoice,
-  } = useQuery(
+  const { data: hours, isSuccess: hoursSuccess } = useQuery(
+    `hours/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+  );
+  const { data: invoice, isSuccess: invoiceSuccess } = useQuery(
     `invoice/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
   );
-  const {
-    data: vab,
-    isSuccess: vabSuccess,
-    refetch: updateVAB,
-  } = useQuery(
+  const { data: vab, isSuccess: vabSuccess } = useQuery(
     `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
   );
 
@@ -56,20 +46,17 @@ export default function MonthPage({
       )}
       <Heading>Invoice</Heading>
       <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
-      <Button onClick={updateInvoice}>Refresh invoice</Button>
       <BillableHoursPerWeek hours={hours} />
       <BillableHoursClipboardButton
         hours={hours}
         formattedFirstDayOfMonth={formattedFirstDayOfMonth}
         formattedLastDayOfMonth={formattedLastDayOfMonth}
       />
-      <Button onClick={updateHours}>Refresh hours</Button>
       <VAB
         startDate={formattedFirstDayOfLastMonth}
         endDate={formattedLastDayOfLastMonth}
         vab={vab}
       />
-      <Button onClick={updateVAB}>Refresh VAB</Button>
     </>
   );
 }
