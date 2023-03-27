@@ -9,14 +9,9 @@ import { createClient } from "../../modules/react-query-client";
 
 export default function Day({ day, isCurrentDay }) {
   const dayName = useDayName(day);
-  const { data: hours, isSuccess: hoursSuccess } = useQuery(
-    `hours/${day}/${day}`
-  );
-  const { data: invoice, isSuccess: invoiceSuccess } = useQuery(
-    `invoice/${day}/${day}`
-  );
+  const { data, isSuccess } = useQuery(`summary/${day}/${day}`);
 
-  if (!hoursSuccess || !invoiceSuccess) {
+  if (!isSuccess) {
     return <div>Loading...</div>;
   }
 
@@ -31,9 +26,11 @@ export default function Day({ day, isCurrentDay }) {
         </Paragraph>
       )}
       <Heading>Time</Heading>
-      <Paragraph>{hours.totalBillableHours} hours</Paragraph>
+      <Paragraph>{data.hours.totalBillableHours} hours</Paragraph>
       <Heading>Money</Heading>
-      <Paragraph>{invoice.totalExcludingVAT} excluding VAT</Paragraph>
+      <Paragraph>
+        {data.invoice.totalExcludingVATFormatted} excluding VAT
+      </Paragraph>
     </>
   );
 }
@@ -46,10 +43,7 @@ export async function getServerSideProps(context) {
 
   const queryClient = createClient();
 
-  await Promise.all([
-    queryClient.prefetchQuery(`hours/single-day/${day}`),
-    queryClient.prefetchQuery(`invoice/${day}/${day}`),
-  ]);
+  await Promise.all([queryClient.prefetchQuery(`summary/${day}/${day}`)]);
 
   const isCurrentDay = getCurrentDaySlug() === day;
 

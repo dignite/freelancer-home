@@ -5,6 +5,27 @@ import {
   MetaSlim,
 } from "./meta/index";
 
+export const summary = async (
+  startDate: string,
+  endDate: string
+): Promise<{
+  hours: MetaSlim;
+  invoice: {
+    totalExcludingVATFormatted: string;
+  };
+}> => {
+  const parsedStartDate = new Date(Date.parse(startDate));
+  const parsedEndDate = new Date(Date.parse(endDate));
+  const relevantTimeEntries = await get(parsedStartDate, parsedEndDate);
+  return {
+    hours: hoursMetaSlim(relevantTimeEntries),
+    invoice: {
+      totalExcludingVATFormatted:
+        getInvoiceSumExcludingVAT(relevantTimeEntries),
+    },
+  };
+};
+
 export const hours = async (
   startDate: string,
   endDate: string
