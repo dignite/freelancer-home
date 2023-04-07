@@ -2,27 +2,36 @@
   /* Base values */
   --typography__font: Arial;
   --typography__fontSize: 18px;
+  --typography__capHeight: 0.72;
   --rhythmUnit: 0.66666666rem; /* 12px rhythm */
 
   /* Calculations */
-  --rhythm1: var(--rhythmUnit);
+  --rhythm1: calc(2 * var(--rhythmUnit));
   --rhythm2: calc(2 * var(--rhythmUnit));
   --rhythm3: calc(3 * var(--rhythmUnit));
   --rhythm4: calc(4 * var(--rhythmUnit));
   --rhythm5: calc(5 * var(--rhythmUnit));
   --rhythm6: calc(6 * var(--rhythmUnit));
 
+  --typography__h1FontSize: var(--rhythm3);
   --typography__h1LineHeight: var(--rhythm3);
-  --typography__h1Offset: 6px;
-  --typography__h2LineHeight: var(--rhythm4);
-  --typography__h2Offset: 2px;
-  --typography__h3LineHeight: var(--rhythm2);
-  --typography__h3Offset: 5px;
-  --typography__h4LineHeight: var(--rhythm2);
-  --typography__h4Offset: 6px;
+  --typography__h1Offset: calc((var(--typography__h1LineHeight) - (var(--typography__h1FontSize) * var(--typography__capHeight))) / 2);
 
-  --typography__pOffset: 6px;
-  --typography__tableOffset: 0px;
+  --typography__h2FontSize: var(--rhythm2);
+  --typography__h2LineHeight: var(--rhythm4);
+  --typography__h2Offset: calc((var(--typography__h2LineHeight) - (var(--typography__h2FontSize) * var(--typography__capHeight))) / 2);
+
+  --typography__h3FontSize: var(--rhythm1);
+  --typography__h3LineHeight: var(--rhythm2);
+  --typography__h3Offset: calc((var(--typography__h3LineHeight) - (var(--typography__h3FontSize) * var(--typography__capHeight))) / 2);
+
+  --typography__h4FontSize: var(--rhythm1);
+  --typography__h4LineHeight: var(--rhythm2);
+  --typography__h4Offset: calc((var(--typography__h4LineHeight) - (var(--typography__h4FontSize) * var(--typography__capHeight))) / 2);
+
+  --typography__pFontSize: var(--rhythm2);
+  --typography__pLineHeight: var(--rhythm2);
+  --typography__pOffset: calc((var(--typography__pLineHeight) - (var(--typography__pFontSize) * var(--typography__capHeight))) / 2);
 
 }
 

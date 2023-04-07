@@ -14,6 +14,8 @@ export const MainHeading = ({ children }) => (
   <h1>
     <style jsx>{`
       h1 {
+        font-size: var(--typography__h1FontSize);
+        margin-top: var(--rhythm1);
         line-height: var(--typography__h1LineHeight);
         padding-top: calc(var(--rhythm2) + var(--typography__h1Offset));
         margin-bottom: calc(-1 * var(--typography__h1Offset));
@@ -32,6 +34,7 @@ export const Heading = ({ children }) => (
   <h2>
     <style jsx>{`
       h2 {
+        font-size: var(--typography__h2FontSize);
         margin-top: var(--rhythm3);
         line-height: var(--typography__h2LineHeight);
         padding-top: var(--typography__h2Offset);
@@ -50,6 +53,7 @@ export const SubHeading = ({ children }) => (
   <h3>
     <style jsx>{`
       h3 {
+        font-size: var(--typography__h3FontSize);
         margin-top: var(--rhythm2);
         line-height: var(--typography__h3LineHeight);
         padding-top: var(--typography__h3Offset);
@@ -64,6 +68,7 @@ export const SubSubHeading = ({ children }) => (
   <h4>
     <style jsx>{`
       h4 {
+        font-size: var(--typography__h4FontSize);
         margin-top: var(--rhythm2);
         line-height: var(--typography__h4LineHeight);
         padding-top: var(--typography__h4Offset);
@@ -78,6 +83,7 @@ export const Paragraph = ({ children }) => (
   <p>
     <style jsx>{`
       p {
+        font-size: var(--typography__pFontSize);
         margin-top: var(--rhythm2);
         line-height: var(--rhythm2);
         padding-top: var(--typography__pOffset);
@@ -110,8 +116,6 @@ export const Table = ({ children }) => (
       div {
         --border-size: 2px;
         --cell-padding: 4px;
-        padding-top: var(--typography__tableOffset);
-        margin-bottom: calc(-1 * var(--typography__tableOffset));
       }
       table {
         border-collapse: collapse;
