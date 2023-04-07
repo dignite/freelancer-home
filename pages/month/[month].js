@@ -4,8 +4,8 @@ import { createClient } from "../../modules/react-query-client";
 import { BillableHoursPerWeek } from "../../modules/hours/billable-hours-per-week";
 import { BillableHoursClipboardButton } from "../../modules/hours/billable-hours-clipboard-button";
 import { VAB } from "../../modules/hours/vab";
+import { ClientTimeReportingEntries } from "../../modules/hours/client-time-reporting-entries";
 import {
-  Button,
   Heading,
   MainHeading,
   Paragraph,
@@ -23,6 +23,10 @@ export default function MonthPage({
   const { data: summary, isSuccess: summarySuccess } = useQuery(
     `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
   );
+  const { data: clientTimeReporting, isSuccess: clientTimeReportingSuccess } =
+    useQuery(
+      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+    );
   const { data: vab, isSuccess: vabSuccess } = useQuery(
     `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
   );
@@ -51,6 +55,10 @@ export default function MonthPage({
         formattedFirstDayOfMonth={formattedFirstDayOfMonth}
         formattedLastDayOfMonth={formattedLastDayOfMonth}
       />
+      {clientTimeReportingSuccess ? (
+        <ClientTimeReportingEntries entries={clientTimeReporting.entries} />
+      ) : null}
+
       <VAB
         startDate={formattedFirstDayOfLastMonth}
         endDate={formattedLastDayOfLastMonth}
@@ -87,6 +95,9 @@ export async function getServerSideProps(context) {
   await Promise.all([
     queryClient.prefetchQuery(
       `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+    ),
+    queryClient.prefetchQuery(
+      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
     ),
     queryClient.prefetchQuery(
       `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
