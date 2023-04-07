@@ -10,103 +10,17 @@ export const ApplicationContainer = ({ children }) => (
   </div>
 );
 
-export const MainHeading = ({ children }) => (
-  <h1>
-    <style jsx>{`
-      h1 {
-        font-size: var(--typography__h1FontSize);
-        margin-top: var(--rhythm1);
-        line-height: var(--typography__h1LineHeight);
-        padding-top: calc(var(--rhythm2) + var(--typography__h1Offset));
-        margin-bottom: calc(-1 * var(--typography__h1Offset));
-        background-color: var(--heading-background);
-        padding-bottom: var(--rhythm2);
-        padding-left: var(--rhythm1);
-        margin-left: calc(-1 * var(--rhythm1));
-        margin-right: calc(-1 * var(--rhythm2));
-      }
-    `}</style>
-    {children}
-  </h1>
-);
+export const MainHeading = ({ children }) => <h1>{children}</h1>;
 
-export const Heading = ({ children }) => (
-  <h2>
-    <style jsx>{`
-      h2 {
-        font-size: var(--typography__h2FontSize);
-        margin-top: var(--rhythm3);
-        line-height: var(--typography__h2LineHeight);
-        padding-top: var(--typography__h2Offset);
-        margin-bottom: calc(-1 * var(--typography__h2Offset));
-        background-color: var(--heading-background);
-        padding-left: var(--rhythm1);
-        margin-left: calc(-1 * var(--rhythm1));
-        margin-right: calc(-1 * var(--rhythm2));
-      }
-    `}</style>
-    {children}
-  </h2>
-);
+export const Heading = ({ children }) => <h2>{children}</h2>;
 
-export const SubHeading = ({ children }) => (
-  <h3>
-    <style jsx>{`
-      h3 {
-        font-size: var(--typography__h3FontSize);
-        margin-top: var(--rhythm2);
-        line-height: var(--typography__h3LineHeight);
-        padding-top: var(--typography__h3Offset);
-        margin-bottom: calc(-1 * var(--typography__h3Offset));
-      }
-    `}</style>
-    {children}
-  </h3>
-);
+export const SubHeading = ({ children }) => <h3>{children}</h3>;
 
-export const SubSubHeading = ({ children }) => (
-  <h4>
-    <style jsx>{`
-      h4 {
-        font-size: var(--typography__h4FontSize);
-        margin-top: var(--rhythm2);
-        line-height: var(--typography__h4LineHeight);
-        padding-top: var(--typography__h4Offset);
-        margin-bottom: calc(-1 * var(--typography__h4Offset));
-      }
-    `}</style>
-    {children}
-  </h4>
-);
+export const SubSubHeading = ({ children }) => <h4>{children}</h4>;
 
-export const Paragraph = ({ children }) => (
-  <p>
-    <style jsx>{`
-      p {
-        font-size: var(--typography__pFontSize);
-        margin-top: var(--rhythm2);
-        line-height: var(--rhythm2);
-        padding-top: var(--typography__pOffset);
-        margin-bottom: calc(-1 * var(--typography__pOffset));
-      }
-    `}</style>
-    {children}
-  </p>
-);
+export const Paragraph = ({ children }) => <p>{children}</p>;
 
-export const UnorderedList = ({ children }) => (
-  <ul>
-    <style jsx>{`
-      ul {
-        margin-top: var(--rhythm2);
-        line-height: var(--rhythm2);
-        padding-top: var(--typography__pOffset);
-        margin-bottom: calc(-1 * var(--typography__pOffset));
-      }
-    `}</style>
-    {children}
-  </ul>
-);
+export const UnorderedList = ({ children }) => <ul>{children}</ul>;
 
 export const UnorderedListItem = ({ children }) => <li>{children}</li>;
 
