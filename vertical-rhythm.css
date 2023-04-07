@@ -6,24 +6,12 @@
   --rhythmUnit: 0.66666666rem; /* 12px rhythm */
 
   /* Calculations */
-  --rhythm1: calc(2 * var(--rhythmUnit));
+  --rhythm1: calc(1 * var(--rhythmUnit));
   --rhythm2: calc(2 * var(--rhythmUnit));
   --rhythm3: calc(3 * var(--rhythmUnit));
   --rhythm4: calc(4 * var(--rhythmUnit));
   --rhythm5: calc(5 * var(--rhythmUnit));
   --rhythm6: calc(6 * var(--rhythmUnit));
-
-  --typography__h1FontSize: var(--rhythm3);
-  --typography__h1LineHeight: var(--rhythm3);
-  --typography__h1Offset: calc((var(--typography__h1LineHeight) - (var(--typography__h1FontSize) * var(--typography__capHeight))) / 2);
-
-  --typography__h2FontSize: var(--rhythm2);
-  --typography__h2LineHeight: var(--rhythm4);
-  --typography__h2Offset: calc((var(--typography__h2LineHeight) - (var(--typography__h2FontSize) * var(--typography__capHeight))) / 2);
-
-  --typography__h3FontSize: var(--rhythm1);
-  --typography__h3LineHeight: var(--rhythm2);
-  --typography__h3Offset: calc((var(--typography__h3LineHeight) - (var(--typography__h3FontSize) * var(--typography__capHeight))) / 2);
 
   --typography__h4FontSize: var(--rhythm1);
   --typography__h4LineHeight: var(--rhythm2);
@@ -33,6 +21,65 @@
   --typography__pLineHeight: var(--rhythm2);
   --typography__pOffset: calc((var(--typography__pLineHeight) - (var(--typography__pFontSize) * var(--typography__capHeight))) / 2);
 
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+  --typography__offset: calc((var(--typography__lineHeight) - (var(--typography__fontSize) * var(--typography__capHeight))) / 2);
+  font-size: var(--typography__fontSize);
+  line-height: var(--typography__lineHeight);
+  padding-top: calc(var(--paddingTop) + var(--typography__offset));
+  margin-bottom: calc(-1 * var(--typography__offset));
+}
+
+h1 {
+  --typography__fontSize: var(--rhythm3);
+  --typography__lineHeight: var(--rhythm3);
+  --paddingTop: var(--rhythm2);
+  padding-bottom: var(--rhythm2);
+  padding-left: var(--rhythm1);
+  margin-top: var(--rhythm1);
+  margin-right: calc(-1 * var(--rhythm2));
+  margin-left: calc(-1 * var(--rhythm1));
+  background-color: var(--heading-background);
+}
+
+h2 {
+  --typography__fontSize: var(--rhythm2);
+  --typography__lineHeight: var(--rhythm4);
+  --paddingTop: 0px;
+  padding-left: var(--rhythm1);
+  margin-top: var(--rhythm3);
+  margin-right: calc(-1 * var(--rhythm2));
+  margin-left: calc(-1 * var(--rhythm1));
+  background-color: var(--heading-background);
+}
+
+h3 {
+  --typography__fontSize: var(--rhythm2);
+  --typography__lineHeight: var(--rhythm2);
+  --paddingTop: 0px;
+  margin-top: var(--rhythm2);
+}
+
+h4 {
+  --typography__fontSize: var(--rhythm2);
+  --typography__lineHeight: var(--rhythm2);
+  --paddingTop: 0px;
+  margin-top: var(--rhythm2);
+}
+
+p {
+  --typography__fontSize: var(--rhythm2);
+  --typography__lineHeight: var(--rhythm2);
+  --paddingTop: 0px;
+  margin-top: var(--rhythm2);
+}
+
+ul, ol {
+  --typography__fontSize: var(--rhythm2);
+  --typography__lineHeight: var(--rhythm3);
+  --paddingTop: 0px;
+  margin-top: var(--rhythm2);
 }
 
 html {
