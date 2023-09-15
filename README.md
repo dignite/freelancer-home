@@ -4,7 +4,8 @@ A home page to visualize work and maybe add triggers for starting and stopping H
 
 ## Pre-requisites
 
-This application has a dependency on [harvest-report-lambda](https://github.com/dignite/harvest-report-lambda), or a REST API of the same shape.
+- A Harvest API key
+- A PE Accounting API key
 
 ## Development
 
