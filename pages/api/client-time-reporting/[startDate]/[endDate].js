@@ -1,4 +1,8 @@
 export default async function handler(req, res) {
+  if(!process.env.PE_ACCOUNTING_ACCOUNT_ID){
+    res.status(400).json({ entries: [] });
+    return;
+  }
   const { startDate, endDate } = req.query;
   const headers = new Headers();
   headers.append("X-token", process.env.PE_ACCOUNTING_TOKEN);
