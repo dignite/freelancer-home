@@ -87,7 +87,7 @@ VERCEL_URL                             auto-set by Vercel
 
 ## CI/CD
 
-- GitHub Actions: Node 14, `npm ci && npm run build && npm test` on push/PR
+- GitHub Actions: Node 22, `npm ci && npm run build && npm test` on push/PR
 - Vercel auto-deploys on PR open; disable via Vercel UI
 - Repository only allows rebase merges (no merge commits, no squash)
 

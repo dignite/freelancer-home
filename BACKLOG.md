@@ -38,13 +38,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B2a — `.env.example`: Document `PE_ACCOUNTING_ACTIVITY_ID`
-**File**: `.env.example`
-**Problem**: `activityId=45784` is hardcoded in the PE Accounting API URL with no indication it's configurable.
-**Fix**: Add `PE_ACCOUNTING_ACTIVITY_ID=` to `.env.example` with a comment explaining what it is.
-
----
-
 ### B2b — PE Accounting API: Read `activityId` from env
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
 **Requires**: B2a
@@ -180,7 +173,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
 - **B2b** — Read `activityId` from env
 - **B3** — Remove redundant `NonNullable` type
 - **C1** — Test `hoursMetaSlim()`
