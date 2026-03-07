@@ -3,7 +3,15 @@
 
 name: Continuous Integration
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'BACKLOG.md'
+      - 'BLUEWORK.md'
+  pull_request:
+    paths-ignore:
+      - 'BACKLOG.md'
+      - 'BLUEWORK.md'
 
 jobs:
   build-and-test:
