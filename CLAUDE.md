@@ -95,6 +95,7 @@ VERCEL_URL                             auto-set by Vercel
 
 - Always run /verify before creating any commit. Fix any failures before proceeding.
 - Always `git fetch origin` and branch from `origin/main` when starting work on a new task.
+- NEVER prefix git or npm commands with `cd C:/repos/freelancer-home &&`. The working directory is always the repo root.
 
 ## Planned (not yet built)
 
