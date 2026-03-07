@@ -1,6 +1,7 @@
 # freelancer-home: Improvement Backlog
 
 > Pick any item and ask Claude to implement it. Each item is self-contained.
+> Items marked **[test first]** should have a failing test committed before the implementation fix — two commits, one PR.
 
 ---
 
@@ -36,6 +37,7 @@
 
 ### A5 — PE Accounting API: Wrap entire handler in try/catch
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
+**Requires**: A4 first — A4's fix sits inside the try block.
 **Problem**: Network errors from `fetch()` are completely unhandled.
 **Fix**: Wrap handler body in try/catch; return 500 on failure.
 
@@ -55,10 +57,17 @@
 
 ---
 
-### A8 — `vab.js` and `client-time-reporting-entries.js`: Float accumulation in totals
-**Files**: `modules/hours/vab.js`, `modules/hours/client-time-reporting-entries.js`
-**Problem**: Both components sum hours with a plain `reduce((acc, cur) => acc + cur.hours, 0)`. This can produce floating-point results like `11.299999...`. The backend uses `sumPreservingOneDecimal` (`Math.round(a * 10 + b * 10) / 10`) for exactly this reason, but the UI doesn't.
-**Fix**: Apply the same `Math.round(acc * 10 + cur.hours * 10) / 10` pattern in both reduce calls.
+### A8a — `vab.js`: Fix float accumulation in total
+**File**: `modules/hours/vab.js`
+**Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`. The backend uses `sumPreservingOneDecimal` for exactly this reason.
+**Fix**: Replace the reduce accumulator with `Math.round(acc * 10 + cur.hours * 10) / 10`.
+
+---
+
+### A8b — `client-time-reporting-entries.js`: Fix float accumulation in total
+**File**: `modules/hours/client-time-reporting-entries.js`
+**Problem**: Same as A8a — plain float accumulation in the reduce total.
+**Fix**: Same pattern — `Math.round(acc * 10 + cur.hours * 10) / 10`.
 
 ---
 
@@ -71,10 +80,18 @@
 
 ---
 
-### B2 — PE Accounting API: Move hardcoded `activityId` to env var
+### B2a — `.env.example`: Document `PE_ACCOUNTING_ACTIVITY_ID`
+**File**: `.env.example`
+**Problem**: `activityId=45784` is hardcoded in the PE Accounting API URL with no indication it's configurable.
+**Fix**: Add `PE_ACCOUNTING_ACTIVITY_ID=` to `.env.example` with a comment explaining what it is.
+
+---
+
+### B2b — PE Accounting API: Read `activityId` from env
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: `activityId=45784` is hardcoded in the URL. This is personal/account-specific config.
-**Fix**: Read from `process.env.PE_ACCOUNTING_ACTIVITY_ID`, falling back to the current hardcoded value. Document in `.env.example`.
+**Requires**: B2a
+**Problem**: `activityId=45784` is hardcoded in the URL.
+**Fix**: Read from `process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"`.
 
 ---
 
@@ -85,17 +102,19 @@
 
 ---
 
-### B4 — Improve `isValidDaySlug` validation
+### B4 — Improve `isValidDaySlug` validation **[test first → C5a]**
 **File**: `pages/day/[day].js`
 **Problem**: `day.length === 10` accepts any 10-character string like `"abcdefghij"` or `"2024-99-99"`.
 **Fix**: Use a regex: `/^\d{4}-\d{2}-\d{2}$/.test(day)`.
+_Do C5a first to get a failing test, then apply this fix._
 
 ---
 
-### B5 — Improve `isValidMonthSlug` validation
+### B5 — Improve `isValidMonthSlug` validation **[test first → C5b]**
 **File**: `pages/month/[month].js`
 **Problem**: `month.length === 7` accepts any 7-character string.
 **Fix**: Use a regex: `/^\d{4}-\d{2}$/.test(month)`.
+_Do C5b first to get a failing test, then apply this fix._
 
 ---
 
@@ -122,10 +141,18 @@
 
 ---
 
-### C3 — Test `harvest-report-api/index.ts` (summary + byName entry points)
+### C3a — Test `summary()` in `harvest-report-api/index.ts`
 **File**: New file `modules/harvest-report-api/index.test.ts`
-**Problem**: `summary()` and `byName()` are the main public API but have zero direct tests.
-**Fix**: Add tests using MSW (already set up) to exercise both functions.
+**Problem**: `summary()` is the main public API entry point with zero direct tests.
+**Fix**: Add tests using MSW (already set up) covering the happy path and error case.
+
+---
+
+### C3b — Test `byName()` in `harvest-report-api/index.ts`
+**File**: `modules/harvest-report-api/index.test.ts`
+**Requires**: C3a (same file)
+**Problem**: `byName()` filters entries by task name but has no direct tests.
+**Fix**: Add tests for: entries matching the name, no matches, and multiple entries with mixed names.
 
 ---
 
@@ -136,17 +163,32 @@
 
 ---
 
-### C5 — Test `isValidDaySlug` and `isValidMonthSlug`
-**Files**: `pages/day/[day].js`, `pages/month/[month].js`
-**Problem**: Exported functions with business logic but no tests. Pairs naturally with B4/B5.
-**Fix**: Add small test files for each page's exported helpers.
+### C5a — Test `isValidDaySlug` **[write before B4]**
+**File**: New file `pages/day/[day].test.js`
+**Problem**: `isValidDaySlug` has no tests. Writing them first exposes that `length === 10` accepts non-date strings.
+**Fix**: Test valid slugs (`"2024-03-01"`), non-numeric strings (`"aaaaaaaaaa"`), wrong separators, and invalid dates (`"2024-99-99"`). Tests will fail until B4 is applied.
 
 ---
 
-### C6 — Test `lastDayOfMonth` and `firstDayOfLastMonth`
+### C5b — Test `isValidMonthSlug` **[write before B5]**
+**File**: New file `pages/month/[month].test.js`
+**Problem**: `isValidMonthSlug` has no tests. Same weakness as C5a.
+**Fix**: Test valid slugs (`"2024-03"`), non-numeric strings (`"aaaaaaa"`), and wrong formats. Tests will fail until B5 is applied.
+
+---
+
+### C6a — Export `firstDayOfLastMonth` from month page
 **File**: `pages/month/[month].js`
-**Problem**: Date arithmetic functions with no tests. Edge cases: leap years, December → January boundary.
-**Fix**: `lastDayOfMonth` is already exported; `firstDayOfLastMonth` is not — export it first, then add a test file covering edge cases.
+**Problem**: `firstDayOfLastMonth` is `const` (not `export const`) so it cannot be imported in a test file.
+**Fix**: Add the `export` keyword. No behaviour change.
+
+---
+
+### C6b — Test `lastDayOfMonth` and `firstDayOfLastMonth`
+**File**: `pages/month/[month].test.js`
+**Requires**: C6a, C5b (same test file)
+**Problem**: Date arithmetic functions with no tests. Edge cases include leap years and year boundaries.
+**Fix**: Add cases covering: end of January, end of February in a leap year (2024), end of February in a non-leap year (2023), end of December, and the December → January boundary for `firstDayOfLastMonth`.
 
 ---
 
@@ -173,12 +215,9 @@
 
 ---
 
----
-
 ## Category E: Evergreen Skills
 
-These are not one-off tasks — they are ongoing quality activities to run periodically
-or whenever the codebase changes significantly. Each has a corresponding Claude skill.
+These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
 
 ### E1 — Mutation testing (`/mutate`)
 Introduce small deliberate mutations into implementation code and check whether any test catches the regression. If a mutation survives, either strengthen an existing test, write a new one, or remove dead code. Run periodically and especially after adding new features or tests.
@@ -192,43 +231,86 @@ Check rendered pages against WCAG 2.1 AA. Focus on: semantic HTML, keyboard navi
 ### E4 — Usability review
 Use the app as a real user would across different months and edge cases (no entries, large invoices, VAB weeks, December→January boundary). Look for confusing layouts, missing loading states, unhelpful error messages, or missing affordances.
 
+### E5 — Brainstorm new improvements
+Review the Harvest API (`/harvest`) and PE Accounting API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
+
 ---
 
 ## Category F: Feature Ideas
 
 Sourced from `pages/index.js` goals listed on the home page.
 
-### F1 — Money visualization
-**Problem**: The home page lists "Visualize Money and Time" as in-progress, with the Money sub-goal marked TODO. Currently only time and invoice totals are shown per day/month, with no broader financial picture.
-**Ideas**: Visualize money flow over time (monthly invoice trend), show thresholds (e.g. how many hours until salary is covered), yearly summary. Use PE Accounting or Harvest invoice data as source.
+### F1a — Explore money data from Harvest and PE Accounting
+**Problem**: Before building money visualization, understand what data is available.
+**Fix**: Use the `/harvest` skill to fetch `/invoices` and `/reports/time/clients`. Document what fields are available and what would be useful to display.
 
-### F2 — Harvest clock-in/out via the portal
-**Problem**: The home page lists "Control Harvest and Slack in Sync" as TODO. Currently you have to open the Harvest app to start/stop a timer.
-**Ideas**: Add clock-in/clock-out buttons on the home or day page using the Harvest API (`POST /time_entries`, `PATCH /time_entries/:id/stop`). Use the `/harvest` skill to explore the timer endpoints first.
+### F1b — Add `/api/invoices` API route
+**Requires**: F1a
+**Problem**: No API route exists for invoice data beyond the per-period total.
+**Fix**: Add a new API route that fetches invoices from Harvest's `/invoices` endpoint and returns relevant fields.
 
-### F3 — Slack status sync with Harvest state
-**Problem**: Companion to F2. When clocked into Harvest, your Slack status should automatically reflect it (e.g. "In a focus session"), and reset when you stop.
-**Ideas**: Integrate with Slack API to set/clear status based on Harvest timer state. Could be a server-side cron or triggered on clock-in/out.
+### F1c — Show invoice status on the month page
+**Requires**: F1b
+**Problem**: The month page shows total hours and invoice amount but not whether the invoice has been sent or paid.
+**Fix**: Use the new `/api/invoices` route to display invoice status for the current month.
+
+### F1d — Add a yearly summary page
+**Requires**: F1b
+**Problem**: No way to see a full year of income at a glance.
+**Fix**: Add a `/year/[year]` page with monthly invoice totals and a yearly sum.
 
 ---
 
-## Category E: Evergreen Skills
-Review the Harvest API (`/harvest discover`) and PE Accounting API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
+### F2a — Explore Harvest timer API endpoints
+**Problem**: Before building clock-in/out, understand the API.
+**Fix**: Use the `/harvest` skill to explore `POST /time_entries`, `PATCH /time_entries/:id/restart`, and `PATCH /time_entries/:id/stop`. Document required fields and the shape of a running timer entry.
+
+### F2b — Add `/api/timer` API route
+**Requires**: F2a
+**Problem**: No server-side route exists for starting or stopping a Harvest timer.
+**Fix**: Add an API route supporting start (POST with task/project) and stop (PATCH) operations.
+
+### F2c — Add clock-in/out UI to the day page
+**Requires**: F2b
+**Problem**: You have to open the Harvest app to start/stop a timer.
+**Fix**: Add a clock-in button (when no active timer) and a clock-out button (when running) to the day page.
+
+---
+
+### F3a — Research Slack status API
+**Problem**: Before building Slack sync, understand what credentials and payload are needed.
+**Fix**: Review the Slack `users.profile.set` API. Document the required bot token scopes and status payload format.
+
+### F3b — Add Slack credentials to `.env.example`
+**Requires**: F3a
+**Problem**: No place to store Slack credentials.
+**Fix**: Add `SLACK_BOT_TOKEN=` to `.env.example` with a comment.
+
+### F3c — Sync Slack status on Harvest clock-in/out
+**Requires**: F2b, F3b
+**Problem**: Slack status doesn't reflect Harvest timer state.
+**Fix**: When the timer API route starts or stops a timer, also call Slack's `users.profile.set` to update or clear the status.
 
 ---
 
 ## Suggested Order
 
-1. **D1 + D2** — Fix CI first so tests run on a supported runtime
-2. **D3** — Add `.nvmrc`
-3. **A1** — Auth middleware hardening (highest security impact)
-4. **A4 + A5** — PE Accounting error handling
-5. **B1 + B6** — `package.json` cleanups
-6. **B4 + B5 + C5** — Improve slug validation + tests (natural pairing)
-7. **A6 + A7** — Month page loading state + query error message
-8. **B2** — Move `activityId` to env
-9. **B3** — Remove redundant type
-10. **C1 → C6** — Test coverage, in order
-11. **A2 + A3** — API try/catch for tidy JSON errors
-12. **A8** — Fix float accumulation in UI totals
-13. **F1 → F3** — Feature ideas, in order
+1. **D1 + D2 + D3** — Fix CI and pin Node version (one PR)
+2. **A1** — Auth middleware hardening
+3. **A4 → A5** — PE Accounting error handling (A4 first, A5 wraps it)
+4. **B1 + B6** — `package.json` cleanups
+5. **C5a → B4** — Write failing day slug tests, then fix (TDD, one PR)
+6. **C5b → B5** — Write failing month slug tests, then fix (TDD, one PR)
+7. **C6a → C6b** — Export `firstDayOfLastMonth`, then test it
+8. **A6 + A7** — Month page loading state + query error message
+9. **B2a → B2b** — Document then read `activityId` from env
+10. **B3** — Remove redundant type
+11. **C1** — Test `hoursMetaSlim()`
+12. **C2** — Test `vercel-utils.ts`
+13. **C3a → C3b** — Test `summary()` then `byName()`
+14. **C4** — Test SEK edge cases
+15. **A2 + A3** — API try/catch for tidy JSON errors
+16. **A8a + A8b** — Fix float accumulation in UI totals
+17. **F1a → F1d** — Money visualization, step by step
+18. **F2a → F2c** — Harvest clock-in/out, step by step
+19. **F3a → F3c** — Slack sync, step by step
