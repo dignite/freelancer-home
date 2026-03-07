@@ -74,14 +74,6 @@
 
 ---
 
-### B5 — Improve `isValidMonthSlug` validation **[test first → C5b]**
-**File**: `pages/month/[month].js`
-**Problem**: `month.length === 7` accepts any 7-character string.
-**Fix**: Use a regex: `/^\d{4}-\d{2}$/.test(month)`.
-_Do C5b first to get a failing test, then apply this fix._
-
----
-
 ## Category C: Test Coverage
 
 ### C1 — Test `hoursMetaSlim()` in `meta/index.ts`
@@ -117,13 +109,6 @@ _Do C5b first to get a failing test, then apply this fix._
 **File**: `modules/harvest-report-api/npm-package-encapsulation/swedish-crowns.test.ts`
 **Problem**: No tests for negative amounts, zero, or large numbers with float precision risk.
 **Fix**: Add test cases to the existing file.
-
----
-
-### C5b — Test `isValidMonthSlug` **[write before B5]**
-**File**: New file `pages/month/[month].test.js`
-**Problem**: `isValidMonthSlug` has no tests. Same weakness as C5a.
-**Fix**: Test valid slugs (`"2024-03"`), non-numeric strings (`"aaaaaaa"`), and wrong formats. Tests will fail until B5 is applied.
 
 ---
 
@@ -224,7 +209,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
 - **C6a** — Export `firstDayOfLastMonth`
 - **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 - **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
