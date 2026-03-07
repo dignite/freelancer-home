@@ -22,21 +22,6 @@
 
 ---
 
-### A4 — PE Accounting API: Check `response.ok` before `.json()`
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: `response.json()` is called unconditionally. A 4xx/5xx response with a non-JSON body throws an unhandled error.
-**Fix**: Check `response.ok`; return an appropriate error response if not ok.
-
----
-
-### A5 — PE Accounting API: Wrap entire handler in try/catch
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Requires**: A4 first — A4's fix sits inside the try block.
-**Problem**: Network errors from `fetch()` are completely unhandled.
-**Fix**: Wrap handler body in try/catch; return 500 on failure.
-
----
-
 ### A6 — Month page: Include `clientTimeReportingSuccess` in loading gate
 **File**: `pages/month/[month].js`
 **Problem**: Loading check only covers `summarySuccess && vabSuccess`. `clientTimeReporting.entries` is accessed below without confirming it loaded, risking a render with undefined data.
@@ -268,8 +253,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A4** — PE Accounting: check `response.ok`
-- **A5** — PE Accounting: wrap handler in try/catch
 - **B1** — Fix React version strings in `package.json`
 - **B6** — Add `jest-mock` as explicit devDependency
 - **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
