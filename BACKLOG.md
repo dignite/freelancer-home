@@ -55,6 +55,13 @@
 
 ---
 
+### A8 — `vab.js` and `client-time-reporting-entries.js`: Float accumulation in totals
+**Files**: `modules/hours/vab.js`, `modules/hours/client-time-reporting-entries.js`
+**Problem**: Both components sum hours with a plain `reduce((acc, cur) => acc + cur.hours, 0)`. This can produce floating-point results like `11.299999...`. The backend uses `sumPreservingOneDecimal` (`Math.round(a * 10 + b * 10) / 10`) for exactly this reason, but the UI doesn't.
+**Fix**: Apply the same `Math.round(acc * 10 + cur.hours * 10) / 10` pattern in both reduce calls.
+
+---
+
 ## Category B: Code Quality / Small Cleanups
 
 ### B1 — `package.json`: Fix React version strings
@@ -139,7 +146,7 @@
 ### C6 — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 **File**: `pages/month/[month].js`
 **Problem**: Date arithmetic functions with no tests. Edge cases: leap years, December → January boundary.
-**Fix**: The functions are already exported — add a test file covering edge cases.
+**Fix**: `lastDayOfMonth` is already exported; `firstDayOfLastMonth` is not — export it first, then add a test file covering edge cases.
 
 ---
 
@@ -185,7 +192,27 @@ Check rendered pages against WCAG 2.1 AA. Focus on: semantic HTML, keyboard navi
 ### E4 — Usability review
 Use the app as a real user would across different months and edge cases (no entries, large invoices, VAB weeks, December→January boundary). Look for confusing layouts, missing loading states, unhelpful error messages, or missing affordances.
 
-### E5 — Brainstorm new improvements
+---
+
+## Category F: Feature Ideas
+
+Sourced from `pages/index.js` goals listed on the home page.
+
+### F1 — Money visualization
+**Problem**: The home page lists "Visualize Money and Time" as in-progress, with the Money sub-goal marked TODO. Currently only time and invoice totals are shown per day/month, with no broader financial picture.
+**Ideas**: Visualize money flow over time (monthly invoice trend), show thresholds (e.g. how many hours until salary is covered), yearly summary. Use PE Accounting or Harvest invoice data as source.
+
+### F2 — Harvest clock-in/out via the portal
+**Problem**: The home page lists "Control Harvest and Slack in Sync" as TODO. Currently you have to open the Harvest app to start/stop a timer.
+**Ideas**: Add clock-in/clock-out buttons on the home or day page using the Harvest API (`POST /time_entries`, `PATCH /time_entries/:id/stop`). Use the `/harvest` skill to explore the timer endpoints first.
+
+### F3 — Slack status sync with Harvest state
+**Problem**: Companion to F2. When clocked into Harvest, your Slack status should automatically reflect it (e.g. "In a focus session"), and reset when you stop.
+**Ideas**: Integrate with Slack API to set/clear status based on Harvest timer state. Could be a server-side cron or triggered on clock-in/out.
+
+---
+
+## Category E: Evergreen Skills
 Review the Harvest API (`/harvest discover`) and PE Accounting API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
 
 ---
@@ -203,3 +230,5 @@ Review the Harvest API (`/harvest discover`) and PE Accounting API for data that
 9. **B3** — Remove redundant type
 10. **C1 → C6** — Test coverage, in order
 11. **A2 + A3** — API try/catch for tidy JSON errors
+12. **A8** — Fix float accumulation in UI totals
+13. **F1 → F3** — Feature ideas, in order

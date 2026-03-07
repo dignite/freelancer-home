@@ -4,7 +4,11 @@ Test the Vercel preview deployment for the current PR.
 
 1. Run `gh pr view --json url,headRefName,statusCheckRollup` to get the current PR's branch and check if the Vercel deployment is complete. If CI/deployment checks are still pending, let the user know and stop.
 
-2. Find the preview URL. Vercel deployments follow the pattern `https://freelancer-home-git-{branch}-dignite.vercel.app` — derive it from the branch name, replacing slashes with dashes and lowercasing. If unsure, ask the user to paste the Vercel preview URL from the PR.
+2. Find the preview URL by running:
+   ```
+   gh pr view --json comments --jq '.comments[].body' | grep -o 'https://freelancer-home[^)]*vercel\.app' | head -1
+   ```
+   Do not try to derive the URL from the branch name — Vercel's preview URLs include a hash and are not predictable. If the grep returns nothing, ask the user to paste the URL from the PR.
 
 3. Read `.env` to get `USER_NAME` and `PASSWORD` for Basic Auth. Encode them as base64 (`echo -n "user:pass" | base64`) to construct the `Authorization: Basic ...` header.
 
