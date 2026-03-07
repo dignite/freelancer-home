@@ -96,6 +96,7 @@ VERCEL_URL                             auto-set by Vercel
 - Always run /verify before creating any commit. Fix any failures before proceeding.
 - Always `git fetch origin` and branch from `origin/main` when starting work on a new task.
 - NEVER prefix git or npm commands with `cd C:/repos/freelancer-home &&`. The working directory is always the repo root.
+- NEVER use the `#` character in git commit messages — it triggers a safety prompt that requires human approval. Use plain text instead (e.g. write "number" or the item ID directly, not "#84"). Note: `#` is fine in PR bodies, markdown files, and code comments.
 
 ## Planned (not yet built)
 
