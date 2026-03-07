@@ -16,6 +16,10 @@ export default async function handler(req, res) {
     `https://api.accounting.pe/v1/company/${process.env.PE_ACCOUNTING_ACCOUNT_ID}/event?startDate=${startDate}&endDate=${endDate}&activityId=45784`,
     requestOptions
   );
+  if (!response.ok) {
+    res.status(502).json({ error: `PE Accounting responded with ${response.status}` });
+    return;
+  }
   const events = await response.json();
 
   res.status(200).json({
