@@ -5,13 +5,9 @@ name: Continuous Integration
 
 on:
   push:
-    paths-ignore:
-      - 'BACKLOG.md'
-      - 'BLUEWORK.md'
+    branches:
+      - main
   pull_request:
-    paths-ignore:
-      - 'BACKLOG.md'
-      - 'BLUEWORK.md'
 
 jobs:
   build-and-test:

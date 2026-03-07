@@ -114,19 +114,6 @@
 
 ## Category D: CI / Dependencies
 
-### D3 — Prevent duplicate CI runs on PR open
-**File**: `.github/workflows/continuous-integration.yml`
-**Problem**: Opening a PR fires both a `push` event and a `pull_request` event for the same branch, causing Build and Test to run twice in parallel and doubling CI minutes.
-**Fix**: Add a `concurrency` group so the second run cancels the first:
-```yaml
-concurrency:
-  group: ci-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
-```
-`github.head_ref` is only populated on `pull_request` events (it's the source branch name), so both events for the same branch land in the same group and the newer run wins.
-
----
-
 ## Category E: Evergreen Skills
 
 These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
@@ -207,7 +194,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **D3** — Prevent duplicate CI runs on PR open
 - **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
 - **A7** — `react-query-client.ts`: include HTTP status in error message
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
