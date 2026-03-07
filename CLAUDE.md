@@ -64,7 +64,8 @@ vercel-utils.ts             getAbsoluteUrl() — handles browser / SSR / Vercel 
 
 - react-query keys map directly to API paths: `summary/YYYY-MM-DD/YYYY-MM-DD`
 - SSR prefetch via `queryClient.prefetchQuery(key)` + `dehydrate(queryClient)` passed as `pageProps.dehydratedState`
-- Hours stored/displayed in 0.1h increments; cost computed as `SEK(billableHours).multiply(billableRate)`
+- Hours stored/displayed in 0.1h increments (one decimal place); cost computed as `SEK(billableHours).multiply(billableRate)`
+- Always present time with exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)
 - Currency formatted as Swedish SEK string
 
 ## Environment Variables
