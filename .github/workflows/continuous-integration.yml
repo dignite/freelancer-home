@@ -8,6 +8,8 @@ on:
     branches:
       - main
   pull_request:
+    paths-ignore:
+      - 'BACKLOG.md'
 
 jobs:
   build-and-test:
