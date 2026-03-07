@@ -22,13 +22,6 @@
 
 ---
 
-### A7 — `react-query-client.ts`: Include HTTP status in error message
-**File**: `modules/react-query-client.ts`
-**Problem**: On non-ok response, throws `"Network response was not ok"` — no status code, no URL, impossible to debug in production.
-**Fix**: Include `response.status` and `queryKey` in the error message.
-
----
-
 ### A8a — `vab.js`: Fix float accumulation in total
 **File**: `modules/hours/vab.js`
 **Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`. The backend uses `sumPreservingOneDecimal` for exactly this reason.
@@ -187,7 +180,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A7** — `react-query-client.ts`: include HTTP status in error message
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
 - **B2b** — Read `activityId` from env
 - **B3** — Remove redundant `NonNullable` type
