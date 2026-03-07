@@ -142,7 +142,7 @@ export const lastDayOfMonth = (dayInMonth) => {
   );
 };
 
-const firstDayOfLastMonth = (dayInNextMonth) => {
+export const firstDayOfLastMonth = (dayInNextMonth) => {
   return new Date(
     Date.UTC(dayInNextMonth.getFullYear(), dayInNextMonth.getMonth() - 1, 1)
   );
