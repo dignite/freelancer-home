@@ -38,13 +38,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B3 — `harvest-queries.ts`: Remove redundant `NonNullable` type
-**File**: `modules/harvest-report-api/npm-package-encapsulation/harvest-queries.ts`
-**Problem**: The file defines `type NonNullable<T> = Exclude<T, null | undefined>` which is identical to TypeScript's built-in `NonNullable<T>`.
-**Fix**: Delete the local definition; rely on the built-in.
-
----
-
 ## Category C: Test Coverage
 
 ### C1 — Test `hoursMetaSlim()` in `meta/index.ts`
@@ -165,7 +158,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B3** — Remove redundant `NonNullable` type
 - **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`

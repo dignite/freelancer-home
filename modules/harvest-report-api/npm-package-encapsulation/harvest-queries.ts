@@ -12,8 +12,6 @@ export interface SimplifiedUnbilledTimeEntry {
   name: string;
 }
 
-type NonNullable<T> = Exclude<T, null | undefined>;
-
 export const getTimeEntriesForMonth = async (
   from: Date,
   to: Date
