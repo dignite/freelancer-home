@@ -31,7 +31,7 @@ export default function MonthPage({
     `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
   );
 
-  if (!summarySuccess || !vabSuccess) {
+  if (!summarySuccess || !vabSuccess || !clientTimeReportingSuccess) {
     return <div>Loading...</div>;
   }
 
@@ -55,9 +55,7 @@ export default function MonthPage({
         formattedFirstDayOfMonth={formattedFirstDayOfMonth}
         formattedLastDayOfMonth={formattedLastDayOfMonth}
       />
-      {clientTimeReportingSuccess ? (
-        <ClientTimeReportingEntries entries={clientTimeReporting.entries} />
-      ) : null}
+      <ClientTimeReportingEntries entries={clientTimeReporting.entries} />
 
       <VAB
         startDate={formattedFirstDayOfLastMonth}
