@@ -114,7 +114,6 @@
 
 ### C6b — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 **File**: `modules/pages/month.test.js`
-**Requires**: C6a
 **Problem**: Date arithmetic functions with no tests. Edge cases include leap years and year boundaries.
 **Fix**: Add cases covering: end of January, end of February in a leap year (2024), end of February in a non-leap year (2023), end of December, and the December → January boundary for `firstDayOfLastMonth`.
 
