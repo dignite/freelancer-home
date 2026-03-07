@@ -8,7 +8,9 @@ export const createClient = () =>
         queryFn: async ({ queryKey }) => {
           const response = await fetch(`${getAbsoluteUrl()}/api/${queryKey}`);
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error(
+              `Network response was not ok: ${response.status} for ${queryKey}`
+            );
           }
           return response.json();
         },
