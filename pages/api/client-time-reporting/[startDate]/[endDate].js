@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   if(!process.env.PE_ACCOUNTING_ACCOUNT_ID){
-    res.status(400).json({ entries: [] });
+    res.status(200).json({ entries: [] });
     return;
   }
   try {

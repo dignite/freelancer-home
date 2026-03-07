@@ -8,13 +8,6 @@
 
 ## Category A: Bug Fixes
 
-### A9 — `client-time-reporting` API: return 200 not 400 when PE Accounting is not configured **[test first]**
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: When `PE_ACCOUNTING_ACCOUNT_ID` is not set the handler returns `res.status(400).json({ entries: [] })`. The react-query `queryFn` throws on any non-ok status, so the query enters error state and `isSuccess` is never `true`. Since A6 added `clientTimeReportingSuccess` to the loading gate, the month page is permanently stuck on "Loading..." for anyone without PE Accounting configured.
-**Fix**: Change `res.status(400)` to `res.status(200)`. Write a unit test (new file `pages/api/client-time-reporting/client-time-reporting.test.js`) that calls the handler with `PE_ACCOUNTING_ACCOUNT_ID` unset and asserts the response is `{ status: 200, body: { entries: [] } }`. Mock `req`/`res` directly — no extra dependencies needed.
-
----
-
 ### A2 — `pages/api/summary/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/summary/[startDate]/[endDate].js`
 **Problem**: `await summary(startDate, endDate)` has no error handling. Next.js catches unhandled throws and returns an HTML 500 page — react-query clients get a non-JSON body and the UI stays on "Loading..." indefinitely.
@@ -187,7 +180,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A9** — Fix `client-time-reporting` API 400→200 when PE Accounting not configured (+ test)
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
 - **B2b** — Read `activityId` from env
 - **B3** — Remove redundant `NonNullable` type
