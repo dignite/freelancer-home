@@ -80,6 +80,8 @@ VERCEL_URL                             auto-set by Vercel
 ## Testing
 
 - `npm test` runs Jest with jsdom environment
+- To run a single test file: `npm test -- modules/pages/month.test.js` (pass path after `--`)
+- Always use `npm ci` before running tests in a fresh environment
 - Setup: `modules/harvest-report-api/setup-tests.ts` (MSW server lifecycle)
 - Integration tests for harvest-queries and process-env use real env vars
 
