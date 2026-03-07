@@ -166,6 +166,30 @@
 
 ---
 
+---
+
+## Category E: Evergreen Skills
+
+These are not one-off tasks — they are ongoing quality activities to run periodically
+or whenever the codebase changes significantly. Each has a corresponding Claude skill.
+
+### E1 — Mutation testing (`/mutate`)
+Introduce small deliberate mutations into implementation code and check whether any test catches the regression. If a mutation survives, either strengthen an existing test, write a new one, or remove dead code. Run periodically and especially after adding new features or tests.
+
+### E2 — Security review
+Review API routes, auth handling, environment variable usage, and any user-controlled input for OWASP top-10 issues (injection, broken auth, sensitive data exposure, etc.). Check that `.env` secrets are not leaked into client bundles or logs.
+
+### E3 — Accessibility review
+Check rendered pages against WCAG 2.1 AA. Focus on: semantic HTML, keyboard navigation, colour contrast, screen reader labels on interactive elements, and meaningful page titles.
+
+### E4 — Usability review
+Use the app as a real user would across different months and edge cases (no entries, large invoices, VAB weeks, December→January boundary). Look for confusing layouts, missing loading states, unhelpful error messages, or missing affordances.
+
+### E5 — Brainstorm new improvements
+Review the Harvest API (`/harvest discover`) and PE Accounting API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
+
+---
+
 ## Suggested Order
 
 1. **D1 + D2** — Fix CI first so tests run on a supported runtime
