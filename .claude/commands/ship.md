@@ -1,0 +1,35 @@
+---
+allowed-tools: Bash(gh pr:*), Bash(gh run:*), Bash(git:*), Bash(printf:*), Bash(base64:*), Bash(curl:*), Read, Skill(test-preview)
+---
+
+Open a PR for the current branch, wait for CI to pass, run /test-preview, then ask whether to merge.
+
+## Steps
+
+1. **Open PR** — summarise the branch commits with `git log main..HEAD --oneline`, then create the PR:
+   ```
+   gh pr create --title "<title>" --body "..."
+   ```
+   Use this body format:
+   ```
+   ## Summary
+   <bullet points from commits>
+
+   ## Test plan
+   - [ ] CI passes
+   - [ ] Preview deployment tested with /test-preview
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   ```
+
+2. **Wait for CI** — run `gh pr checks --watch` to block until all checks complete.
+   - If any check fails, report which check failed and stop. Do not proceed.
+
+3. **Run /test-preview** — invoke the test-preview skill against the preview deployment.
+   - If any endpoint fails, report the failure and stop. Do not proceed.
+
+4. **Ask whether to merge** — once CI and preview both pass, ask:
+
+   > CI passed and preview looks good. Should I merge this PR?
+
+   Wait for the user's response. Do not merge automatically.
