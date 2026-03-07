@@ -45,6 +45,11 @@ When asked about new data or features, fetch the relevant endpoint and inspect t
 
 All list endpoints support `from` and `to` (YYYY-MM-DD) query params and are paginated (`page`, `per_page`).
 
+## Presenting results
+
+- Always display hours with **one decimal place** (e.g. 3.5h, not 3.48h or 3.50h)
+- Each entry is first rounded to one decimal place (nearest 6 minutes), then entries are summed while preserving one decimal throughout — so round each entry before adding, not just the final total
+
 ## Output
 
 Always show:
