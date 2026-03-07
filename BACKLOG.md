@@ -8,13 +8,6 @@
 
 ## Category A: Bug Fixes
 
-### A1 — `middleware.js`: Harden Basic Auth parsing
-**File**: `middleware.js`
-**Problem**: `basicAuth.split(" ")[1]` can be `undefined` if the header is malformed (e.g. `Authorization: Basic` with no value); `atob()` then throws an uncaught error, crashing the middleware.
-**Fix**: Wrap parsing in try/catch; validate `authValue` exists and `atob()` result contains a colon before destructuring.
-
----
-
 ### A2 — `pages/api/summary/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/summary/[startDate]/[endDate].js`
 **Problem**: `await summary(startDate, endDate)` has no error handling. Next.js catches unhandled throws and returns an HTML 500 page — react-query clients get a non-JSON body and the UI stays on "Loading..." indefinitely.
@@ -275,7 +268,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A1** — Auth middleware hardening
 - **A4** — PE Accounting: check `response.ok`
 - **A5** — PE Accounting: wrap handler in try/catch
 - **B1** — Fix React version strings in `package.json`
