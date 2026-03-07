@@ -1,3 +1,7 @@
+---
+allowed-tools: Read, Bash(grep:*), Bash(curl:*)
+---
+
 Interact with the Harvest API v2 using the credentials in `.env`.
 
 ## Setup

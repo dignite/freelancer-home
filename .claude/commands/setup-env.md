@@ -1,3 +1,7 @@
+---
+allowed-tools: Read, Write, Bash(grep:*)
+---
+
 Check if a `.env` file exists in the project root. If it does, read it and report which variables are set (without revealing values) and which are missing compared to `.env.example`.
 
 If `.env` does not exist, read `.env.example` to get the list of required variables, then ask the user for each value one at a time, explaining what it's used for:
