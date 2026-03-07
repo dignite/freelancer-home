@@ -16,4 +16,8 @@ describe("isValidMonthSlug", () => {
   it("rejects a slug that is too short", () => {
     expect(isValidMonthSlug("2024-3")).toBe(false);
   });
+
+  it("rejects an out-of-range month number", () => {
+    expect(isValidMonthSlug("2024-99")).toBe(false);
+  });
 });

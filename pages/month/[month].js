@@ -119,7 +119,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export const isValidMonthSlug = (month) => /^\d{4}-\d{2}$/.test(month);
+export const isValidMonthSlug = (month) => /^\d{4}-(0[1-9]|1[0-2])$/.test(month);
 
 export const getCurrentMonthRedirect = () => ({
   redirect: {
