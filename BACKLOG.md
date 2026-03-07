@@ -22,13 +22,6 @@
 
 ---
 
-### A6 — Month page: Include `clientTimeReportingSuccess` in loading gate
-**File**: `pages/month/[month].js`
-**Problem**: Loading check only covers `summarySuccess && vabSuccess`. `clientTimeReporting.entries` is accessed below without confirming it loaded, risking a render with undefined data.
-**Fix**: Add `clientTimeReportingSuccess` to the loading condition and remove the now-redundant inline `{clientTimeReportingSuccess ? ... : null}` guard.
-
----
-
 ### A7 — `react-query-client.ts`: Include HTTP status in error message
 **File**: `modules/react-query-client.ts`
 **Problem**: On non-ok response, throws `"Network response was not ok"` — no status code, no URL, impossible to debug in production.
@@ -194,7 +187,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
 - **A7** — `react-query-client.ts`: include HTTP status in error message
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
 - **B2b** — Read `activityId` from env
