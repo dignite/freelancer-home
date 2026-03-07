@@ -114,19 +114,6 @@
 
 ## Category D: CI / Dependencies
 
-### D2 — Skip Vercel preview deployments for doc-only changes
-**File**: `vercel.json` (create)
-**Problem**: Every bluework PR triggers a Vercel preview deployment even though only `BACKLOG.md` changed, consuming build minutes and adding noise to the PR checks.
-**Fix**: Create `vercel.json` with an `ignoreCommand` that exits 0 (skip build) when only `BACKLOG.md` changed, exits 1 (proceed) otherwise:
-```json
-{
-  "ignoreCommand": "git diff HEAD~1 --name-only | grep -vE '^BACKLOG\\.md$' | grep -q . && exit 1 || exit 0"
-}
-```
-Vercel exits 0 → skip, exits 1 → build.
-
----
-
 ## Category E: Evergreen Skills
 
 These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
@@ -207,7 +194,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **D2** — Skip Vercel for doc-only changes
 - **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
 - **A7** — `react-query-client.ts`: include HTTP status in error message
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
