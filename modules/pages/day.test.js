@@ -1,4 +1,4 @@
-import { isValidDaySlug } from "./[day]";
+import { isValidDaySlug } from "pages/day/[day]";
 
 describe("isValidDaySlug", () => {
   it("accepts a valid YYYY-MM-DD slug", () => {
