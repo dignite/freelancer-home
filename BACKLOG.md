@@ -90,13 +90,6 @@ _Do C5b first to get a failing test, then apply this fix._
 
 ---
 
-### B6 — Add `jest-mock` as explicit devDependency
-**File**: `package.json`
-**Problem**: `time-entries.test.ts` imports from `"jest-mock"` but it's not declared in `package.json` (arrives as a transitive dep of Jest).
-**Fix**: Add `"jest-mock": "*"` (or matching version) to devDependencies.
-
----
-
 ## Category C: Test Coverage
 
 ### C1 — Test `hoursMetaSlim()` in `meta/index.ts`
@@ -246,7 +239,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B6** — Add `jest-mock` as explicit devDependency
 - **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
 - **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
 - **C6a** — Export `firstDayOfLastMonth`
