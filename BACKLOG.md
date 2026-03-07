@@ -112,13 +112,6 @@
 
 ---
 
-### C6a — Export `firstDayOfLastMonth` from month page
-**File**: `pages/month/[month].js`
-**Problem**: `firstDayOfLastMonth` is `const` (not `export const`) so it cannot be imported in a test file.
-**Fix**: Add the `export` keyword. No behaviour change.
-
----
-
 ### C6b — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 **File**: `modules/pages/month.test.js`
 **Requires**: C6a
@@ -209,7 +202,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C6a** — Export `firstDayOfLastMonth`
 - **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 - **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
 - **A7** — `react-query-client.ts`: include HTTP status in error message
