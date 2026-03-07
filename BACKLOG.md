@@ -38,14 +38,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B2b — PE Accounting API: Read `activityId` from env
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Requires**: B2a
-**Problem**: `activityId=45784` is hardcoded in the URL.
-**Fix**: Read from `process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"`.
-
----
-
 ### B3 — `harvest-queries.ts`: Remove redundant `NonNullable` type
 **File**: `modules/harvest-report-api/npm-package-encapsulation/harvest-queries.ts`
 **Problem**: The file defines `type NonNullable<T> = Exclude<T, null | undefined>` which is identical to TypeScript's built-in `NonNullable<T>`.
@@ -173,7 +165,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B2b** — Read `activityId` from env
 - **B3** — Remove redundant `NonNullable` type
 - **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
