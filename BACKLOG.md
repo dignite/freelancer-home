@@ -2,6 +2,7 @@
 
 > Pick any item and ask Claude to implement it. Each item is self-contained.
 > Items marked **[test first]** should have a failing test committed before the implementation fix — two commits, one PR.
+> - When a task is implemented, **remove it from this file in the same PR** — including its entry in the "Suggested Order" section.
 
 ---
 
@@ -194,13 +195,6 @@ _Do C5b first to get a failing test, then apply this fix._
 
 ## Category D: CI / Dependencies
 
-### D1 — Update GitHub Actions versions
-**File**: `.github/workflows/continuous-integration.yml`
-**Problem**: Uses `actions/checkout@v2` and `actions/setup-node@v1` (both deprecated).
-**Fix**: Update to `actions/checkout@v4` and `actions/setup-node@v4`.
-
----
-
 ### D2 — Update CI Node version from 14.x to 20.x
 **File**: `.github/workflows/continuous-integration.yml`
 **Problem**: Node 14 reached EOL April 2023.
@@ -295,22 +289,38 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-1. **D1 + D2 + D3** — Fix CI and pin Node version (one PR)
-2. **A1** — Auth middleware hardening
-3. **A4 → A5** — PE Accounting error handling (A4 first, A5 wraps it)
-4. **B1 + B6** — `package.json` cleanups
-5. **C5a → B4** — Write failing day slug tests, then fix (TDD, one PR)
-6. **C5b → B5** — Write failing month slug tests, then fix (TDD, one PR)
-7. **C6a → C6b** — Export `firstDayOfLastMonth`, then test it
-8. **A6 + A7** — Month page loading state + query error message
-9. **B2a → B2b** — Document then read `activityId` from env
-10. **B3** — Remove redundant type
-11. **C1** — Test `hoursMetaSlim()`
-12. **C2** — Test `vercel-utils.ts`
-13. **C3a → C3b** — Test `summary()` then `byName()`
-14. **C4** — Test SEK edge cases
-15. **A2 + A3** — API try/catch for tidy JSON errors
-16. **A8a + A8b** — Fix float accumulation in UI totals
-17. **F1a → F1d** — Money visualization, step by step
-18. **F2a → F2c** — Harvest clock-in/out, step by step
-19. **F3a → F3c** — Slack sync, step by step
+1. **D2** — Update CI Node version to 20.x
+2. **D3** — Add `.nvmrc`
+3. **A1** — Auth middleware hardening
+4. **A4** — PE Accounting: check `response.ok`
+5. **A5** — PE Accounting: wrap handler in try/catch
+6. **B1** — Fix React version strings in `package.json`
+7. **B6** — Add `jest-mock` as explicit devDependency
+8. **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
+9. **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
+10. **C6a** — Export `firstDayOfLastMonth`
+11. **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
+12. **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
+13. **A7** — `react-query-client.ts`: include HTTP status in error message
+14. **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
+15. **B2b** — Read `activityId` from env
+16. **B3** — Remove redundant `NonNullable` type
+17. **C1** — Test `hoursMetaSlim()`
+18. **C2** — Test `vercel-utils.ts`
+19. **C3a** — Test `summary()`
+20. **C3b** — Test `byName()`
+21. **C4** — Test SEK edge cases
+22. **A2** — `pages/api/summary`: add try/catch
+23. **A3** — `pages/api/by-name`: add try/catch
+24. **A8a** — Fix float accumulation in `vab.js`
+25. **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+26. **F1a** — Explore money data from Harvest and PE Accounting
+27. **F1b** — Add `/api/invoices` route
+28. **F1c** — Show invoice status on month page
+29. **F1d** — Add yearly summary page
+30. **F2a** — Explore Harvest timer API endpoints
+31. **F2b** — Add `/api/timer` route
+32. **F2c** — Add clock-in/out UI to the day page
+33. **F3a** — Research Slack status API
+34. **F3b** — Add Slack credentials to `.env.example`
+35. **F3c** — Sync Slack status on clock-in/out
