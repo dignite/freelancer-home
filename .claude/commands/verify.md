@@ -1,3 +1,7 @@
+---
+allowed-tools: Bash(npx tsc:*), Bash(npm test:*), Bash(npm run build:*)
+---
+
 Run all local quality checks before committing. Work through each step and fix any failures before moving on.
 
 ## Steps

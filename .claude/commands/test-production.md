@@ -1,3 +1,7 @@
+---
+allowed-tools: Bash(gh repo:*), Bash(gh api:*), Bash(printf:*), Bash(base64:*), Bash(curl:*), Read
+---
+
 Test the production Vercel deployment (after merging to main).
 
 ## Steps

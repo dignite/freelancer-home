@@ -1,3 +1,7 @@
+---
+allowed-tools: Bash(gh pr:*), Bash(printf:*), Bash(base64:*), Bash(curl:*), Read
+---
+
 Test the Vercel preview deployment for the current PR.
 
 ## Steps

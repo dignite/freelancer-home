@@ -91,6 +91,10 @@ VERCEL_URL                             auto-set by Vercel
 - Vercel auto-deploys on PR open; disable via Vercel UI
 - Repository only allows rebase merges (no merge commits, no squash)
 
+## Workflow Rules
+
+- Always run /verify before creating any commit. Fix any failures before proceeding.
+
 ## Planned (not yet built)
 
 - Money visualization via PE Accounting

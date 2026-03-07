@@ -1,3 +1,7 @@
+---
+allowed-tools: Read, Edit, Bash(npm test:*)
+---
+
 # Mutation Testing
 
 Verify that the test suite actually detects broken code — not just that it runs.
