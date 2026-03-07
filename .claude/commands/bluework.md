@@ -42,18 +42,18 @@ Accepts optional argument `auto` — if passed, skip human discussion and act au
    git fetch origin
    git checkout -b bluework/<short-slug> origin/main
    ```
-   Commit the changes with a clear message describing what was added/removed/refined.
+   Commit the changes with a clear message. **Always append `[skip ci]` to the commit message** — BACKLOG.md changes don't need CI, and `[skip ci]` satisfies branch protection (unlike `paths-ignore` which leaves checks unsatisfied).
 
 6. Open a PR:
    ```
    gh pr create --title "..." --body "..."
    ```
 
-7. Wait for CI:
+7. Wait for Vercel (CI is skipped):
    ```
    gh pr checks --watch
    ```
-   (No /test-preview needed — BACKLOG.md changes don't affect the app.)
+   Vercel will also skip via `ignoreCommand`. Once all checks are green (or skipped), proceed.
 
 8. Merge:
    ```
