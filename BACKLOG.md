@@ -195,13 +195,6 @@ _Do C5b first to get a failing test, then apply this fix._
 
 ## Category D: CI / Dependencies
 
-### D2 — Update CI Node version from 14.x to 20.x
-**File**: `.github/workflows/continuous-integration.yml`
-**Problem**: Node 14 reached EOL April 2023.
-**Fix**: Change `node-version: [14.x]` to `[20.x]`.
-
----
-
 ### D3 — Add `.nvmrc` file
 **File**: New `.nvmrc`
 **Problem**: No local Node version pinning. Developers may use any Node version.
@@ -289,38 +282,37 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-1. **D2** — Update CI Node version to 20.x
-2. **D3** — Add `.nvmrc`
-3. **A1** — Auth middleware hardening
-4. **A4** — PE Accounting: check `response.ok`
-5. **A5** — PE Accounting: wrap handler in try/catch
-6. **B1** — Fix React version strings in `package.json`
-7. **B6** — Add `jest-mock` as explicit devDependency
-8. **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
-9. **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
-10. **C6a** — Export `firstDayOfLastMonth`
-11. **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
-12. **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
-13. **A7** — `react-query-client.ts`: include HTTP status in error message
-14. **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
-15. **B2b** — Read `activityId` from env
-16. **B3** — Remove redundant `NonNullable` type
-17. **C1** — Test `hoursMetaSlim()`
-18. **C2** — Test `vercel-utils.ts`
-19. **C3a** — Test `summary()`
-20. **C3b** — Test `byName()`
-21. **C4** — Test SEK edge cases
-22. **A2** — `pages/api/summary`: add try/catch
-23. **A3** — `pages/api/by-name`: add try/catch
-24. **A8a** — Fix float accumulation in `vab.js`
-25. **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
-26. **F1a** — Explore money data from Harvest and PE Accounting
-27. **F1b** — Add `/api/invoices` route
-28. **F1c** — Show invoice status on month page
-29. **F1d** — Add yearly summary page
-30. **F2a** — Explore Harvest timer API endpoints
-31. **F2b** — Add `/api/timer` route
-32. **F2c** — Add clock-in/out UI to the day page
-33. **F3a** — Research Slack status API
-34. **F3b** — Add Slack credentials to `.env.example`
-35. **F3c** — Sync Slack status on clock-in/out
+1. **D3** — Add `.nvmrc`
+2. **A1** — Auth middleware hardening
+3. **A4** — PE Accounting: check `response.ok`
+4. **A5** — PE Accounting: wrap handler in try/catch
+5. **B1** — Fix React version strings in `package.json`
+6. **B6** — Add `jest-mock` as explicit devDependency
+7. **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
+8. **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
+9. **C6a** — Export `firstDayOfLastMonth`
+10. **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
+11. **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
+12. **A7** — `react-query-client.ts`: include HTTP status in error message
+13. **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
+14. **B2b** — Read `activityId` from env
+15. **B3** — Remove redundant `NonNullable` type
+16. **C1** — Test `hoursMetaSlim()`
+17. **C2** — Test `vercel-utils.ts`
+18. **C3a** — Test `summary()`
+19. **C3b** — Test `byName()`
+20. **C4** — Test SEK edge cases
+21. **A2** — `pages/api/summary`: add try/catch
+22. **A3** — `pages/api/by-name`: add try/catch
+23. **A8a** — Fix float accumulation in `vab.js`
+24. **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+25. **F1a** — Explore money data from Harvest and PE Accounting
+26. **F1b** — Add `/api/invoices` route
+27. **F1c** — Show invoice status on month page
+28. **F1d** — Add yearly summary page
+29. **F2a** — Explore Harvest timer API endpoints
+30. **F2b** — Add `/api/timer` route
+31. **F2c** — Add clock-in/out UI to the day page
+32. **F3a** — Research Slack status API
+33. **F3b** — Add Slack credentials to `.env.example`
+34. **F3c** — Sync Slack status on clock-in/out
