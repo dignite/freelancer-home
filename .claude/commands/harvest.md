@@ -2,7 +2,7 @@ Interact with the Harvest API v2 using the credentials in `.env`.
 
 ## Setup
 
-Read credentials from `.env`:
+Read credentials from `.env` using `grep KEY .env | cut -d= -f2-` (note `f2-` not `f2` — values like tokens can contain `=` characters):
 - `HARVEST_ACCESS_TOKEN` → Bearer token
 - `HARVEST_ACCOUNT_ID` → Harvest-Account-Id header
 - `USER_AGENT_EMAIL` → User-Agent header
