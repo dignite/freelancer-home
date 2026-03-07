@@ -282,37 +282,37 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-1. **D3** — Add `.nvmrc`
-2. **A1** — Auth middleware hardening
-3. **A4** — PE Accounting: check `response.ok`
-4. **A5** — PE Accounting: wrap handler in try/catch
-5. **B1** — Fix React version strings in `package.json`
-6. **B6** — Add `jest-mock` as explicit devDependency
-7. **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
-8. **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
-9. **C6a** — Export `firstDayOfLastMonth`
-10. **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
-11. **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
-12. **A7** — `react-query-client.ts`: include HTTP status in error message
-13. **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
-14. **B2b** — Read `activityId` from env
-15. **B3** — Remove redundant `NonNullable` type
-16. **C1** — Test `hoursMetaSlim()`
-17. **C2** — Test `vercel-utils.ts`
-18. **C3a** — Test `summary()`
-19. **C3b** — Test `byName()`
-20. **C4** — Test SEK edge cases
-21. **A2** — `pages/api/summary`: add try/catch
-22. **A3** — `pages/api/by-name`: add try/catch
-23. **A8a** — Fix float accumulation in `vab.js`
-24. **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
-25. **F1a** — Explore money data from Harvest and PE Accounting
-26. **F1b** — Add `/api/invoices` route
-27. **F1c** — Show invoice status on month page
-28. **F1d** — Add yearly summary page
-29. **F2a** — Explore Harvest timer API endpoints
-30. **F2b** — Add `/api/timer` route
-31. **F2c** — Add clock-in/out UI to the day page
-32. **F3a** — Research Slack status API
-33. **F3b** — Add Slack credentials to `.env.example`
-34. **F3c** — Sync Slack status on clock-in/out
+- **D3** — Add `.nvmrc`
+- **A1** — Auth middleware hardening
+- **A4** — PE Accounting: check `response.ok`
+- **A5** — PE Accounting: wrap handler in try/catch
+- **B1** — Fix React version strings in `package.json`
+- **B6** — Add `jest-mock` as explicit devDependency
+- **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
+- **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
+- **C6a** — Export `firstDayOfLastMonth`
+- **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
+- **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
+- **A7** — `react-query-client.ts`: include HTTP status in error message
+- **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
+- **B2b** — Read `activityId` from env
+- **B3** — Remove redundant `NonNullable` type
+- **C1** — Test `hoursMetaSlim()`
+- **C2** — Test `vercel-utils.ts`
+- **C3a** — Test `summary()`
+- **C3b** — Test `byName()`
+- **C4** — Test SEK edge cases
+- **A2** — `pages/api/summary`: add try/catch
+- **A3** — `pages/api/by-name`: add try/catch
+- **A8a** — Fix float accumulation in `vab.js`
+- **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+- **F1a** — Explore money data from Harvest and PE Accounting
+- **F1b** — Add `/api/invoices` route
+- **F1c** — Show invoice status on month page
+- **F1d** — Add yearly summary page
+- **F2a** — Explore Harvest timer API endpoints
+- **F2b** — Add `/api/timer` route
+- **F2c** — Add clock-in/out UI to the day page
+- **F3a** — Research Slack status API
+- **F3b** — Add Slack credentials to `.env.example`
+- **F3c** — Sync Slack status on clock-in/out
