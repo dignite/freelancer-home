@@ -195,13 +195,6 @@ _Do C5b first to get a failing test, then apply this fix._
 
 ## Category D: CI / Dependencies
 
-### D3 — Add `.nvmrc` file
-**File**: New `.nvmrc`
-**Problem**: No local Node version pinning. Developers may use any Node version.
-**Fix**: Create `.nvmrc` containing `20`.
-
----
-
 ## Category E: Evergreen Skills
 
 These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
@@ -282,7 +275,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **D3** — Add `.nvmrc`
 - **A1** — Auth middleware hardening
 - **A4** — PE Accounting: check `response.ok`
 - **A5** — PE Accounting: wrap handler in try/catch
