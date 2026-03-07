@@ -52,13 +52,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B1 — `package.json`: Fix React version strings
-**File**: `package.json`
-**Problem**: `"react": "18.2"` and `"react-dom": "18.2"` are missing the patch version — not valid semver.
-**Fix**: Update both to `"^18.2.0"`.
-
----
-
 ### B2a — `.env.example`: Document `PE_ACCOUNTING_ACTIVITY_ID`
 **File**: `.env.example`
 **Problem**: `activityId=45784` is hardcoded in the PE Accounting API URL with no indication it's configurable.
@@ -253,7 +246,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B1** — Fix React version strings in `package.json`
 - **B6** — Add `jest-mock` as explicit devDependency
 - **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
 - **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
