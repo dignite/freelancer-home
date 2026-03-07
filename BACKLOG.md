@@ -74,14 +74,6 @@
 
 ---
 
-### B4 — Improve `isValidDaySlug` validation **[test first → C5a]**
-**File**: `pages/day/[day].js`
-**Problem**: `day.length === 10` accepts any 10-character string like `"abcdefghij"` or `"2024-99-99"`.
-**Fix**: Use a regex: `/^\d{4}-\d{2}-\d{2}$/.test(day)`.
-_Do C5a first to get a failing test, then apply this fix._
-
----
-
 ### B5 — Improve `isValidMonthSlug` validation **[test first → C5b]**
 **File**: `pages/month/[month].js`
 **Problem**: `month.length === 7` accepts any 7-character string.
@@ -125,13 +117,6 @@ _Do C5b first to get a failing test, then apply this fix._
 **File**: `modules/harvest-report-api/npm-package-encapsulation/swedish-crowns.test.ts`
 **Problem**: No tests for negative amounts, zero, or large numbers with float precision risk.
 **Fix**: Add test cases to the existing file.
-
----
-
-### C5a — Test `isValidDaySlug` **[write before B4]**
-**File**: New file `pages/day/[day].test.js`
-**Problem**: `isValidDaySlug` has no tests. Writing them first exposes that `length === 10` accepts non-date strings.
-**Fix**: Test valid slugs (`"2024-03-01"`), non-numeric strings (`"aaaaaaaaaa"`), wrong separators, and invalid dates (`"2024-99-99"`). Tests will fail until B4 is applied.
 
 ---
 
@@ -239,7 +224,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C5a → B4** — TDD: write failing day slug tests, then fix (two commits, one PR)
 - **C5b → B5** — TDD: write failing month slug tests, then fix (two commits, one PR)
 - **C6a** — Export `firstDayOfLastMonth`
 - **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
