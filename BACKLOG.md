@@ -112,13 +112,6 @@
 
 ---
 
-### C6b — Test `lastDayOfMonth` and `firstDayOfLastMonth`
-**File**: `modules/pages/month.test.js`
-**Problem**: Date arithmetic functions with no tests. Edge cases include leap years and year boundaries.
-**Fix**: Add cases covering: end of January, end of February in a leap year (2024), end of February in a non-leap year (2023), end of December, and the December → January boundary for `firstDayOfLastMonth`.
-
----
-
 ## Category D: CI / Dependencies
 
 ## Category E: Evergreen Skills
@@ -201,7 +194,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C6b** — Test `lastDayOfMonth` and `firstDayOfLastMonth`
 - **A6** — Month page: include `clientTimeReportingSuccess` in loading gate
 - **A7** — `react-query-client.ts`: include HTTP status in error message
 - **B2a** — Document `PE_ACCOUNTING_ACTIVITY_ID` in `.env.example`
