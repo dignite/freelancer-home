@@ -1,8 +1,8 @@
 ---
-allowed-tools: Bash(gh pr:*), Bash(gh run:*), Bash(git:*), Bash(printf:*), Bash(base64:*), Bash(curl:*), Read, Skill(test-preview)
+allowed-tools: Bash(gh pr:*), Bash(gh run:*), Bash(git:*), Bash(printf:*), Bash(base64:*), Bash(curl:*), Read
 ---
 
-Open a PR for the current branch, wait for CI to pass, run /test-preview, then ask whether to merge.
+Open a PR for the current branch, wait for CI to pass, then ask whether to merge.
 
 ## Steps
 
@@ -35,7 +35,7 @@ Open a PR for the current branch, wait for CI to pass, run /test-preview, then a
 
    ## Test plan
    - [ ] CI passes
-   - [ ] Preview deployment tested with /test-preview
+   - [ ] Smoke Test (Preview) passes automatically after Vercel deploys
 
    🤖 Generated with [Claude Code](https://claude.com/claude-code)
    ```
@@ -43,10 +43,7 @@ Open a PR for the current branch, wait for CI to pass, run /test-preview, then a
 3. **Wait for CI** — run `gh pr checks --watch` to block until all checks complete.
    - If any check fails, report which check failed and stop. Do not proceed.
 
-4. **Run /test-preview** — invoke the test-preview skill against the preview deployment.
-   - If any endpoint fails, report the failure and stop. Do not proceed.
-
-5. **Ask whether to merge** — once CI and preview both pass, ask:
+4. **Ask whether to merge** — once all checks pass, ask:
 
    > CI passed and preview looks good. Should I merge this PR?
 
