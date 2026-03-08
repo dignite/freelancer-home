@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A11 — Hour display missing `.toFixed(1)` in UI components
-**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `modules/hours/vab.js`, `pages/day/[day].js`
-**Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". Even when values are correct, `3` displays as `3` not `3.0`.
-**Fix**: Apply `.toFixed(1)` when rendering any hour value in UI components, including the VAB total.
-
----
-
 ### A12 — `billable-hours-clipboard-button.js`: `clipboard.writeText()` not awaited — false success feedback
 **File**: `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: The `onClick` handler calls `navigator.clipboard.writeText(text)` and immediately calls `setChecked(true)` without awaiting the promise. If the clipboard API rejects (permission denied, API unavailable), the user sees "Copied to clipboard ✓" even though the copy failed.
@@ -270,7 +263,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A11** — Apply `.toFixed(1)` to all hour displays in UI components
 - **A12** — Await `clipboard.writeText()` and handle rejection
 - **A13** — Reset clipboard button state after 2 seconds
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`

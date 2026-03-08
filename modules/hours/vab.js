@@ -28,7 +28,7 @@ export const VAB = ({ vab, startDate, endDate }) => (
           {vab.map((vabDay) => (
             <TableRow key={vabDay.id}>
               <TableData>{vabDay.date}</TableData>
-              <TableData alignRight>{vabDay.hours}</TableData>
+              <TableData alignRight>{vabDay.hours.toFixed(1)}</TableData>
               <TableData>{vabDay.comment}</TableData>
             </TableRow>
           ))}
@@ -41,7 +41,7 @@ export const VAB = ({ vab, startDate, endDate }) => (
                 (accumulator, currentValue) =>
                   Math.round(accumulator * 10 + currentValue.hours * 10) / 10,
                 0
-              )}
+              ).toFixed(1)}
             </TableData>
           </TableRow>
         </TableFooter>
