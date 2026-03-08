@@ -40,13 +40,6 @@
 
 ## Category C: Test Coverage
 
-### C1 — Test `hoursMetaSlim()` in `meta/index.ts`
-**File**: `modules/harvest-report-api/meta/index.test.ts`
-**Problem**: Only `getInvoiceSumExcludingVAT()` is tested. `hoursMetaSlim()` composes `totalSum()` + `perWeek()` and has no direct test.
-**Fix**: Add a test case to the existing `index.test.ts`.
-
----
-
 ### C2 — Test `vercel-utils.ts` — all three branches of `getAbsoluteUrl()`
 **File**: New file `modules/vercel-utils.test.ts`
 **Problem**: Zero tests. Has three code paths: browser (`window.location.origin`), Vercel (`VERCEL_URL`), and localhost fallback.
@@ -158,7 +151,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`
 - **C3b** — Test `byName()`
