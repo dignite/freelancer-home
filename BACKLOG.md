@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A8b — `client-time-reporting-entries.js`: Fix float accumulation in total
-**File**: `modules/hours/client-time-reporting-entries.js`
-**Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`.
-**Fix**: Replace the reduce accumulator with `Math.round(acc * 10 + cur.hours * 10) / 10`.
-
----
-
 ### A9 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Use URLSearchParams to build PE Accounting query
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
 **Problem**: `startDate` and `endDate` from the Next.js route are interpolated directly into the URL string without encoding. A crafted path like `2024-01-01%26injected=yes` would append a rogue query parameter to the PE Accounting request.
@@ -278,7 +271,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
 - **A9** — Use URLSearchParams in client-time-reporting route
 - **A10** — Fix week ordering at year boundary in hour table and clipboard export
 - **A11** — Apply `.toFixed(1)` to all hour displays in UI components
