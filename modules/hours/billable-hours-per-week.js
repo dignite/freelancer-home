@@ -20,7 +20,12 @@ export const BillableHoursPerWeek = ({ hours }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {Object.keys(hours.totalBillableHoursPerWeek).map((week) => (
+        {Object.keys(hours.totalBillableHoursPerWeek)
+          .sort((a, b) => {
+            const n = (w) => { const v = parseInt(w.slice(1)); return v > 26 ? v - 53 : v; };
+            return n(a) - n(b);
+          })
+          .map((week) => (
           <TableRow key={week}>
             <TableData>{week}</TableData>
             <TableData alignRight>

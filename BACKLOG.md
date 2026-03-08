@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A10 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Weeks displayed out of order at year boundary
-**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: Both components iterate `Object.keys(hours.totalBillableHoursPerWeek)` without sorting. `perWeek()` in `time-summary.ts` groups by ISO week number with a `"w"` prefix, so a December→January month will produce keys like `["w52", "w1", "w2"]` (insertion order). The table and clipboard export show `w1` before `w52` — the wrong chronological order.
-**Fix**: Sort the keys numerically before iterating. Keys are prefixed with `"w"` (e.g. `"w1"`, `"w52"`), so strip the prefix before comparing: `parseInt(week.slice(1))`. Account for the year-boundary case: high weeks come before low weeks. Sort comparator: `const n = (w) => { const v = parseInt(w.slice(1)); return v > 26 ? v - 53 : v; }` — this maps week 52 to -1 and week 1 to 1, producing correct chronological order.
-
----
-
 ### A11 — Hour display missing `.toFixed(1)` in UI components
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `modules/hours/vab.js`, `pages/day/[day].js`
 **Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". Even when values are correct, `3` displays as `3` not `3.0`.
@@ -264,7 +257,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A10** — Fix week ordering at year boundary in hour table and clipboard export
 - **A11** — Apply `.toFixed(1)` to all hour displays in UI components
 - **A12** — Await `clipboard.writeText()` and handle rejection
 - **A13** — Reset clipboard button state after 2 seconds
