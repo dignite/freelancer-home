@@ -25,7 +25,7 @@
 
 ### A11 — Hour display missing `.toFixed(1)` in UI components
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `modules/hours/vab.js`, `pages/day/[day].js`
-**Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". If a floating-point value slips through (e.g. from A8a/A8b not yet fixed), it will display as `11.3` or `11.299999`. Even when values are correct, `3` displays as `3` not `3.0`.
+**Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". Even when values are correct, `3` displays as `3` not `3.0`.
 **Fix**: Apply `.toFixed(1)` when rendering any hour value in UI components, including the VAB total.
 
 ---
