@@ -78,6 +78,20 @@
 
 ## Category D: CI / Dependencies
 
+### D1 — Add concurrency group to CI workflow to cancel redundant runs
+**File**: `.github/workflows/continuous-integration.yml`
+**Problem**: CI triggers on both `push` and `pull_request` events, causing two parallel "Build and Test" runs for every PR commit — wasteful and creates noise in the checks panel.
+**Fix**: Add a `concurrency` group so the `push`-triggered run is automatically cancelled when the `pull_request`-triggered run starts (or vice versa). Use `github.workflow` + `github.ref` as the group key with `cancel-in-progress: true`.
+
+---
+
+### D2 — Run `/clear` at the start of `/redwork` to free context
+**File**: `.claude/commands/redwork.md`
+**Problem**: The claude-claude-claude loop accumulates context across multiple bluework/redwork handoffs, causing context window pressure and potentially slower/worse responses over time.
+**Fix**: Add a `/clear` step at the very start of `/redwork` (before picking a task) so each implementation task starts with a fresh context.
+
+---
+
 ## Category E: Evergreen Skills
 
 These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
@@ -158,6 +172,8 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
+- **D1** — Add concurrency group to CI workflow
+- **D2** — Run `/clear` at start of `/redwork`
 - **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`
