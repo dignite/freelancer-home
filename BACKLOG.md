@@ -142,6 +142,10 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ## Category D: CI / Dependencies
 
+### D8 — Add Prettier with commit hook and CI check
+**Detail**: `BACKLOG/D8-prettier.md`
+**Risk**: Low. Formatting-only — no logic changes. Requires one initial bulk-format commit to clean up existing files, then hooks and CI enforce it going forward.
+
 ### D7 — CI: Add `tsc --noEmit` type-check step
 **File**: `.github/workflows/continuous-integration.yml`
 **Problem**: The CI workflow runs `npm ci && npm run build && npm test` but no explicit TypeScript type-check. `next build` does run tsc internally, but TypeScript errors can go unreported if they're in files not imported by the build (e.g. test utilities, type-only declarations). Adding an explicit `tsc --noEmit` step makes type errors visible as a distinct CI failure.
@@ -269,6 +273,7 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **C5** — Add missing edge cases to `day.test.js`
+- **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **D5** — Upgrade TypeScript 4.9 → 5
 - **D4** — Upgrade date-fns v2 → v3
