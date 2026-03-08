@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A8a — `vab.js`: Fix float accumulation in total
-**File**: `modules/hours/vab.js`
-**Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`. The backend uses `sumPreservingOneDecimal` for exactly this reason.
-**Fix**: Replace the reduce accumulator with `Math.round(acc * 10 + cur.hours * 10) / 10`.
-
----
-
 ### A8b — `client-time-reporting-entries.js`: Fix float accumulation in total
 **File**: `modules/hours/client-time-reporting-entries.js`
 **Problem**: Same as A8a — plain float accumulation in the reduce total.
@@ -285,7 +278,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
 - **A9** — Use URLSearchParams in client-time-reporting route
 - **A10** — Fix week ordering at year boundary in hour table and clipboard export

@@ -38,7 +38,8 @@ export const VAB = ({ vab, startDate, endDate }) => (
             <TableData>Total</TableData>
             <TableData alignRight colSpan={2}>
               {vab.reduce(
-                (accumulator, currentValue) => accumulator + currentValue.hours,
+                (accumulator, currentValue) =>
+                  Math.round(accumulator * 10 + currentValue.hours * 10) / 10,
                 0
               )}
             </TableData>
