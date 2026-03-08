@@ -47,7 +47,7 @@
 ### A10 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Weeks displayed out of order at year boundary
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components iterate `Object.keys(hours.totalBillableHoursPerWeek)` without sorting. `perWeek()` in `time-summary.ts` groups by ISO week number, so a December→January month will produce keys like `["52", "1", "2"]` (insertion order). The table and clipboard export show week 1 before week 52 — the wrong chronological order.
-**Fix**: Sort the keys numerically before iterating. Account for the year-boundary case: if both low week numbers (≤ 10) and high week numbers (≥ 40) are present, the high weeks come first. Sort by `parseInt(week) > 26 ? parseInt(week) - 53 : parseInt(week)`.
+**Fix**: Sort the keys numerically before iterating. Keys are prefixed with `"w"` (e.g. `"w1"`, `"w52"`), so strip the prefix before comparing: `parseInt(week.slice(1))`. Account for the year-boundary case: high weeks come before low weeks. Sort comparator: `const n = (w) => { const v = parseInt(w.slice(1)); return v > 26 ? v - 53 : v; }` — this maps week 52 to -1 and week 1 to 1, producing correct chronological order.
 
 ---
 
