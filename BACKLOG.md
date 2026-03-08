@@ -44,6 +44,34 @@
 
 ---
 
+### A10 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Weeks displayed out of order at year boundary
+**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
+**Problem**: Both components iterate `Object.keys(hours.totalBillableHoursPerWeek)` without sorting. `perWeek()` in `time-summary.ts` groups by ISO week number, so a December→January month will produce keys like `["52", "1", "2"]` (insertion order). The table and clipboard export show week 1 before week 52 — the wrong chronological order.
+**Fix**: Sort the keys numerically before iterating. Account for the year-boundary case: if both low week numbers (≤ 10) and high week numbers (≥ 40) are present, the high weeks come first. Sort by `parseInt(week) > 26 ? parseInt(week) - 53 : parseInt(week)`.
+
+---
+
+### A11 — Hour display missing `.toFixed(1)` in UI components
+**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `pages/day/[day].js`
+**Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". If a floating-point value slips through (e.g. from A8a/A8b not yet fixed), it will display as `11.3` or `11.299999`. Even when values are correct, `3` displays as `3` not `3.0`.
+**Fix**: Apply `.toFixed(1)` when rendering any hour value in UI components.
+
+---
+
+### A12 — `billable-hours-clipboard-button.js`: `clipboard.writeText()` not awaited — false success feedback
+**File**: `modules/hours/billable-hours-clipboard-button.js`
+**Problem**: The `onClick` handler calls `navigator.clipboard.writeText(text)` and immediately calls `setChecked(true)` without awaiting the promise. If the clipboard API rejects (permission denied, API unavailable), the user sees "Copied to clipboard ✓" even though the copy failed.
+**Fix**: Make the handler `async`, `await clipboard.writeText(text)`, and only call `setChecked(true)` on success. Catch rejection and surface an error (e.g. console.error or a visible message).
+
+---
+
+### A13 — `billable-hours-clipboard-button.js`: "Copied" state never resets
+**File**: `modules/hours/billable-hours-clipboard-button.js`
+**Problem**: After the first successful copy, `checked` is set to `true` and never reset. The button shows "Copied to clipboard ✓" permanently for the rest of the page session. Standard UX for copy buttons is to revert to the original label after ~2 seconds.
+**Fix**: After setting `checked(true)`, schedule `setTimeout(() => setChecked(false), 2000)`. Clear the timeout in a `useEffect` cleanup to avoid state updates on unmounted components.
+
+---
+
 ## Category B: Code Quality / Small Cleanups
 
 ### B1 — `pages/day/[day].js`: Remove unnecessary export from `getCurrentDayRedirect`
@@ -91,6 +119,11 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 **Test file**: `pages/api/client-time-reporting/client-time-reporting.test.js`
 **Problem**: Current tests only cover the "unconfigured" case (env var not set → returns `{ entries: [] }`). The success path (PE Accounting returns data), the error path (PE Accounting returns non-200), and the malformed-response path are all untested.
 **Fix**: Add test cases for: (1) PE Accounting returns valid entries → response matches, (2) PE Accounting returns 4xx/5xx → API returns 500 JSON, (3) PE Accounting returns malformed JSON → API returns 500.
+
+### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
+**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
+**Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
+**Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
 
 ## Category D: CI / Dependencies
 
@@ -203,12 +236,17 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
 - **A9** — Use URLSearchParams in client-time-reporting route
+- **A10** — Fix week ordering at year boundary in hour table and clipboard export
+- **A11** — Apply `.toFixed(1)` to all hour displays in UI components
+- **A12** — Await `clipboard.writeText()` and handle rejection
+- **A13** — Reset clipboard button state after 2 seconds
 - **B1** — Remove unnecessary export from `getCurrentDayRedirect`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C1** — Add integration tests for `/api/summary` route
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
 - **C3** — Expand PE Accounting tests to cover success and error paths
+- **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
