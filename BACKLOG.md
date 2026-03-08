@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A12 — `billable-hours-clipboard-button.js`: `clipboard.writeText()` not awaited — false success feedback
-**File**: `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: The `onClick` handler calls `navigator.clipboard.writeText(text)` and immediately calls `setChecked(true)` without awaiting the promise. If the clipboard API rejects (permission denied, API unavailable), the user sees "Copied to clipboard ✓" even though the copy failed.
-**Fix**: Make the handler `async`, `await clipboard.writeText(text)`, and only call `setChecked(true)` on success. Catch rejection and surface an error (e.g. console.error or a visible message).
-
----
-
 ### A13 — `billable-hours-clipboard-button.js`: "Copied" state never resets
 **File**: `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: After the first successful copy, `checked` is set to `true` and never reset. The button shows "Copied to clipboard ✓" permanently for the rest of the page session. Standard UX for copy buttons is to revert to the original label after ~2 seconds.
@@ -264,7 +257,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A12** — Await `clipboard.writeText()` and handle rejection
 - **A13** — Reset clipboard button state after 2 seconds
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
