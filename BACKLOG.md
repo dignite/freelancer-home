@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A9 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Use URLSearchParams to build PE Accounting query
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: `startDate` and `endDate` from the Next.js route are interpolated directly into the URL string without encoding. A crafted path like `2024-01-01%26injected=yes` would append a rogue query parameter to the PE Accounting request.
-**Fix**: Build the query string with `new URLSearchParams({ startDate, endDate, accountId, activityId })` and append it to the base URL, so values are always percent-encoded.
-
----
-
 ### A10 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Weeks displayed out of order at year boundary
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components iterate `Object.keys(hours.totalBillableHoursPerWeek)` without sorting. `perWeek()` in `time-summary.ts` groups by ISO week number with a `"w"` prefix, so a December→January month will produce keys like `["w52", "w1", "w2"]` (insertion order). The table and clipboard export show `w1` before `w52` — the wrong chronological order.
@@ -84,7 +77,7 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: The fallback activity ID `"45784"` is inlined in a template literal: `` `...&activityId=${process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"}` ``. Magic numbers are hard to find and change.
+**Problem**: The fallback activity ID `"45784"` is inlined in a `URLSearchParams` constructor: `activityId: process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"`. Magic numbers are hard to find and change.
 **Fix**: Extract to a named constant at the top of the file: `const DEFAULT_ACTIVITY_ID = "45784"`.
 
 ---
@@ -271,7 +264,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A9** — Use URLSearchParams in client-time-reporting route
 - **A10** — Fix week ordering at year boundary in hour table and clipboard export
 - **A11** — Apply `.toFixed(1)` to all hour displays in UI components
 - **A12** — Await `clipboard.writeText()` and handle rejection
