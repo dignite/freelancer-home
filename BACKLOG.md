@@ -84,9 +84,9 @@ Note: the API base URL (`https://api.accounting.pe/v1/...`) may also need updati
 
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: Both components have zero test coverage. The clipboard behaviour fixes (A12, A13) cannot be verified without tests.
+**Problem**: Both components have zero test coverage. The clipboard state-reset fix (A13) cannot be verified without tests.
 **Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week key sort order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
-**Requires**: A12, A13
+**Requires**: A13
 
 ## Category T: TypeScript Migration
 
@@ -265,7 +265,7 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route
-- **C4** — Add component tests for billable-hours-per-week and clipboard button (after A12-A13)
+- **C4** — Add component tests for billable-hours-per-week and clipboard button (after A13)
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
