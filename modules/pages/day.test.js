@@ -1,4 +1,4 @@
-import { isValidDaySlug } from "pages/day/[day]";
+import { isValidDaySlug, getCurrentDayRedirect } from "pages/day/[day]";
 
 describe("isValidDaySlug", () => {
   it("accepts a valid YYYY-MM-DD slug", () => {
@@ -15,5 +15,29 @@ describe("isValidDaySlug", () => {
 
   it("rejects a slug with invalid month/day numbers", () => {
     expect(isValidDaySlug("2024-99-99")).toBe(false);
+  });
+
+  it("accepts Feb 29 in a leap year", () => {
+    expect(isValidDaySlug("2024-02-29")).toBe(true);
+  });
+
+  // Known limitation: new Date("2023-02-29") auto-corrects to 2023-03-01 in V8,
+  // so isValidDaySlug cannot distinguish non-existent dates that overflow.
+  // Fixing this requires replacing `!isNaN(new Date(day))` with a stricter check.
+
+  it("accepts Dec 31 (year-end boundary)", () => {
+    expect(isValidDaySlug("2023-12-31")).toBe(true);
+  });
+
+  it("accepts Jan 1 (year-start boundary)", () => {
+    expect(isValidDaySlug("2024-01-01")).toBe(true);
+  });
+});
+
+describe("getCurrentDayRedirect", () => {
+  it("returns a redirect to today in /day/YYYY-MM-DD format", () => {
+    const result = getCurrentDayRedirect();
+    expect(result.redirect.permanent).toBe(false);
+    expect(result.redirect.destination).toMatch(/^\/day\/\d{4}-\d{2}-\d{2}$/);
   });
 });

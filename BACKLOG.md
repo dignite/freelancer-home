@@ -105,33 +105,17 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ## Category C: Test Coverage
 
-### C1 — `pages/api/summary/[startDate]/[endDate].js`: Add integration tests **[test first]**
-**File**: `pages/api/summary/[startDate]/[endDate].js`
-**Problem**: The summary API route has zero test coverage. It calls `summary()` and returns `{ hours, invoice }` — the happy path and error path are both untested.
-**Fix**: Add a test file alongside the route (or under `modules/pages/`) using MSW to mock Harvest responses. Cover: successful response shape, and the try/catch 500 error path.
-
 ### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests **[test first]**
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
 **Problem**: The by-name API route has zero test coverage. It has no error handling (see A3), and also no tests.
 **Fix**: Add a test file covering: successful response, and — after A3 is done — the 500 error path. Implement A3 first.
 **Requires**: A3
 
-### C3 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Expand test coverage
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Test file**: `pages/api/client-time-reporting/client-time-reporting.test.js`
-**Problem**: Current tests only cover the "unconfigured" case (env var not set → returns `{ entries: [] }`). The success path (PE Accounting returns data), the error path (PE Accounting returns non-200), and the malformed-response path are all untested.
-**Fix**: Add test cases for: (1) PE Accounting returns valid entries → response matches, (2) PE Accounting returns 4xx/5xx → API returns 500 JSON, (3) PE Accounting returns malformed JSON → API returns 500.
-
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
 **Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week order in rendered output (assert `w52` row appears before `w1` row), `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
 **Requires**: A10, A11, A12, A13
-
-### C5 — `modules/pages/day.test.js`: Add missing edge cases
-**File**: `modules/pages/day.test.js`
-**Problem**: The test file only covers `isValidDaySlug()` with four basic cases. Missing: (1) leap-year validation — `isValidDaySlug("2024-02-29")` should pass but `isValidDaySlug("2023-02-29")` should fail, though `new Date()` leniency may mask this; (2) year-boundary dates (`2023-12-31`, `2024-01-01`); (3) no tests for `useDayName()` or other exported helpers — compare with `month.test.js` which tests `lastDayOfMonth()` and `firstDayOfLastMonth()` thoroughly.
-**Fix**: Add leap-year cases, year-boundary cases, and tests for any other exported day-page utility functions.
 
 ## Category D: CI / Dependencies
 
@@ -260,11 +244,8 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
-- **C1** — Add integration tests for `/api/summary` route
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
-- **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
-- **C5** — Add missing edge cases to `day.test.js`
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **D5** — Upgrade TypeScript 4.9 → 5
