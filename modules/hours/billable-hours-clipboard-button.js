@@ -9,7 +9,7 @@ export const BillableHoursClipboardButton = ({
   const [checked, setChecked] = useState(false);
   return (
     <Button
-      onClick={() => {
+      onClick={async () => {
         const allWeeks = Object.keys(hours.totalBillableHoursPerWeek)
           .sort()
           .map((week) => `${week}:  ${hours.totalBillableHoursPerWeek[week].toFixed(1)}h`);
@@ -18,8 +18,12 @@ export const BillableHoursClipboardButton = ({
           ...allWeeks,
           `Total: ${hours.totalBillableHours.toFixed(1)}h`,
         ];
-        navigator.clipboard.writeText(lines.join("\n"));
-        setChecked(true);
+        try {
+          await navigator.clipboard.writeText(lines.join("\n"));
+          setChecked(true);
+        } catch (error) {
+          console.error("Failed to copy to clipboard:", error);
+        }
       }}
     >
       {checked ? "Copied to clipboard ✓" : "Copy to clipboard"}
