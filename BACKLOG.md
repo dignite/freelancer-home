@@ -3,6 +3,7 @@
 > Pick any item and ask Claude to implement it. Each item is self-contained.
 > Items marked **[test first]** should have a failing test committed before the implementation fix — two commits, one PR.
 > - When a task is implemented, **remove it from this file in the same PR** — including its entry in the "Suggested Order" section.
+> - Detailed upgrade plans for dependency items (D-category) live in `BACKLOG/`. Read the relevant file before starting a D-category task.
 
 ---
 
@@ -34,6 +35,30 @@
 ## Category C: Test Coverage
 
 ## Category D: CI / Dependencies
+
+### D5 — Upgrade TypeScript 4.9 → 5
+**Detail**: `BACKLOG/D5-typescript-5.md`
+**Risk**: Very low. Backward-compatible upgrade. Optional `tsconfig.json` modernization.
+
+### D4 — Upgrade date-fns v2 → v3
+**Detail**: `BACKLOG/D4-date-fns-v3.md`
+**Risk**: Low. One import site (`date-info.ts`), one test mock to rewrite.
+
+### D1 — Upgrade MSW v1 → v2
+**Detail**: `BACKLOG/D1-msw-v2.md`
+**Risk**: High. Complete handler API rewrite in `harvest-handlers.ts`. `rest.get` / `res(ctx.json(...))` pattern replaced with `http.get` / `HttpResponse.json(...)`.
+
+### D2 — Upgrade react-query v3 → @tanstack/react-query v5
+**Detail**: `BACKLOG/D2-react-query-v5.md`
+**Risk**: High. Package renamed, SSR `Hydrate` → `HydrationBoundary`, `useQuery("key")` string shorthand removed.
+
+### D3 — Upgrade Next.js 13 → 15 (Pages Router)
+**Detail**: `BACKLOG/D3-nextjs-15.md`
+**Risk**: Very high. Stay on Pages Router (App Router migration is separate). Do after D1, D2, D5.
+
+### D6 — Upgrade React 18 → 19
+**Detail**: `BACKLOG/D6-react-19.md`
+**Risk**: Medium. Depends on D2 and D3 being complete first.
 
 ## Category E: Evergreen Skills
 
@@ -118,6 +143,12 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+- **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
+- **D4** — Upgrade date-fns v2 → v3
+- **D1** — Upgrade MSW v1 → v2
+- **D2** — Upgrade react-query v3 → @tanstack/react-query v5
+- **D3** — Upgrade Next.js 13 → 15
+- **D6** — Upgrade React 18 → 19 (do last, depends on D2 + D3)
 - **F1a** — Explore money data from Harvest and PE Accounting
 - **F1b** — Add `/api/invoices` route
 - **F1c** — Show invoice status on month page
