@@ -8,13 +8,6 @@
 
 ## Category A: Bug Fixes
 
-### A2 — `pages/api/summary/[startDate]/[endDate].js`: Add try/catch _(low priority)_
-**File**: `pages/api/summary/[startDate]/[endDate].js`
-**Problem**: `await summary(startDate, endDate)` has no error handling. Next.js catches unhandled throws and returns an HTML 500 page — react-query clients get a non-JSON body and the UI stays on "Loading..." indefinitely.
-**Fix**: Wrap in try/catch, return `res.status(500).json({ error: ... })` on failure.
-
----
-
 ### A3 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
 **Problem**: Same as A2 — no error handling around the async `byName()` call.
@@ -122,7 +115,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A2** — `pages/api/summary`: add try/catch
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
