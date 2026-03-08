@@ -78,13 +78,6 @@
 
 ## Category D: CI / Dependencies
 
-### D2 — Run `/clear` at the start of `/redwork` to free context
-**File**: `.claude/commands/redwork.md`
-**Problem**: The claude-claude-claude loop accumulates context across multiple bluework/redwork handoffs, causing context window pressure and potentially slower/worse responses over time.
-**Fix**: Add a `/clear` step at the very start of `/redwork` (before picking a task) so each implementation task starts with a fresh context.
-
----
-
 ## Category E: Evergreen Skills
 
 These are not one-off tasks — they are ongoing quality activities to run periodically or whenever the codebase changes significantly. Each has a corresponding Claude skill.
@@ -165,7 +158,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **D2** — Run `/clear` at start of `/redwork`
 - **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`
