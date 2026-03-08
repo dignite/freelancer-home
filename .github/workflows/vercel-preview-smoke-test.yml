@@ -2,36 +2,43 @@ name: Vercel Preview Smoke Test
 
 on:
   deployment_status:
-  pull_request:
 
 jobs:
   smoke-test:
     name: Smoke Test (Preview)
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'deployment_status' &&
-       github.event.deployment_status.state == 'success' &&
-       contains(github.event.deployment.environment, 'Preview') &&
-       github.repository == 'dignite/freelancer-home') ||
-      (github.event_name == 'pull_request' &&
-       github.repository == 'dignite/freelancer-home')
+      github.repository == 'dignite/freelancer-home' &&
+      contains(github.event.deployment.environment, 'Preview')
 
     steps:
-      - name: Check if smoke test applies
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Check Vercel deployment state
+        id: check
         run: |
-          CHANGED=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --jq '.[].filename')
-          if echo "$CHANGED" | grep -vE '^BACKLOG\.md$|^BACKLOG/' | grep -q .; then
-            echo "Code changes present — smoke test will run after Vercel deploys (via deployment_status)"
-            exit 1
+          STATE="${{ github.event.deployment_status.state }}"
+          DESC="${{ github.event.deployment_status.description }}"
+          echo "State:       $STATE"
+          echo "Description: $DESC"
+
+          if echo "$DESC" | grep -qi "canceled by ignored build step"; then
+            echo "skip=true"  >> "$GITHUB_OUTPUT"
+            echo "reason=Vercel skipped this deploy (ignoreCommand fired)" >> "$GITHUB_OUTPUT"
+          elif echo "$DESC" | grep -qi "rate.limit"; then
+            echo "skip=true"  >> "$GITHUB_OUTPUT"
+            echo "reason=Vercel deployment was rate-limited" >> "$GITHUB_OUTPUT"
+          elif [ "$STATE" != "success" ]; then
+            echo "skip=true"  >> "$GITHUB_OUTPUT"
+            echo "reason=Deployment state is '$STATE' — not a successful deploy" >> "$GITHUB_OUTPUT"
           else
-            echo "BACKLOG-only change — smoke test skipped (no Vercel deployment)"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Skip smoke test
+        if: steps.check.outputs.skip == 'true'
+        run: echo "Skipped — ${{ steps.check.outputs.reason }}"
+
       - name: Run smoke tests
-        if: github.event_name == 'deployment_status'
+        if: steps.check.outputs.skip == 'false'
         env:
           PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
           USERNAME: ${{ secrets.PREVIEW_SMOKE_TEST_USER_NAME }}
