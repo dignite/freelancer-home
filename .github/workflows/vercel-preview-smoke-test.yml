@@ -3,8 +3,6 @@ name: Vercel Preview Smoke Test
 on:
   deployment_status:
   pull_request:
-    paths:
-      - 'BACKLOG.md'
 
 jobs:
   smoke-test:
