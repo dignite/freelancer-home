@@ -33,7 +33,7 @@ describe("summary function", () => {
     expect(result).toStrictEqual({
       hours: {
         totalBillableHours: 10.7,
-        totalBillableHoursPerWeek: { w45: 10.7 },
+        totalBillableHoursPerWeek: { "2020-w45": 10.7 },
       },
       invoice: {
         totalExcludingVATFormatted: `2${nonBreakingSpace}354,00${nonBreakingSpace}kr`,

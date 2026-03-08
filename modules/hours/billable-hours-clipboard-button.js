@@ -10,12 +10,8 @@ export const BillableHoursClipboardButton = ({
   return (
     <Button
       onClick={() => {
-        const keys = Object.keys(hours.totalBillableHoursPerWeek);
-        const nums = keys.map((w) => parseInt(w.slice(1)));
-        const hasYearBoundary = Math.max(...nums) > 46 && Math.min(...nums) < 7;
-        const n = (w) => { const v = parseInt(w.slice(1)); return hasYearBoundary && v > 26 ? v - 53 : v; };
-        const allWeeks = keys
-          .sort((a, b) => n(a) - n(b))
+        const allWeeks = Object.keys(hours.totalBillableHoursPerWeek)
+          .sort()
           .map((week) => `${week}:  ${hours.totalBillableHoursPerWeek[week]}h`);
         const lines = [
           `${formattedFirstDayOfMonth} - ${formattedLastDayOfMonth}`,

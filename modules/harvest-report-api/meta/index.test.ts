@@ -59,6 +59,6 @@ describe("hoursMetaSlim function", () => {
     expect.assertions(1);
     const result = hoursMetaSlim(entries);
     // Nov 3+4 2018 are in ISO week 44; Nov 6 2018 is in ISO week 45
-    expect(result.totalBillableHoursPerWeek).toStrictEqual({ w44: 7.2, w45: 4.1 });
+    expect(result.totalBillableHoursPerWeek).toStrictEqual({ "2018-w44": 7.2, "2018-w45": 4.1 });
   });
 });
