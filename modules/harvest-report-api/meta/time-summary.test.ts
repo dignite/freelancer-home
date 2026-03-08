@@ -153,4 +153,16 @@ describe("perWeek function", () => {
       "2018-w45": 4.1,
     });
   });
+
+  it("zero-pads week number so w09 sorts before w10", () => {
+    expect.assertions(1);
+    // 2026-02-25 is ISO week 9; 2026-03-04 is ISO week 10
+    const week9Entry = { id: 1, date: "2026-02-25", name: "Programming", billableHours: 1.0, hours: 1.0, cost: 0, comment: "" };
+    const week10Entry = { id: 2, date: "2026-03-04", name: "Programming", billableHours: 2.0, hours: 2.0, cost: 0, comment: "" };
+
+    const result = perWeek([week9Entry, week10Entry]);
+    const sortedKeys = Object.keys(result).sort();
+
+    expect(sortedKeys).toStrictEqual(["2026-w09", "2026-w10"]);
+  });
 });
