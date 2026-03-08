@@ -20,6 +20,8 @@ Accepts optional argument `auto` — if passed, skip human discussion and act au
    - Are dependencies (`Requires`) still valid, or have some been resolved?
    - Is there an aspect of the code worth deep analysis (test coverage gaps, error handling,
      type safety, floating-point issues, API hardening)?
+   - Check `INSPIRATION.md` for patterns and quality benchmarks from similar open-source
+     projects that may suggest improvements or validate backlog items.
 
 3. Formulate a concrete set of proposed changes: add, remove, split, combine, clarify, re-order.
 
