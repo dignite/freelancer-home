@@ -117,6 +117,64 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 **Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week order in rendered output (assert `w52` row appears before `w1` row), `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
 **Requires**: A10, A11, A12, A13
 
+## Category T: TypeScript Migration
+
+The project's `modules/harvest-report-api/` is already fully TypeScript. All remaining JS files live in `pages/` and `modules/hours/` + `modules/layout/`. Items are ordered so dependencies are typed before dependents. Do D8 (Prettier) first so the formatter handles `.ts`/`.tsx` files from the start.
+
+Items marked _(non-production)_ touch only test files. Items without that note touch production code.
+
+### T1 — Convert simple API routes to TypeScript _(production)_
+**Files**: `pages/api/auth.js` → `.ts`, `pages/api/summary/[startDate]/[endDate].js` → `.ts`, `pages/api/by-name/[name]/[startDate]/[endDate].js` → `.ts`
+**Changes**: Add `NextApiRequest, NextApiResponse` types to all three handlers. Rename files. `auth.js` becomes a typed `NextApiHandler`. The summary and by-name handlers gain typed `req.query` destructuring. No logic changes.
+
+### T2 — Convert `middleware.js` to TypeScript _(production)_
+**File**: `middleware.js` → `middleware.ts`
+**Changes**: Import `NextRequest` from `"next/server"`. Type the `request` parameter and the `NextResponse` calls. The exported `config.matcher` type-checks automatically.
+
+### T3 — Convert test files to TypeScript _(non-production)_
+**Files**: `modules/pages/day.test.js` → `.test.ts`, `modules/pages/month.test.js` → `.test.ts`
+**Changes**: Rename files. Add type annotations to variables where inference is insufficient. Both already use ES `import` syntax so no require() conversion needed.
+
+### T4 — Convert `pages/_app.js` to TypeScript _(production)_
+**File**: `pages/_app.js` → `_app.tsx`
+**Changes**: Import `AppProps` from `"next/app"`. Type the `FreelancerHome` component: `function FreelancerHome({ Component, pageProps }: AppProps)`. The `dehydratedState` in `pageProps` is `unknown` — cast or type appropriately.
+
+### T5 — Convert redirect pages and `pages/index.js` to TypeScript _(production)_
+**Files**: `pages/index.js` → `.tsx`, `pages/day/index.js` → `.tsx`, `pages/month/index.js` → `.tsx`
+**Changes**: Rename all three. `index.tsx` is pure JSX with no props — no types needed beyond the default export. The redirect pages (`day/index.tsx`, `month/index.tsx`) each re-export `getServerSideProps` from the dynamic route — the type flows through automatically once those dynamic route files are converted.
+
+### T6 — Convert API route test files to TypeScript _(non-production)_
+**Files**: `pages/api/summary/summary.test.js` → `.test.ts`, `pages/api/client-time-reporting/client-time-reporting.test.js` → `.test.ts`
+**Changes**: Convert `require()` calls to ES `import` statements. Type mock functions (`jest.fn<ReturnType, ArgsType>()`). Type the mock `req`/`res` objects (or use a cast). More involved than T3 due to CJS→ESM conversion in the test bodies.
+
+### T7 — Convert `pages/api/client-time-reporting/[startDate]/[endDate].js` to TypeScript _(production)_
+**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js` → `.ts`
+**Changes**: Type `req: NextApiRequest, res: NextApiResponse`. Type the `events` JSON response (define an `EventReadable` interface with `id: { id: string }, date: string, hours: number, comment: string`). Type `Headers`, the `fetch` response, and the mapped entries.
+
+### T8 — Convert `modules/layout/vertical-rhythm.js` to TypeScript _(production)_
+**File**: `modules/layout/vertical-rhythm.js` → `.tsx`
+**Changes**: All ~15 exported components take only `children` or a small set of known props. Add `React.PropsWithChildren` for the child-only ones. For `TableHeader` and `TableData`, add `{ children?: React.ReactNode; alignRight?: boolean }`. For `TableRow` and others with `colSpan`, add those props. No logic changes.
+
+### T9 — Convert hour components to TypeScript _(production)_
+**Files**: `modules/hours/billable-hours-per-week.js` → `.tsx`, `modules/hours/billable-hours-clipboard-button.js` → `.tsx`
+**Changes**: Both components receive a typed `hours` prop. Define `HoursMeta = { totalBillableHours: number; totalBillableHoursPerWeek: Record<string, number> }` (reuse across both). The clipboard button adds `formattedFirstDayOfMonth: string; formattedLastDayOfMonth: string`. Type the `useState<boolean>` hook.
+**Requires**: T8 (vertical-rhythm types)
+
+### T10 — Convert remaining hour components to TypeScript _(production)_
+**Files**: `modules/hours/vab.js` → `.tsx`, `modules/hours/client-time-reporting-entries.js` → `.tsx`
+**Changes**: Define `VabEntry = { id: string; date: string; hours: number; comment: string }` and `TimeReportingEntry = { id: string; date: string; hours: number; comment: string }`. Prop interfaces are `{ vab: VabEntry[]; startDate: string; endDate: string }` and `{ entries: TimeReportingEntry[] }`.
+**Requires**: T8 (vertical-rhythm types)
+
+### T11 — Convert `pages/day/[day].js` to TypeScript _(production)_
+**File**: `pages/day/[day].js` → `[day].tsx`
+**Changes**: Define `DayProps = { day: string; isCurrentDay: boolean; dehydratedState: unknown }`. Type `getServerSideProps` as `GetServerSideProps<DayProps>`. Type `isValidDaySlug(day: string): boolean` and `getCurrentDayRedirect()`. The `useDayName` hook takes `day: string` and returns `string`. Type `useQuery` return value.
+**Requires**: T9, T10 (so component imports from hours/ are already typed)
+
+### T12 — Convert `pages/month/[month].js` to TypeScript _(production)_
+**File**: `pages/month/[month].js` → `[month].tsx`
+**Changes**: Define `MonthProps` with all 7 props passed from `getServerSideProps`. Type `getServerSideProps` as `GetServerSideProps<MonthProps>`. Type all utility functions: `isValidMonthSlug`, `lastDayOfMonth`, `firstDayOfLastMonth`, `useMonthName`. Three `useQuery` calls need their data types. This is the most involved migration item.
+**Requires**: T9, T10 (hours components typed), T11 (day page pattern established)
+
 ## Category D: CI / Dependencies
 
 ### D8 — Add Prettier with commit hook and CI check
@@ -248,6 +306,18 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
+- **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
+- **T2** — Convert `middleware.js` to TypeScript
+- **T3** — Convert `day.test.js` and `month.test.js` to TypeScript (non-production)
+- **T4** — Convert `pages/_app.js` to TypeScript
+- **T5** — Convert redirect pages and `pages/index.js` to TypeScript
+- **T6** — Convert API route test files to TypeScript (non-production)
+- **T7** — Convert `pages/api/client-time-reporting` route to TypeScript
+- **T8** — Convert `modules/layout/vertical-rhythm.js` to TypeScript
+- **T9** — Convert clipboard button and billable-hours-per-week to TypeScript
+- **T10** — Convert vab.js and client-time-reporting-entries.js to TypeScript
+- **T11** — Convert `pages/day/[day].js` to TypeScript
+- **T12** — Convert `pages/month/[month].js` to TypeScript (most complex)
 - **D5** — Upgrade TypeScript 4.9 → 5
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
