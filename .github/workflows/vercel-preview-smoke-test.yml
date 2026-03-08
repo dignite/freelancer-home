@@ -2,18 +2,37 @@ name: Vercel Preview Smoke Test
 
 on:
   deployment_status:
+  pull_request:
+    paths:
+      - 'BACKLOG.md'
 
 jobs:
   smoke-test:
     name: Smoke Test (Preview)
     runs-on: ubuntu-latest
     if: |
-      github.event.deployment_status.state == 'success' &&
-      contains(github.event.deployment.environment, 'Preview') &&
-      github.repository == 'dignite/freelancer-home'
+      (github.event_name == 'deployment_status' &&
+       github.event.deployment_status.state == 'success' &&
+       contains(github.event.deployment.environment, 'Preview') &&
+       github.repository == 'dignite/freelancer-home') ||
+      (github.event_name == 'pull_request' &&
+       github.repository == 'dignite/freelancer-home')
 
     steps:
+      - name: Check if smoke test applies
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          CHANGED=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --jq '.[].filename')
+          if echo "$CHANGED" | grep -vE '^BACKLOG\.md$' | grep -q .; then
+            echo "Code changes present — smoke tests will run after Vercel deploys"
+          else
+            echo "BACKLOG-only change — smoke test skipped (no Vercel deployment)"
+          fi
+
       - name: Run smoke tests
+        if: github.event_name == 'deployment_status'
         env:
           PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
           USERNAME: ${{ secrets.PREVIEW_SMOKE_TEST_USER_NAME }}

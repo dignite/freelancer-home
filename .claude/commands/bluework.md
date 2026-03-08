@@ -42,18 +42,18 @@ Accepts optional argument `auto` — if passed, skip human discussion and act au
    git fetch origin
    git checkout -b bluework/<short-slug> origin/main
    ```
-   Commit the changes with a clear message. **Always append `[skip ci]` to the commit message** — BACKLOG.md changes don't need CI, and `[skip ci]` satisfies branch protection (unlike `paths-ignore` which leaves checks unsatisfied).
+   Commit the changes with a clear message. No special annotation needed.
 
 6. Open a PR:
    ```
    gh pr create --title "..." --body "..."
    ```
 
-7. Wait for Vercel (CI is skipped):
+7. Wait for checks:
    ```
    gh pr checks --watch
    ```
-   Vercel will also skip via `ignoreCommand`. Once all checks are green (or skipped), proceed.
+   CI runs normally. Vercel will skip via `ignoreCommand`. The smoke test PR trigger passes immediately (scoped to BACKLOG.md changes). Once all checks are green or skipped, proceed.
 
 8. Merge:
    ```
