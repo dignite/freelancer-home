@@ -68,6 +68,19 @@ collectCoverageFrom: [
 ```
 Do not set hard thresholds yet — let coverage reporting run first to establish a baseline.
 
+### B4 — Rename PE Accounting → Kleer throughout the codebase
+**Files**: `pages/api/client-time-reporting/[startDate]/[endDate].js`, `pages/api/client-time-reporting/client-time-reporting.test.js`, `CLAUDE.md`, `.env.example`
+**Problem**: PE Accounting has rebranded to Kleer. Display strings and environment variable names still use the old brand name.
+**Fix**:
+1. Rename env vars in `.env.example` and all code: `PE_ACCOUNTING_ACCOUNT_ID` → `KLEER_ACCOUNT_ID`, `PE_ACCOUNTING_TOKEN` → `KLEER_TOKEN`, `PE_ACCOUNTING_ACTIVITY_ID` → `KLEER_ACTIVITY_ID`
+2. Update the error message in the API route: `"PE Accounting responded with ${response.status}"` → `"Kleer responded with ${response.status}"`
+3. Update `CLAUDE.md` module map references from "PE Accounting" to "Kleer"
+4. After merging: update the corresponding env var names in Vercel (Settings → Environment Variables)
+
+Note: the API base URL (`https://api.accounting.pe/v1/...`) may also need updating if Kleer has a new API domain — verify before merging.
+
+---
+
 ### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
 **Problem**: The fallback activity ID `"45784"` is inlined in a `URLSearchParams` constructor: `activityId: process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"`. Magic numbers are hard to find and change.
@@ -84,9 +97,9 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
-**Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week order in rendered output (assert `w52` row appears before `w1` row), `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
-**Requires**: A10, A11, A12, A13
+**Problem**: Both components have zero test coverage. The hour formatting fix (A11) and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
+**Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week key sort order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
+**Requires**: A11, A12, A13
 
 ## Category T: TypeScript Migration
 
@@ -194,7 +207,7 @@ Check rendered pages against WCAG 2.1 AA. Focus on: semantic HTML, keyboard navi
 Use the app as a real user would across different months and edge cases (no entries, large invoices, VAB weeks, December→January boundary). Look for confusing layouts, missing loading states, unhelpful error messages, or missing affordances.
 
 ### E5 — Brainstorm new improvements
-Review the Harvest API (`/harvest`) and PE Accounting API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
+Review the Harvest API (`/harvest`) and Kleer API for data that isn't yet surfaced in the app. Consider: yearly summaries, client breakdowns, invoice status tracking, Slack/calendar integrations, or mobile layout improvements.
 
 ---
 
@@ -202,7 +215,7 @@ Review the Harvest API (`/harvest`) and PE Accounting API for data that isn't ye
 
 Sourced from `pages/index.js` goals listed on the home page.
 
-### F1a — Explore money data from Harvest and PE Accounting
+### F1a — Explore money data from Harvest and Kleer
 **Problem**: Before building money visualization, understand what data is available.
 **Fix**: Use the `/harvest` skill to fetch `/invoices` and `/reports/time/clients`. Document what fields are available and what would be useful to display.
 
@@ -263,10 +276,11 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **A16** — Fix `isValidDaySlug` to reject non-existent dates like `2023-02-29`
+- **B4** — Rename PE Accounting → Kleer throughout the codebase
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route
-- **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
+- **C4** — Add component tests for billable-hours-per-week and clipboard button (after A11-A13)
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
@@ -286,7 +300,7 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **D2** — Upgrade react-query v3 → @tanstack/react-query v5
 - **D3** — Upgrade Next.js 13 → 15
 - **D6** — Upgrade React 18 → 19 (do last, depends on D2 + D3)
-- **F1a** — Explore money data from Harvest and PE Accounting
+- **F1a** — Explore money data from Harvest and Kleer
 - **F1b** — Add `/api/invoices` route
 - **F1c** — Show invoice status on month page
 - **F1d** — Add yearly summary page
