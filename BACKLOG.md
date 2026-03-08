@@ -9,6 +9,13 @@
 
 ## Category A: Bug Fixes
 
+### A1 — `middleware.js`: Use constant-time comparison for Basic Auth credentials
+**File**: `middleware.js`
+**Problem**: Credentials are compared with `===` (`user === process.env.USER_NAME && pwd === process.env.PASSWORD`). JavaScript string equality short-circuits on the first differing character, making response time weakly correlated with how many characters match — a timing side-channel. While the dashboard is personal, it is public on the internet.
+**Fix**: Compare using `crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b))` for both username and password. Guard against undefined env vars (return 401 immediately if either is not set).
+
+---
+
 ### A3 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
 **Problem**: Same as A2 — no error handling around the async `byName()` call.
@@ -30,12 +37,34 @@
 
 ---
 
+### A9 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Use URLSearchParams to build PE Accounting query
+**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
+**Problem**: `startDate` and `endDate` from the Next.js route are interpolated directly into the URL string without encoding. A crafted path like `2024-01-01%26injected=yes` would append a rogue query parameter to the PE Accounting request.
+**Fix**: Build the query string with `new URLSearchParams({ startDate, endDate, accountId, activityId })` and append it to the base URL, so values are always percent-encoded.
+
+---
+
 ## Category B: Code Quality / Small Cleanups
 
 ### B1 — `pages/day/[day].js`: Remove unnecessary export from `getCurrentDayRedirect`
 **File**: `pages/day/[day].js`
 **Problem**: `getCurrentDayRedirect` is exported but only used internally within the same file's `getServerSideProps`. The export is dead — nothing else imports it.
 **Fix**: Remove the `export` keyword. Keep the function as a plain local function.
+
+### B3 — `jest.config.js`: Add coverage collection configuration
+**File**: `jest.config.js`
+**Problem**: Jest is not configured to collect or report coverage. Without `collectCoverageFrom`, running `npm test -- --coverage` reports on files that happen to be imported by tests, missing untested modules entirely. There are no coverage thresholds to prevent regressions.
+**Fix**: Add to `jest.config.js`:
+```js
+collectCoverageFrom: [
+  'modules/**/*.{ts,js}',
+  'pages/**/*.js',
+  '!**/*.test.{ts,js}',
+  '!modules/harvest-report-api/mock-service-worker/**',
+  '!modules/harvest-report-api/harvest-v2-types.ts',
+],
+```
+Do not set hard thresholds yet — let coverage reporting run first to establish a baseline.
 
 ### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
@@ -169,11 +198,14 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
+- **A1** — Basic Auth constant-time comparison in `middleware.js`
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+- **A9** — Use URLSearchParams in client-time-reporting route
 - **B1** — Remove unnecessary export from `getCurrentDayRedirect`
 - **B2** — Extract hardcoded activity ID fallback to named constant
+- **B3** — Add coverage collection config to `jest.config.js`
 - **C1** — Add integration tests for `/api/summary` route
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
 - **C3** — Expand PE Accounting tests to cover success and error paths
