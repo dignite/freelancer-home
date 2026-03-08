@@ -1,0 +1,79 @@
+name: Vercel Preview Smoke Test
+
+on:
+  deployment_status:
+
+jobs:
+  smoke-test:
+    name: Smoke Test (Preview)
+    runs-on: ubuntu-latest
+    if: |
+      github.event.deployment_status.state == 'success' &&
+      contains(github.event.deployment.environment, 'Preview') &&
+      github.repository == 'dignite/freelancer-home'
+
+    steps:
+      - name: Run smoke tests
+        env:
+          PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
+          USERNAME: ${{ secrets.PREVIEW_SMOKE_TEST_USER_NAME }}
+          PASSWORD: ${{ secrets.PREVIEW_SMOKE_TEST_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          TODAY=$(date -u +%Y-%m-%d)
+          FIRST_OF_MONTH=$(date -u +%Y-%m-01)
+          AUTH=$(printf '%s:%s' "$USERNAME" "$PASSWORD" | base64 -w 0)
+          FAILURES=0
+
+          check_status() {
+            local label="$1"
+            local expected="$2"
+            shift 2
+            local actual
+            actual=$(curl -s -o /tmp/smoke_body.txt -w "%{http_code}" "$@")
+            if [ "$actual" -eq "$expected" ]; then
+              echo "PASS  [$label] got $actual"
+            else
+              echo "FAIL  [$label] expected $expected, got $actual"
+              echo "      body: $(cat /tmp/smoke_body.txt)"
+              FAILURES=$((FAILURES + 1))
+            fi
+          }
+
+          check_json() {
+            local label="$1"
+            local expr="$2"
+            if jq -e "$expr" /tmp/smoke_body.txt > /dev/null 2>&1; then
+              echo "PASS  [$label] JSON shape valid"
+            else
+              echo "FAIL  [$label] JSON shape invalid: $expr"
+              echo "      body: $(cat /tmp/smoke_body.txt)"
+              FAILURES=$((FAILURES + 1))
+            fi
+          }
+
+          COMMON_ARGS=(-H "Authorization: Basic $AUTH")
+
+          echo "--- Smoke testing: $PREVIEW_URL ---"
+
+          check_status "GET /" 200 \
+            "${COMMON_ARGS[@]}" "$PREVIEW_URL/"
+
+          check_status "GET /day" 200 \
+            -L "${COMMON_ARGS[@]}" "$PREVIEW_URL/day"
+
+          check_status "GET /month" 200 \
+            -L "${COMMON_ARGS[@]}" "$PREVIEW_URL/month"
+
+          check_status "GET /api/summary" 200 \
+            "${COMMON_ARGS[@]}" "$PREVIEW_URL/api/summary/$TODAY/$TODAY"
+          # Validate JSON shape: must have both "hours" and "invoice" keys
+          check_json "GET /api/summary shape" 'has("hours") and has("invoice")'
+
+          check_status "GET /api/client-time-reporting" 200 \
+            "${COMMON_ARGS[@]}" \
+            "$PREVIEW_URL/api/client-time-reporting/$FIRST_OF_MONTH/$TODAY"
+
+          echo "--- Done: $FAILURES failure(s) ---"
+          [ "$FAILURES" -eq 0 ]
