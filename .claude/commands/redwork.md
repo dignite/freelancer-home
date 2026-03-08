@@ -10,6 +10,8 @@ Accepts optional argument `auto` — if passed, skip all confirmation prompts an
 
 ## Steps
 
+0. **Clear context** — run `/clear` to free the context window before starting work.
+
 1. **Pick a task** — read `BACKLOG.md`. From "Suggested Order", find the first item that:
    - Is not Category E (evergreen) or F (feature) — too large for autonomous execution
    - Has no unmet `Requires` — a dep is met if its ID is gone from BACKLOG.md
