@@ -79,6 +79,13 @@
 
 ---
 
+### A16 — `pages/day/[day].js`: `isValidDaySlug` accepts non-existent dates **[test first]**
+**File**: `pages/day/[day].js`
+**Problem**: `isValidDaySlug` validates with `!isNaN(new Date(day))`, but V8's `Date` constructor silently auto-corrects overflow dates — `new Date("2023-02-29")` becomes `2023-03-01`, so `isValidDaySlug("2023-02-29")` returns `true` for a date that does not exist. The limitation is documented in a comment in `modules/pages/day.test.ts` but not yet fixed.
+**Fix**: After parsing, round-trip the date back to an ISO string and compare: `const d = new Date(day); return !isNaN(d) && d.toISOString().slice(0, 10) === day`. Add the failing test case for `"2023-02-29"` before implementing the fix.
+
+---
+
 ## Category B: Code Quality / Small Cleanups
 
 ### B3 — `jest.config.js`: Add coverage collection configuration
@@ -296,6 +303,7 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A13** — Reset clipboard button state after 2 seconds
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
+- **A16** — Fix `isValidDaySlug` to reject non-existent dates like `2023-02-29`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
