@@ -132,7 +132,7 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
-**Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
+**Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week order in rendered output (assert `w52` row appears before `w1` row), `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
 **Requires**: A10, A11, A12, A13
 
 ### C5 — `modules/pages/day.test.js`: Add missing edge cases
