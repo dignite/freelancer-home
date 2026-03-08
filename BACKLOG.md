@@ -3,18 +3,11 @@
 > Pick any item and ask Claude to implement it. Each item is self-contained.
 > Items marked **[test first]** should have a failing test committed before the implementation fix — two commits, one PR.
 > - When a task is implemented, **remove it from this file in the same PR** — including its entry in the "Suggested Order" section.
-> - Detailed upgrade plans for dependency items (D-category) live in `BACKLOG/`. Read the relevant file before starting a D-category task.
+> - Some items have a detailed plan in `BACKLOG/` — read it before starting that task.
 
 ---
 
 ## Category A: Bug Fixes
-
-### A1 — `middleware.js`: Use constant-time comparison for Basic Auth credentials
-**File**: `middleware.js`
-**Problem**: Credentials are compared with `===` (`user === process.env.USER_NAME && pwd === process.env.PASSWORD`). JavaScript string equality short-circuits on the first differing character, making response time weakly correlated with how many characters match — a timing side-channel. While the dashboard is personal, it is public on the internet.
-**Fix**: Compare using `crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b))` for both username and password. Guard against undefined env vars (return 401 immediately if either is not set).
-
----
 
 ### A3 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
@@ -255,7 +248,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A1** — Basic Auth constant-time comparison in `middleware.js`
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
