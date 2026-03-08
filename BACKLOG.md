@@ -40,13 +40,6 @@
 
 ## Category C: Test Coverage
 
-### C3a — Test `summary()` in `harvest-report-api/index.ts`
-**File**: New file `modules/harvest-report-api/index.test.ts`
-**Problem**: `summary()` is the main public API entry point with zero direct tests.
-**Fix**: Add tests using MSW (already set up) covering the happy path and error case.
-
----
-
 ### C3b — Test `byName()` in `harvest-report-api/index.ts`
 **File**: `modules/harvest-report-api/index.test.ts`
 **Requires**: C3a (same file)
@@ -144,7 +137,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C3a** — Test `summary()`
 - **C3b** — Test `byName()`
 - **C4** — Test SEK edge cases
 - **A2** — `pages/api/summary`: add try/catch
