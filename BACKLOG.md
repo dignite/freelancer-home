@@ -11,8 +11,8 @@
 
 ### A8b — `client-time-reporting-entries.js`: Fix float accumulation in total
 **File**: `modules/hours/client-time-reporting-entries.js`
-**Problem**: Same as A8a — plain float accumulation in the reduce total.
-**Fix**: Same pattern — `Math.round(acc * 10 + cur.hours * 10) / 10`.
+**Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`.
+**Fix**: Replace the reduce accumulator with `Math.round(acc * 10 + cur.hours * 10) / 10`.
 
 ---
 
