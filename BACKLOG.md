@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A13 — `billable-hours-clipboard-button.js`: "Copied" state never resets
-**File**: `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: After the first successful copy, `checked` is set to `true` and never reset. The button shows "Copied to clipboard ✓" permanently for the rest of the page session. Standard UX for copy buttons is to revert to the original label after ~2 seconds.
-**Fix**: After setting `checked(true)`, schedule `setTimeout(() => setChecked(false), 2000)`. Clear the timeout in a `useEffect` cleanup to avoid state updates on unmounted components.
-
----
-
 ### A14 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
 **File**: `pages/month/[month].js`
 **Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view.
@@ -257,7 +250,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A13** — Reset clipboard button state after 2 seconds
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **A16** — Fix `isValidDaySlug` to reject non-existent dates like `2023-02-29`

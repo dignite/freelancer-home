@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../layout/vertical-rhythm";
 
 export const BillableHoursClipboardButton = ({
@@ -7,6 +7,14 @@ export const BillableHoursClipboardButton = ({
   formattedLastDayOfMonth,
 }) => {
   const [checked, setChecked] = useState(false);
+  const resetTimer = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
   return (
     <Button
       onClick={async () => {
@@ -21,6 +29,7 @@ export const BillableHoursClipboardButton = ({
         try {
           await navigator.clipboard.writeText(lines.join("\n"));
           setChecked(true);
+          resetTimer.current = setTimeout(() => setChecked(false), 2000);
         } catch (error) {
           console.error("Failed to copy to clipboard:", error);
         }
