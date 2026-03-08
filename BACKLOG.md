@@ -42,7 +42,6 @@
 
 ### C3b — Test `byName()` in `harvest-report-api/index.ts`
 **File**: `modules/harvest-report-api/index.test.ts`
-**Requires**: C3a (same file)
 **Problem**: `byName()` filters entries by task name but has no direct tests.
 **Fix**: Add tests for: entries matching the name, no matches, and multiple entries with mixed names.
 
