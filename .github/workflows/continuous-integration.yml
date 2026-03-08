@@ -5,7 +5,13 @@ name: Continuous Integration
 
 on:
   push:
+    paths-ignore:
+      - 'BACKLOG.md'
+      - 'BACKLOG/**'
   pull_request:
+    paths-ignore:
+      - 'BACKLOG.md'
+      - 'BACKLOG/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
