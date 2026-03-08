@@ -79,7 +79,7 @@
 
 ---
 
-### A15 — `pages/day/[day].js`: Add error handling on SSR prefetch
+### A15 — `pages/day/[day].js`: Add error handling on SSR prefetch **[test first]**
 **File**: `pages/day/[day].js`
 **Problem**: Same root cause as A14 — `getServerSideProps` wraps a `queryClient.prefetchQuery()` call in `Promise.all()` with no `.catch()`. Harvest API failure causes a hard SSR 500 on the day page too.
 **Fix**: Same fix — wrap the prefetch in `.catch(() => {})`.
@@ -269,8 +269,8 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **C5** — Add missing edge cases to `day.test.js`
-- **D7** — Add `tsc --noEmit` type-check step to CI
-- **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
+- **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
+- **D5** — Upgrade TypeScript 4.9 → 5
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
 - **D2** — Upgrade react-query v3 → @tanstack/react-query v5
