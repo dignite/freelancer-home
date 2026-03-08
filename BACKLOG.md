@@ -40,13 +40,6 @@
 
 ## Category C: Test Coverage
 
-### C2 — Test `vercel-utils.ts` — all three branches of `getAbsoluteUrl()`
-**File**: New file `modules/vercel-utils.test.ts`
-**Problem**: Zero tests. Has three code paths: browser (`window.location.origin`), Vercel (`VERCEL_URL`), and localhost fallback.
-**Fix**: Write unit tests mocking `window` and `process.env.VERCEL_URL`.
-
----
-
 ### C3a — Test `summary()` in `harvest-report-api/index.ts`
 **File**: New file `modules/harvest-report-api/index.test.ts`
 **Problem**: `summary()` is the main public API entry point with zero direct tests.
@@ -151,7 +144,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`
 - **C3b** — Test `byName()`
 - **C4** — Test SEK edge cases
