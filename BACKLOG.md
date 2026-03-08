@@ -52,9 +52,9 @@
 ---
 
 ### A11 — Hour display missing `.toFixed(1)` in UI components
-**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `pages/day/[day].js`
+**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`, `modules/hours/vab.js`, `pages/day/[day].js`
 **Problem**: Hours are rendered as raw JS numbers (`{hours.totalBillableHours}`, `` `${hours}h` ``). CLAUDE.md requires "exactly one decimal place (e.g. 3.5h, not 3.48h or 3.50h)". If a floating-point value slips through (e.g. from A8a/A8b not yet fixed), it will display as `11.3` or `11.299999`. Even when values are correct, `3` displays as `3` not `3.0`.
-**Fix**: Apply `.toFixed(1)` when rendering any hour value in UI components.
+**Fix**: Apply `.toFixed(1)` when rendering any hour value in UI components, including the VAB total.
 
 ---
 
@@ -116,19 +116,32 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 **Fix**: Add test cases for: (1) PE Accounting returns valid entries → response matches, (2) PE Accounting returns 4xx/5xx → API returns 500 JSON, (3) PE Accounting returns malformed JSON → API returns 500.
 
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
+**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
+**Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
+**Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
 **Requires**: A10, A11, A12, A13
 
 ### M1 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
 **File**: `pages/month/[month].js`
-**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view. The day page likely has the same pattern.
+**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view.
 **Fix**: Wrap each `prefetchQuery` call individually in `.catch(() => {})` so a single failing query leaves the others intact and SSR completes. The client-side `useQuery` error states will then show the error gracefully in-page.
 
+### M2 — `pages/day/[day].js`: Add error handling on SSR prefetch
+**File**: `pages/day/[day].js`
+**Problem**: Same root cause as M1 — `getServerSideProps` wraps a `queryClient.prefetchQuery()` call in `Promise.all()` with no `.catch()`. Harvest API failure causes a hard SSR 500 on the day page too.
+**Fix**: Same fix — wrap the prefetch in `.catch(() => {})`.
 
-**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
-**Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
+### C5 — `modules/pages/day.test.js`: Add missing edge cases
+**File**: `modules/pages/day.test.js`
+**Problem**: The test file only covers `isValidDaySlug()` with four basic cases. Missing: (1) leap-year validation — `isValidDaySlug("2024-02-29")` should pass but `isValidDaySlug("2023-02-29")` should fail, though `new Date()` leniency may mask this; (2) year-boundary dates (`2023-12-31`, `2024-01-01`); (3) no tests for `useDayName()` or other exported helpers — compare with `month.test.js` which tests `lastDayOfMonth()` and `firstDayOfLastMonth()` thoroughly.
+**Fix**: Add leap-year cases, year-boundary cases, and tests for any other exported day-page utility functions.
 
 ## Category D: CI / Dependencies
+
+### D7 — CI: Add `tsc --noEmit` type-check step
+**File**: `.github/workflows/continuous-integration.yml`
+**Problem**: The CI workflow runs `npm ci && npm run build && npm test` but no explicit TypeScript type-check. `next build` does run tsc internally, but TypeScript errors can go unreported if they're in files not imported by the build (e.g. test utilities, type-only declarations). Adding an explicit `tsc --noEmit` step makes type errors visible as a distinct CI failure.
+**Fix**: Add a `npm run type-check` script to `package.json` (`"type-check": "tsc --noEmit"`) and a CI step that runs it before `npm run build`.
 
 ### D5 — Upgrade TypeScript 4.9 → 5
 **Detail**: `BACKLOG/D5-typescript-5.md`
@@ -250,6 +263,9 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **M1** — Add error handling on SSR prefetch in `pages/month/[month].js`
+- **M2** — Add error handling on SSR prefetch in `pages/day/[day].js`
+- **C5** — Add missing edge cases to `day.test.js`
+- **D7** — Add `tsc --noEmit` type-check step to CI
 - **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
