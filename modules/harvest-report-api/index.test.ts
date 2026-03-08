@@ -1,4 +1,4 @@
-import { summary } from "./index";
+import { summary, byName } from "./index";
 import { server } from "./mock-service-worker/server";
 import {
   prepareGetTimeEntriesSuccess,
@@ -48,5 +48,44 @@ describe("summary function", () => {
     await expect(summary("2020-11-01", "2020-11-30")).rejects.toThrow(
       'Error getting time entries: 401 Unauthorized, {"message":"Error getting time entries, bad request"}'
     );
+  });
+});
+
+const config = {
+  userAgent: "harvest-report-lambda (Value from process.env.USER_AGENT_EMAIL)",
+  accessToken: "Value from process.env.HARVEST_ACCESS_TOKEN",
+  accountId: "Value from process.env.HARVEST_ACCOUNT_ID",
+  isBilledQueryParameter: "false",
+  isFromQueryParameter: "2020-11-01",
+  isToQueryParameter: "2020-11-30",
+};
+
+describe("byName function", () => {
+  it("returns only entries matching the given name", async () => {
+    expect.assertions(1);
+    server.resetHandlers(
+      prepareGetTimeEntriesSuccess(config, [
+        { id: 1, spent_date: "2020-11-05", task: { name: "Programming" }, is_billed: false, billable: true, billable_rate: 220, hours: 3.0, notes: null },
+        { id: 2, spent_date: "2020-11-06", task: { name: "Vacation" },    is_billed: false, billable: false, billable_rate: null, hours: 8.0, notes: null },
+        { id: 3, spent_date: "2020-11-07", task: { name: "Programming" }, is_billed: false, billable: true, billable_rate: 220, hours: 5.0, notes: null },
+      ])
+    );
+
+    const result = await byName("2020-11-01", "2020-11-30", "Programming");
+
+    expect(result.map((e) => e.id)).toStrictEqual([1, 3]);
+  });
+
+  it("returns empty array when no entries match the name", async () => {
+    expect.assertions(1);
+    server.resetHandlers(
+      prepareGetTimeEntriesSuccess(config, [
+        { id: 1, spent_date: "2020-11-05", task: { name: "Vacation" }, is_billed: false, billable: false, billable_rate: null, hours: 8.0, notes: null },
+      ])
+    );
+
+    const result = await byName("2020-11-01", "2020-11-30", "Programming");
+
+    expect(result).toStrictEqual([]);
   });
 });

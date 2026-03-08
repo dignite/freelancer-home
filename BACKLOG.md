@@ -40,13 +40,6 @@
 
 ## Category C: Test Coverage
 
-### C3b — Test `byName()` in `harvest-report-api/index.ts`
-**File**: `modules/harvest-report-api/index.test.ts`
-**Problem**: `byName()` filters entries by task name but has no direct tests.
-**Fix**: Add tests for: entries matching the name, no matches, and multiple entries with mixed names.
-
----
-
 ### C4 — Test SEK edge cases in `swedish-crowns.ts`
 **File**: `modules/harvest-report-api/npm-package-encapsulation/swedish-crowns.test.ts`
 **Problem**: No tests for negative amounts, zero, or large numbers with float precision risk.
@@ -136,7 +129,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C3b** — Test `byName()`
 - **C4** — Test SEK edge cases
 - **A2** — `pages/api/summary`: add try/catch
 - **A3** — `pages/api/by-name`: add try/catch
