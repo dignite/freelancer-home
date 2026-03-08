@@ -9,13 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A3 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add try/catch _(low priority)_
-**File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
-**Problem**: No error handling around the async `byName()` call. If it throws (Harvest API down, network error), the response hangs or crashes with an unhandled rejection instead of returning a 500 JSON response.
-**Fix**: Wrap the `byName()` call in try/catch and return `res.status(500).json({ error: "Internal server error" })` in the catch block — same pattern as the summary route.
-
----
-
 ### A8a — `vab.js`: Fix float accumulation in total
 **File**: `modules/hours/vab.js`
 **Problem**: Hours are summed with `reduce((acc, cur) => acc + cur.hours, 0)`. Floating-point addition of 0.1h values can produce results like `11.299999...`. The backend uses `sumPreservingOneDecimal` for exactly this reason.
@@ -293,7 +286,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
 - **A9** — Use URLSearchParams in client-time-reporting route
