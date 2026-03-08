@@ -38,13 +38,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B1 — Add `tsconfig.tsbuildinfo` to `.gitignore`
-**File**: `.gitignore`
-**Problem**: TypeScript's incremental build file `tsconfig.tsbuildinfo` is not ignored and appears as an untracked file in every `git status`.
-**Fix**: Add `tsconfig.tsbuildinfo` to `.gitignore`.
-
----
-
 ## Category C: Test Coverage
 
 ### C1 — Test `hoursMetaSlim()` in `meta/index.ts`
@@ -165,7 +158,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B1** — Add `tsconfig.tsbuildinfo` to `.gitignore`
 - **C1** — Test `hoursMetaSlim()`
 - **C2** — Test `vercel-utils.ts`
 - **C3a** — Test `summary()`
