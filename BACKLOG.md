@@ -74,11 +74,6 @@
 
 ## Category B: Code Quality / Small Cleanups
 
-### B1 — `pages/day/[day].js`: Remove unnecessary export from `getCurrentDayRedirect`
-**File**: `pages/day/[day].js`
-**Problem**: `getCurrentDayRedirect` is exported but only used internally within the same file's `getServerSideProps`. The export is dead — nothing else imports it.
-**Fix**: Remove the `export` keyword. Keep the function as a plain local function.
-
 ### B3 — `jest.config.js`: Add coverage collection configuration
 **File**: `jest.config.js`
 **Problem**: Jest is not configured to collect or report coverage. Without `collectCoverageFrom`, running `npm test -- --coverage` reports on files that happen to be imported by tests, missing untested modules entirely. There are no coverage thresholds to prevent regressions.
@@ -121,6 +116,14 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 **Fix**: Add test cases for: (1) PE Accounting returns valid entries → response matches, (2) PE Accounting returns 4xx/5xx → API returns 500 JSON, (3) PE Accounting returns malformed JSON → API returns 500.
 
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
+**Requires**: A10, A11, A12, A13
+
+### M1 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
+**File**: `pages/month/[month].js`
+**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view. The day page likely has the same pattern.
+**Fix**: Wrap each `prefetchQuery` call individually in `.catch(() => {})` so a single failing query leaves the others intact and SSR completes. The client-side `useQuery` error states will then show the error gracefully in-page.
+
+
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
 **Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
@@ -240,13 +243,13 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A11** — Apply `.toFixed(1)` to all hour displays in UI components
 - **A12** — Await `clipboard.writeText()` and handle rejection
 - **A13** — Reset clipboard button state after 2 seconds
-- **B1** — Remove unnecessary export from `getCurrentDayRedirect`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C1** — Add integration tests for `/api/summary` route
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
 - **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
+- **M1** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
