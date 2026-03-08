@@ -12,11 +12,11 @@ export const BillableHoursClipboardButton = ({
       onClick={() => {
         const allWeeks = Object.keys(hours.totalBillableHoursPerWeek)
           .sort()
-          .map((week) => `${week}:  ${hours.totalBillableHoursPerWeek[week]}h`);
+          .map((week) => `${week}:  ${hours.totalBillableHoursPerWeek[week].toFixed(1)}h`);
         const lines = [
           `${formattedFirstDayOfMonth} - ${formattedLastDayOfMonth}`,
           ...allWeeks,
-          `Total: ${hours.totalBillableHours}h`,
+          `Total: ${hours.totalBillableHours.toFixed(1)}h`,
         ];
         navigator.clipboard.writeText(lines.join("\n"));
         setChecked(true);

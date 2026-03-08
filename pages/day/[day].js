@@ -26,7 +26,7 @@ export default function Day({ day, isCurrentDay }) {
         </Paragraph>
       )}
       <Heading>Time</Heading>
-      <Paragraph>{data.hours.totalBillableHours} hours</Paragraph>
+      <Paragraph>{data.hours.totalBillableHours.toFixed(1)} hours</Paragraph>
       <Heading>Money</Heading>
       <Paragraph>
         {data.invoice.totalExcludingVATFormatted} excluding VAT
