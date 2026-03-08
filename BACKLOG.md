@@ -72,6 +72,20 @@
 
 ---
 
+### A14 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
+**File**: `pages/month/[month].js`
+**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view.
+**Fix**: Wrap each `prefetchQuery` call individually in `.catch(() => {})` so a single failing query leaves the others intact and SSR completes. The client-side `useQuery` error states will then show the error gracefully in-page.
+
+---
+
+### A15 — `pages/day/[day].js`: Add error handling on SSR prefetch
+**File**: `pages/day/[day].js`
+**Problem**: Same root cause as A14 — `getServerSideProps` wraps a `queryClient.prefetchQuery()` call in `Promise.all()` with no `.catch()`. Harvest API failure causes a hard SSR 500 on the day page too.
+**Fix**: Same fix — wrap the prefetch in `.catch(() => {})`.
+
+---
+
 ## Category B: Code Quality / Small Cleanups
 
 ### B3 — `jest.config.js`: Add coverage collection configuration
@@ -120,16 +134,6 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 **Problem**: Both components have zero test coverage. The week-ordering fix (A10), the hour formatting fix (A11), and the clipboard behaviour fixes (A12, A13) cannot be verified without tests.
 **Fix**: Add React component tests (jest + @testing-library/react if available, or snapshot tests) covering: week order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths, and button state reset after copy.
 **Requires**: A10, A11, A12, A13
-
-### M1 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
-**File**: `pages/month/[month].js`
-**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view.
-**Fix**: Wrap each `prefetchQuery` call individually in `.catch(() => {})` so a single failing query leaves the others intact and SSR completes. The client-side `useQuery` error states will then show the error gracefully in-page.
-
-### M2 — `pages/day/[day].js`: Add error handling on SSR prefetch
-**File**: `pages/day/[day].js`
-**Problem**: Same root cause as M1 — `getServerSideProps` wraps a `queryClient.prefetchQuery()` call in `Promise.all()` with no `.catch()`. Harvest API failure causes a hard SSR 500 on the day page too.
-**Fix**: Same fix — wrap the prefetch in `.catch(() => {})`.
 
 ### C5 — `modules/pages/day.test.js`: Add missing edge cases
 **File**: `modules/pages/day.test.js`
@@ -256,14 +260,14 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A11** — Apply `.toFixed(1)` to all hour displays in UI components
 - **A12** — Await `clipboard.writeText()` and handle rejection
 - **A13** — Reset clipboard button state after 2 seconds
+- **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
+- **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C1** — Add integration tests for `/api/summary` route
 - **C2** — Add integration tests for `/api/by-name` route (after A3)
 - **C3** — Expand PE Accounting tests to cover success and error paths
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
-- **M1** — Add error handling on SSR prefetch in `pages/month/[month].js`
-- **M2** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **C5** — Add missing edge cases to `day.test.js`
 - **D7** — Add `tsc --noEmit` type-check step to CI
 - **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
