@@ -131,10 +131,6 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 **File**: `middleware.js` → `middleware.ts`
 **Changes**: Import `NextRequest` from `"next/server"`. Type the `request` parameter and the `NextResponse` calls. The exported `config.matcher` type-checks automatically.
 
-### T3 — Convert test files to TypeScript _(non-production)_
-**Files**: `modules/pages/day.test.js` → `.test.ts`, `modules/pages/month.test.js` → `.test.ts`
-**Changes**: Rename files. Add type annotations to variables where inference is insufficient. Both already use ES `import` syntax so no require() conversion needed.
-
 ### T4 — Convert `pages/_app.js` to TypeScript _(production)_
 **File**: `pages/_app.js` → `_app.tsx`
 **Changes**: Import `AppProps` from `"next/app"`. Type the `FreelancerHome` component: `function FreelancerHome({ Component, pageProps }: AppProps)`. The `dehydratedState` in `pageProps` is `unknown` — cast or type appropriately.
@@ -308,7 +304,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
 - **T2** — Convert `middleware.js` to TypeScript
-- **T3** — Convert `day.test.js` and `month.test.js` to TypeScript (non-production)
 - **T4** — Convert `pages/_app.js` to TypeScript
 - **T5** — Convert redirect pages and `pages/index.js` to TypeScript
 - **T6** — Convert API route test files to TypeScript (non-production)
