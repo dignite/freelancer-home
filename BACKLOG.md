@@ -32,7 +32,36 @@
 
 ## Category B: Code Quality / Small Cleanups
 
+### B1 — `pages/day/[day].js`: Remove unnecessary export from `getCurrentDayRedirect`
+**File**: `pages/day/[day].js`
+**Problem**: `getCurrentDayRedirect` is exported but only used internally within the same file's `getServerSideProps`. The export is dead — nothing else imports it.
+**Fix**: Remove the `export` keyword. Keep the function as a plain local function.
+
+### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
+**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
+**Problem**: The fallback activity ID `"45784"` is inlined in a template literal: `` `...&activityId=${process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"}` ``. Magic numbers are hard to find and change.
+**Fix**: Extract to a named constant at the top of the file: `const DEFAULT_ACTIVITY_ID = "45784"`.
+
+---
+
 ## Category C: Test Coverage
+
+### C1 — `pages/api/summary/[startDate]/[endDate].js`: Add integration tests **[test first]**
+**File**: `pages/api/summary/[startDate]/[endDate].js`
+**Problem**: The summary API route has zero test coverage. It calls `summary()` and returns `{ hours, invoice }` — the happy path and error path are both untested.
+**Fix**: Add a test file alongside the route (or under `modules/pages/`) using MSW to mock Harvest responses. Cover: successful response shape, and the try/catch 500 error path.
+
+### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests **[test first]**
+**File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
+**Problem**: The by-name API route has zero test coverage. It has no error handling (see A3), and also no tests.
+**Fix**: Add a test file covering: successful response, and — after A3 is done — the 500 error path. Implement A3 first.
+**Requires**: A3
+
+### C3 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Expand test coverage
+**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
+**Test file**: `pages/api/client-time-reporting/client-time-reporting.test.js`
+**Problem**: Current tests only cover the "unconfigured" case (env var not set → returns `{ entries: [] }`). The success path (PE Accounting returns data), the error path (PE Accounting returns non-200), and the malformed-response path are all untested.
+**Fix**: Add test cases for: (1) PE Accounting returns valid entries → response matches, (2) PE Accounting returns 4xx/5xx → API returns 500 JSON, (3) PE Accounting returns malformed JSON → API returns 500.
 
 ## Category D: CI / Dependencies
 
@@ -143,6 +172,11 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
 - **A8b** — Fix float accumulation in `client-time-reporting-entries.js`
+- **B1** — Remove unnecessary export from `getCurrentDayRedirect`
+- **B2** — Extract hardcoded activity ID fallback to named constant
+- **C1** — Add integration tests for `/api/summary` route
+- **C2** — Add integration tests for `/api/by-name` route (after A3)
+- **C3** — Expand PE Accounting tests to cover success and error paths
 - **D5** — Upgrade TypeScript 4.9 → 5 (safest, do first)
 - **D4** — Upgrade date-fns v2 → v3
 - **D1** — Upgrade MSW v1 → v2
