@@ -84,7 +84,7 @@ describe("perWeek function", () => {
     const result = perWeek([novemberThird]);
 
     expect(result).toStrictEqual({
-      w44: 3.1,
+      "2018-w44": 3.1,
     });
   });
 
@@ -112,7 +112,7 @@ describe("perWeek function", () => {
     const result = perWeek([novemberThird, novemberFourth]);
 
     expect(result).toStrictEqual({
-      w44: 7.2,
+      "2018-w44": 7.2,
     });
   });
 
@@ -149,8 +149,8 @@ describe("perWeek function", () => {
     const result = perWeek([novemberThird, novemberFourth, novemberSixth]);
 
     expect(result).toStrictEqual({
-      w44: 7.2,
-      w45: 4.1,
+      "2018-w44": 7.2,
+      "2018-w45": 4.1,
     });
   });
 });

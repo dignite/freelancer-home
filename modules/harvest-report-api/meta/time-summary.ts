@@ -1,4 +1,4 @@
-import { getWeekNumber } from "../npm-package-encapsulation/date-info";
+import { getWeekNumber, getWeekYear } from "../npm-package-encapsulation/date-info";
 import groupBy from "lodash.groupby";
 import mapValues from "lodash.mapvalues";
 import { HarvestReportLambdaTimeEntry } from "../time-entries";
@@ -22,7 +22,7 @@ export const perWeek = (
 ): BillableHoursByWeek => {
   const hoursWithWeekNumber = timeEntries.map((timeEntry) => ({
     billableHours: timeEntry.billableHours,
-    week: `w${getWeekNumber(Date.parse(timeEntry.date))}`,
+    week: `${getWeekYear(Date.parse(timeEntry.date))}-w${String(getWeekNumber(Date.parse(timeEntry.date))).padStart(2, "0")}`,
   }));
 
   const hoursByWeek = groupBy(hoursWithWeekNumber, "week");
