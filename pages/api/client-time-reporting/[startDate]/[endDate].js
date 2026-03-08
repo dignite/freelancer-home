@@ -13,8 +13,13 @@ export default async function handler(req, res) {
       headers,
       redirect: "follow",
     };
+    const params = new URLSearchParams({
+      startDate,
+      endDate,
+      activityId: process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784",
+    });
     const response = await fetch(
-      `https://api.accounting.pe/v1/company/${process.env.PE_ACCOUNTING_ACCOUNT_ID}/event?startDate=${startDate}&endDate=${endDate}&activityId=${process.env.PE_ACCOUNTING_ACTIVITY_ID ?? "45784"}`,
+      `https://api.accounting.pe/v1/company/${process.env.PE_ACCOUNTING_ACCOUNT_ID}/event?${params}`,
       requestOptions
     );
     if (!response.ok) {
