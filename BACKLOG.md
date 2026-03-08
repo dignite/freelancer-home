@@ -107,9 +107,8 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests **[test first]**
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
-**Problem**: The by-name API route has zero test coverage. It has no error handling (see A3), and also no tests.
-**Fix**: Add a test file covering: successful response, and — after A3 is done — the 500 error path. Implement A3 first.
-**Requires**: A3
+**Problem**: The by-name API route has zero test coverage.
+**Fix**: Add a test file covering: successful response and the 500 error path (Harvest API down).
 
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
@@ -298,7 +297,7 @@ Sourced from `pages/index.js` goals listed on the home page.
 - **A16** — Fix `isValidDaySlug` to reject non-existent dates like `2023-02-29`
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
-- **C2** — Add integration tests for `/api/by-name` route (after A3)
+- **C2** — Add integration tests for `/api/by-name` route
 - **C4** — Add component tests for billable-hours-per-week and clipboard button (after A10-A13)
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
