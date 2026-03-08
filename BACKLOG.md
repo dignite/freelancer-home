@@ -40,13 +40,6 @@
 
 ## Category C: Test Coverage
 
-### C4 — Test SEK edge cases in `swedish-crowns.ts`
-**File**: `modules/harvest-report-api/npm-package-encapsulation/swedish-crowns.test.ts`
-**Problem**: No tests for negative amounts, zero, or large numbers with float precision risk.
-**Fix**: Add test cases to the existing file.
-
----
-
 ## Category D: CI / Dependencies
 
 ## Category E: Evergreen Skills
@@ -129,7 +122,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C4** — Test SEK edge cases
 - **A2** — `pages/api/summary`: add try/catch
 - **A3** — `pages/api/by-name`: add try/catch
 - **A8a** — Fix float accumulation in `vab.js`
