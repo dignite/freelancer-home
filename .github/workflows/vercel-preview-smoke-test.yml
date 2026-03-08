@@ -26,7 +26,8 @@ jobs:
         run: |
           CHANGED=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files --jq '.[].filename')
           if echo "$CHANGED" | grep -vE '^BACKLOG\.md$' | grep -q .; then
-            echo "Code changes present — smoke tests will run after Vercel deploys"
+            echo "Code changes present — smoke test will run after Vercel deploys (via deployment_status)"
+            exit 1
           else
             echo "BACKLOG-only change — smoke test skipped (no Vercel deployment)"
           fi
