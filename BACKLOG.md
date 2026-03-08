@@ -18,8 +18,8 @@
 
 ### A3 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add try/catch _(low priority)_
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
-**Problem**: Same as A2 — no error handling around the async `byName()` call.
-**Fix**: Same pattern — try/catch with 500 JSON response.
+**Problem**: No error handling around the async `byName()` call. If it throws (Harvest API down, network error), the response hangs or crashes with an unhandled rejection instead of returning a 500 JSON response.
+**Fix**: Wrap the `byName()` call in try/catch and return `res.status(500).json({ error: "Internal server error" })` in the catch block — same pattern as the summary route.
 
 ---
 
