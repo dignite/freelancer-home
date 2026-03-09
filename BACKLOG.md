@@ -226,7 +226,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
 - **B4** — Rename PE Accounting → Kleer throughout the codebase
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
