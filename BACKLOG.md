@@ -41,9 +41,9 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 **File**: `modules/layout/vertical-rhythm.js` → `.tsx`
 **Changes**: All ~15 exported components take only `children` or a small set of known props. Add `React.PropsWithChildren` for the child-only ones. For `TableHeader` and `TableData`, add `{ children?: React.ReactNode; alignRight?: boolean }`. For `TableRow` and others with `colSpan`, add those props. No logic changes.
 
-### T9 — Convert hour components to TypeScript _(production)_
-**Files**: `modules/hours/billable-hours-per-week.js` → `.tsx`, `modules/hours/billable-hours-clipboard-button.js` → `.tsx`
-**Changes**: Both components receive a typed `hours` prop. Define `HoursMeta = { totalBillableHours: number; totalBillableHoursPerWeek: Record<string, number> }` (reuse across both). The clipboard button adds `formattedFirstDayOfMonth: string; formattedLastDayOfMonth: string`. Type the `useState<boolean>` hook.
+### T9 — Convert hour components to TypeScript _(production + test)_
+**Files**: `modules/hours/billable-hours-per-week.js` → `.tsx`, `modules/hours/billable-hours-clipboard-button.js` → `.tsx`, `modules/hours/billable-hours.test.jsx` → `.test.tsx`
+**Changes**: Both components receive a typed `hours` prop. Define `HoursMeta = { totalBillableHours: number; totalBillableHoursPerWeek: Record<string, number> }` (reuse across both). The clipboard button adds `formattedFirstDayOfMonth: string; formattedLastDayOfMonth: string`. Type the `useState<boolean>` hook. Convert the test file alongside — add `React.JSX.Element` return type where needed and cast the clipboard mock.
 **Requires**: T8 (vertical-rhythm types)
 
 ### T10 — Convert remaining hour components to TypeScript _(production)_
