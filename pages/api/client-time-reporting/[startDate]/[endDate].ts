@@ -1,14 +1,33 @@
-export default async function handler(req, res) {
+import type { NextApiRequest, NextApiResponse } from "next";
+
+interface EventReadable {
+  id: { id: string };
+  date: string;
+  hours: number;
+  comment: string;
+}
+
+interface EventsResponse {
+  "event-readables"?: EventReadable[];
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (!process.env.KLEER_ACCOUNT_ID) {
     res.status(200).json({ entries: [] });
     return;
   }
   try {
-    const { startDate, endDate } = req.query;
+    const { startDate, endDate } = req.query as {
+      startDate: string;
+      endDate: string;
+    };
     const headers = new Headers();
-    headers.append("X-token", process.env.KLEER_TOKEN);
+    headers.append("X-token", process.env.KLEER_TOKEN ?? "");
     headers.append("Content-Type", "application/json");
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: "GET",
       headers,
       redirect: "follow",
@@ -16,7 +35,7 @@ export default async function handler(req, res) {
     const params = new URLSearchParams({
       startDate,
       endDate,
-      activityId: process.env.KLEER_ACTIVITY_ID,
+      activityId: process.env.KLEER_ACTIVITY_ID ?? "",
     });
     const response = await fetch(
       `https://api.accounting.pe/v1/company/${process.env.KLEER_ACCOUNT_ID}/event?${params}`,
@@ -28,7 +47,7 @@ export default async function handler(req, res) {
         .json({ error: `Kleer responded with ${response.status}` });
       return;
     }
-    const events = await response.json();
+    const events: EventsResponse = await response.json();
 
     res.status(200).json({
       entries:
@@ -42,6 +61,6 @@ export default async function handler(req, res) {
             })),
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 }
