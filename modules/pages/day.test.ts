@@ -21,9 +21,9 @@ describe("isValidDaySlug", () => {
     expect(isValidDaySlug("2024-02-29")).toBe(true);
   });
 
-  // Known limitation: new Date("2023-02-29") auto-corrects to 2023-03-01 in V8,
-  // so isValidDaySlug cannot distinguish non-existent dates that overflow.
-  // Fixing this requires replacing `!isNaN(new Date(day))` with a stricter check.
+  it("rejects Feb 29 in a non-leap year", () => {
+    expect(isValidDaySlug("2023-02-29")).toBe(false);
+  });
 
   it("accepts Dec 31 (year-end boundary)", () => {
     expect(isValidDaySlug("2023-12-31")).toBe(true);
