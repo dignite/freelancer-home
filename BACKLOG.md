@@ -26,7 +26,7 @@ Do not set hard thresholds yet — let coverage reporting run first to establish
 
 ## Category C: Test Coverage
 
-### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests **[test first]**
+### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests
 **File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
 **Problem**: The by-name API route has zero test coverage.
 **Fix**: Add a test file covering: successful response and the 500 error path (Harvest API down).
