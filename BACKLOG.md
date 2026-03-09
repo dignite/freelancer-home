@@ -24,13 +24,6 @@ collectCoverageFrom: [
 ```
 Do not set hard thresholds yet — let coverage reporting run first to establish a baseline.
 
-### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
-**Problem**: The fallback activity ID `"45784"` is inlined in a `URLSearchParams` constructor: `activityId: process.env.KLEER_ACTIVITY_ID ?? "45784"`. Magic numbers are hard to find and change.
-**Fix**: Extract to a named constant at the top of the file: `const DEFAULT_ACTIVITY_ID = "45784"`.
-
----
-
 ## Category C: Test Coverage
 
 ### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests **[test first]**
@@ -212,7 +205,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route
 - **C4** — Add component tests for billable-hours-per-week and clipboard button
