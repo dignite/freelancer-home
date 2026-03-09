@@ -1,5 +1,6 @@
 /* eslint-disable fp/no-unused-expression, jest/no-hooks, jest/require-top-level-describe */
 require("next"); //Get fetch polyfilled
+import "@testing-library/jest-dom";
 import { server } from "./mock-service-worker/server";
 
 beforeAll(() => {
