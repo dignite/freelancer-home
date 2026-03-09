@@ -10,7 +10,7 @@
 
 ## Category T: TypeScript Migration
 
-The project's `modules/harvest-report-api/` is already fully TypeScript. All remaining JS files live in `pages/` and `modules/hours/` + `modules/layout/`. Items are ordered so dependencies are typed before dependents. Do D8 (Prettier) first so the formatter handles `.ts`/`.tsx` files from the start.
+The project's `modules/harvest-report-api/` is already fully TypeScript. All remaining JS files live in `pages/` and `modules/hours/` + `modules/layout/`. Items are ordered so dependencies are typed before dependents. Prettier (D8) is already set up and will auto-format new `.ts`/`.tsx` files on commit.
 
 Items marked _(non-production)_ touch only test files. Items without that note touch production code.
 
