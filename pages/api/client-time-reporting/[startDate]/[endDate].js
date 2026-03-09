@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const params = new URLSearchParams({
       startDate,
       endDate,
-      activityId: process.env.KLEER_ACTIVITY_ID ?? "45784",
+      activityId: process.env.KLEER_ACTIVITY_ID,
     });
     const response = await fetch(
       `https://api.accounting.pe/v1/company/${process.env.KLEER_ACCOUNT_ID}/event?${params}`,
