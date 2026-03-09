@@ -56,8 +56,10 @@ export async function getServerSideProps(context) {
   };
 }
 
-export const isValidDaySlug = (day) =>
-  /^\d{4}-\d{2}-\d{2}$/.test(day) && !isNaN(new Date(day));
+export const isValidDaySlug = (day) => {
+  const d = new Date(day);
+  return !isNaN(d) && d.toISOString().slice(0, 10) === day;
+};
 
 export const getCurrentDayRedirect = () => ({
   redirect: {
