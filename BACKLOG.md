@@ -14,11 +14,6 @@ The project's `modules/harvest-report-api/` is already fully TypeScript. All rem
 
 Items marked _(non-production)_ touch only test files. Items without that note touch production code.
 
-### T7 — Convert `pages/api/client-time-reporting/[startDate]/[endDate].js` to TypeScript _(production)_
-
-**File**: `pages/api/client-time-reporting/[startDate]/[endDate].js` → `.ts`
-**Changes**: Type `req: NextApiRequest, res: NextApiResponse`. Type the `events` JSON response (define an `EventReadable` interface with `id: { id: string }, date: string, hours: number, comment: string`). Type `Headers`, the `fetch` response, and the mapped entries.
-
 ### T8 — Convert `modules/layout/vertical-rhythm.js` to TypeScript _(production)_
 
 **File**: `modules/layout/vertical-rhythm.js` → `.tsx`
@@ -175,7 +170,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **T7** — Convert `pages/api/client-time-reporting` route to TypeScript
 - **T8** — Convert `modules/layout/vertical-rhythm.js` to TypeScript
 - **T9** — Convert clipboard button and billable-hours-per-week to TypeScript
 - **T10** — Convert vab.js and client-time-reporting-entries.js to TypeScript
