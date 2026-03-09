@@ -17,7 +17,13 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 ### T8 — Convert `modules/layout/vertical-rhythm.js` to TypeScript _(production)_
 
 **File**: `modules/layout/vertical-rhythm.js` → `.tsx`
-**Changes**: All ~15 exported components take only `children` or a small set of known props. Add `React.PropsWithChildren` for the child-only ones. For `TableHeader` and `TableData`, add `{ children?: React.ReactNode; alignRight?: boolean }`. For `TableRow` and others with `colSpan`, add those props. No logic changes.
+**Changes**: 16 exported components — most take only `children` (`React.PropsWithChildren`). Special props:
+
+- `TableHeader`: `{ alignRight?: boolean; children: React.ReactNode }`
+- `TableData`: `{ colSpan?: number; alignRight?: boolean; children: React.ReactNode }`
+- `Button`: `{ onClick: React.MouseEventHandler<HTMLButtonElement>; children: React.ReactNode }`
+
+No logic changes.
 
 ### T9 — Convert hour components to TypeScript _(production + test)_
 
