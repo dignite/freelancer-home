@@ -14,11 +14,6 @@ The project's `modules/harvest-report-api/` is already fully TypeScript. All rem
 
 Items marked _(non-production)_ touch only test files. Items without that note touch production code.
 
-### T2 — Convert `middleware.js` to TypeScript _(production)_
-
-**File**: `middleware.js` → `middleware.ts`
-**Changes**: Import `NextRequest` from `"next/server"`. Type the `request` parameter and the `NextResponse` calls. The exported `config.matcher` type-checks automatically.
-
 ### T4 — Convert `pages/_app.js` to TypeScript _(production)_
 
 **File**: `pages/_app.js` → `_app.tsx`
@@ -195,7 +190,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **T2** — Convert `middleware.js` to TypeScript
 - **T4** — Convert `pages/_app.js` to TypeScript
 - **T5** — Convert redirect pages and `pages/index.js` to TypeScript
 - **T6** — Convert API route test files to TypeScript (non-production)
