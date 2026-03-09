@@ -7,13 +7,6 @@
 
 ---
 
-## Category C: Test Coverage
-
-### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
-**Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
-**Problem**: Both components have zero test coverage. The clipboard state-reset fix (A13) cannot be verified without tests.
-**Fix**: Install `@testing-library/react` and `@testing-library/jest-dom` as devDependencies (not currently in the project). Then add tests covering: week key sort order in rendered output, `.toFixed(1)` formatting, clipboard success/failure paths (mock `navigator.clipboard`), and button state reset after copy.
-
 ## Category T: TypeScript Migration
 
 The project's `modules/harvest-report-api/` is already fully TypeScript. All remaining JS files live in `pages/` and `modules/hours/` + `modules/layout/`. Items are ordered so dependencies are typed before dependents. Do D8 (Prettier) first so the formatter handles `.ts`/`.tsx` files from the start.
@@ -183,7 +176,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C4** — Add component tests for billable-hours-per-week and clipboard button
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
