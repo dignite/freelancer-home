@@ -37,7 +37,7 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 **Changes**: Rename all three. `index.tsx` is pure JSX with no props — no types needed beyond the default export. The redirect pages (`day/index.tsx`, `month/index.tsx`) each re-export `getServerSideProps` from the dynamic route — the type flows through automatically once those dynamic route files are converted.
 
 ### T6 — Convert API route test files to TypeScript _(non-production)_
-**Files**: `pages/api/summary/summary.test.js` → `.test.ts`, `pages/api/client-time-reporting/client-time-reporting.test.js` → `.test.ts`
+**Files**: `pages/api/summary/summary.test.js` → `.test.ts`, `pages/api/by-name/by-name.test.js` → `.test.ts`, `pages/api/client-time-reporting/client-time-reporting.test.js` → `.test.ts`
 **Changes**: Convert `require()` calls to ES `import` statements. Type mock functions (`jest.fn<ReturnType, ArgsType>()`). Type the mock `req`/`res` objects (or use a cast). The CJS→ESM conversion in test bodies makes this more involved than a simple rename.
 
 ### T7 — Convert `pages/api/client-time-reporting/[startDate]/[endDate].js` to TypeScript _(production)_
