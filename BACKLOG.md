@@ -14,11 +14,6 @@ The project's `modules/harvest-report-api/` is already fully TypeScript. All rem
 
 Items marked _(non-production)_ touch only test files. Items without that note touch production code.
 
-### T5 — Convert redirect pages and `pages/index.js` to TypeScript _(production)_
-
-**Files**: `pages/index.js` → `.tsx`, `pages/day/index.js` → `.tsx`, `pages/month/index.js` → `.tsx`
-**Changes**: Rename all three. `index.tsx` is pure JSX with no props — no types needed beyond the default export. The redirect pages (`day/index.tsx`, `month/index.tsx`) each re-export `getServerSideProps` from the dynamic route — the type flows through automatically once those dynamic route files are converted.
-
 ### T6 — Convert API route test files to TypeScript _(non-production)_
 
 **Files**: `pages/api/summary/summary.test.js` → `.test.ts`, `pages/api/by-name/by-name.test.js` → `.test.ts`, `pages/api/client-time-reporting/client-time-reporting.test.js` → `.test.ts`
@@ -185,7 +180,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **T5** — Convert redirect pages and `pages/index.js` to TypeScript
 - **T6** — Convert API route test files to TypeScript (non-production)
 - **T7** — Convert `pages/api/client-time-reporting` route to TypeScript
 - **T8** — Convert `modules/layout/vertical-rhythm.js` to TypeScript
