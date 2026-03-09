@@ -8,28 +8,6 @@
 
 ---
 
-## Category B: Code Quality / Small Cleanups
-
-### B5 — Add `.gitattributes` to enforce LF line endings
-
-**File**: `.gitattributes` (new)
-**Problem**: On Windows, Git's `core.autocrlf` converts LF to CRLF on checkout. Prettier writes LF, so every commit produces "LF will be replaced by CRLF" warnings for every staged file. The warnings are harmless but noisy and can confuse `format:check` in edge cases.
-**Fix**:
-
-1. Create `.gitattributes` at the repo root:
-   ```
-   * text=auto eol=lf
-   ```
-2. Renormalize the index so existing files are re-recorded as LF:
-   ```
-   git add --renormalize .
-   ```
-3. Commit both `.gitattributes` and the renormalized index.
-
-**Validation**: After the fix, `git ls-files --eol | grep " crlf"` should return nothing (all text files stored as LF). Subsequent `git add` on any file should produce no "LF will be replaced by CRLF" warnings. `npm run format:check` must still pass.
-
----
-
 ## Category T: TypeScript Migration
 
 The project's `modules/harvest-report-api/` is already fully TypeScript. All remaining JS files live in `pages/` and `modules/hours/` + `modules/layout/`. Items are ordered so dependencies are typed before dependents. Prettier (D8) is already set up and will auto-format new `.ts`/`.tsx` files on commit.
@@ -217,7 +195,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B5** — Add `.gitattributes` to enforce LF line endings (eliminates CRLF warnings)
 - **T2** — Convert `middleware.js` to TypeScript
 - **T4** — Convert `pages/_app.js` to TypeScript
 - **T5** — Convert redirect pages and `pages/index.js` to TypeScript
