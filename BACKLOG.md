@@ -9,20 +9,6 @@
 
 ## Category A: Bug Fixes
 
-### A14 — `pages/month/[month].js`: Add error handling on SSR prefetch **[test first]**
-**File**: `pages/month/[month].js`
-**Problem**: `getServerSideProps` wraps three `queryClient.prefetchQuery()` calls in `Promise.all()` with no `.catch()`. If the Harvest API is down or returns an error, the unhandled rejection causes a hard SSR 500 — the user sees a blank error page instead of a degraded view.
-**Fix**: Wrap each `prefetchQuery` call individually in `.catch(() => {})` so a single failing query leaves the others intact and SSR completes. The client-side `useQuery` error states will then show the error gracefully in-page.
-
----
-
-### A15 — `pages/day/[day].js`: Add error handling on SSR prefetch **[test first]**
-**File**: `pages/day/[day].js`
-**Problem**: Same root cause as A14 — `getServerSideProps` wraps a `queryClient.prefetchQuery()` call in `Promise.all()` with no `.catch()`. Harvest API failure causes a hard SSR 500 on the day page too.
-**Fix**: Same fix — wrap the prefetch in `.catch(() => {})`.
-
----
-
 ### A16 — `pages/day/[day].js`: `isValidDaySlug` accepts non-existent dates **[test first]**
 **File**: `pages/day/[day].js`
 **Problem**: `isValidDaySlug` validates with `!isNaN(new Date(day))`, but V8's `Date` constructor silently auto-corrects overflow dates — `new Date("2023-02-29")` becomes `2023-03-01`, so `isValidDaySlug("2023-02-29")` returns `true` for a date that does not exist. The limitation is documented in a comment in `modules/pages/day.test.ts` but not yet fixed.
@@ -250,7 +236,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 ## Suggested Order
 
 - **A14** — Add error handling on SSR prefetch in `pages/month/[month].js`
-- **A15** — Add error handling on SSR prefetch in `pages/day/[day].js`
 - **A16** — Fix `isValidDaySlug` to reject non-existent dates like `2023-02-29`
 - **B4** — Rename PE Accounting → Kleer throughout the codebase
 - **B2** — Extract hardcoded activity ID fallback to named constant
