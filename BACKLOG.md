@@ -24,24 +24,10 @@ collectCoverageFrom: [
 ```
 Do not set hard thresholds yet — let coverage reporting run first to establish a baseline.
 
-### B4 — Rename PE Accounting → Kleer throughout the codebase
-**Files**: `pages/api/client-time-reporting/[startDate]/[endDate].js`, `pages/api/client-time-reporting/client-time-reporting.test.js`, `CLAUDE.md`, `.env.example`
-**Problem**: PE Accounting has rebranded to Kleer. Display strings and environment variable names still use the old brand name.
-**Fix**:
-1. Rename env vars in `.env.example` and all code: `PE_ACCOUNTING_ACCOUNT_ID` → `KLEER_ACCOUNT_ID`, `PE_ACCOUNTING_TOKEN` → `KLEER_TOKEN`, `PE_ACCOUNTING_ACTIVITY_ID` → `KLEER_ACTIVITY_ID`
-2. Update the error message in the API route: `"PE Accounting responded with ${response.status}"` → `"Kleer responded with ${response.status}"`
-3. Update `CLAUDE.md` module map references from "PE Accounting" to "Kleer"
-4. After merging: update the corresponding env var names in Vercel (Settings → Environment Variables)
-
-Note: the API base URL (`https://api.accounting.pe/v1/...`) may also need updating if Kleer has a new API domain — verify before merging.
-
----
-
 ### B2 — `pages/api/client-time-reporting/[startDate]/[endDate].js`: Extract hardcoded activity ID fallback
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js`
 **Problem**: The fallback activity ID `"45784"` is inlined in a `URLSearchParams` constructor: `activityId: process.env.KLEER_ACTIVITY_ID ?? "45784"`. Magic numbers are hard to find and change.
 **Fix**: Extract to a named constant at the top of the file: `const DEFAULT_ACTIVITY_ID = "45784"`.
-**Requires**: B4
 
 ---
 
@@ -226,7 +212,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B4** — Rename PE Accounting → Kleer throughout the codebase
 - **B2** — Extract hardcoded activity ID fallback to named constant
 - **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route
