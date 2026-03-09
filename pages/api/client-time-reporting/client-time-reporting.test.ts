@@ -1,14 +1,12 @@
-const { rest } = require("msw");
-const {
-  server,
-} = require("../../../modules/harvest-report-api/mock-service-worker/server");
-const handler = require("./[startDate]/[endDate]").default;
+import { rest } from "msw";
+import { server } from "../../../modules/harvest-report-api/mock-service-worker/server";
+import handler from "./[startDate]/[endDate]";
 
 const KLEER_URL = "https://api.accounting.pe/v1/company/test-account-id/event";
 
 describe("GET /api/client-time-reporting — unconfigured (no KLEER_ACCOUNT_ID)", () => {
-  let statusCode;
-  let responseBody;
+  let statusCode: number;
+  let responseBody: unknown;
 
   beforeEach(async () => {
     delete process.env.KLEER_ACCOUNT_ID;
@@ -17,7 +15,7 @@ describe("GET /api/client-time-reporting — unconfigured (no KLEER_ACCOUNT_ID)"
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     statusCode = res.status.mock.calls[0][0];
     responseBody = json.mock.calls[0][0];
@@ -65,7 +63,7 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(200);
     expect(json.mock.calls[0][0]).toEqual({
@@ -89,7 +87,7 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(200);
     expect(json.mock.calls[0][0]).toEqual({ entries: [] });
@@ -106,7 +104,7 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(502);
     expect(json.mock.calls[0][0]).toMatchObject({
@@ -129,7 +127,7 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(500);
   });
