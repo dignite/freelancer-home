@@ -67,7 +67,7 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 
 ### T6 — Convert API route test files to TypeScript _(non-production)_
 **Files**: `pages/api/summary/summary.test.js` → `.test.ts`, `pages/api/client-time-reporting/client-time-reporting.test.js` → `.test.ts`
-**Changes**: Convert `require()` calls to ES `import` statements. Type mock functions (`jest.fn<ReturnType, ArgsType>()`). Type the mock `req`/`res` objects (or use a cast). More involved than T3 due to CJS→ESM conversion in the test bodies.
+**Changes**: Convert `require()` calls to ES `import` statements. Type mock functions (`jest.fn<ReturnType, ArgsType>()`). Type the mock `req`/`res` objects (or use a cast). The CJS→ESM conversion in test bodies makes this more involved than a simple rename.
 
 ### T7 — Convert `pages/api/client-time-reporting/[startDate]/[endDate].js` to TypeScript _(production)_
 **File**: `pages/api/client-time-reporting/[startDate]/[endDate].js` → `.ts`
