@@ -4,15 +4,15 @@ const {
 } = require("../../../modules/harvest-report-api/mock-service-worker/server");
 const handler = require("./[startDate]/[endDate]").default;
 
-const PE_URL =
+const KLEER_URL =
   "https://api.accounting.pe/v1/company/test-account-id/event";
 
-describe("GET /api/client-time-reporting — unconfigured (no PE_ACCOUNTING_ACCOUNT_ID)", () => {
+describe("GET /api/client-time-reporting — unconfigured (no KLEER_ACCOUNT_ID)", () => {
   let statusCode;
   let responseBody;
 
   beforeEach(async () => {
-    delete process.env.PE_ACCOUNTING_ACCOUNT_ID;
+    delete process.env.KLEER_ACCOUNT_ID;
 
     const json = jest.fn();
     const req = { query: { startDate: "2024-01-01", endDate: "2024-01-31" } };
@@ -33,20 +33,20 @@ describe("GET /api/client-time-reporting — unconfigured (no PE_ACCOUNTING_ACCO
   });
 });
 
-describe("GET /api/client-time-reporting — configured (PE_ACCOUNTING_ACCOUNT_ID set)", () => {
+describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)", () => {
   beforeEach(() => {
-    process.env.PE_ACCOUNTING_ACCOUNT_ID = "test-account-id";
-    process.env.PE_ACCOUNTING_TOKEN = "test-token";
+    process.env.KLEER_ACCOUNT_ID = "test-account-id";
+    process.env.KLEER_TOKEN = "test-token";
   });
 
   afterEach(() => {
-    delete process.env.PE_ACCOUNTING_ACCOUNT_ID;
-    delete process.env.PE_ACCOUNTING_TOKEN;
+    delete process.env.KLEER_ACCOUNT_ID;
+    delete process.env.KLEER_TOKEN;
   });
 
-  it("returns mapped entries when PE Accounting responds with valid data", async () => {
+  it("returns mapped entries when Kleer responds with valid data", async () => {
     server.resetHandlers(
-      rest.get(PE_URL, (_req, res, ctx) =>
+      rest.get(KLEER_URL, (_req, res, ctx) =>
         res(
           ctx.json({
             "event-readables": [
@@ -78,7 +78,7 @@ describe("GET /api/client-time-reporting — configured (PE_ACCOUNTING_ACCOUNT_I
 
   it("returns empty entries when event-readables is missing from response", async () => {
     server.resetHandlers(
-      rest.get(PE_URL, (_req, res, ctx) => res(ctx.json({})))
+      rest.get(KLEER_URL, (_req, res, ctx) => res(ctx.json({})))
     );
 
     const json = jest.fn();
@@ -91,9 +91,9 @@ describe("GET /api/client-time-reporting — configured (PE_ACCOUNTING_ACCOUNT_I
     expect(json.mock.calls[0][0]).toEqual({ entries: [] });
   });
 
-  it("returns 502 when PE Accounting responds with a non-OK status", async () => {
+  it("returns 502 when Kleer responds with a non-OK status", async () => {
     server.resetHandlers(
-      rest.get(PE_URL, (_req, res, ctx) =>
+      rest.get(KLEER_URL, (_req, res, ctx) =>
         res(ctx.status(503), ctx.json({ error: "Service unavailable" }))
       )
     );
@@ -110,9 +110,9 @@ describe("GET /api/client-time-reporting — configured (PE_ACCOUNTING_ACCOUNT_I
     });
   });
 
-  it("returns 500 when PE Accounting responds with malformed JSON", async () => {
+  it("returns 500 when Kleer responds with malformed JSON", async () => {
     server.resetHandlers(
-      rest.get(PE_URL, (_req, res, ctx) =>
+      rest.get(KLEER_URL, (_req, res, ctx) =>
         res(
           ctx.status(200),
           ctx.set("Content-Type", "text/html"),

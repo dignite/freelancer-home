@@ -1,6 +1,6 @@
 # freelancer-home
 
-Personal Next.js 13 dashboard for a Swedish freelancer. Visualizes billable time and invoice amounts by integrating with Harvest (time tracking) and optionally PE Accounting (Swedish accounting).
+Personal Next.js 13 dashboard for a Swedish freelancer. Visualizes billable time and invoice amounts by integrating with Harvest (time tracking) and optionally Kleer (Swedish accounting).
 
 ## Tech Stack
 
@@ -23,7 +23,7 @@ Personal Next.js 13 dashboard for a Swedish freelancer. Visualizes billable time
 
 - `/api/summary/[startDate]/[endDate]` — returns `{ hours: MetaSlim, invoice: { totalExcludingVATFormatted } }`
 - `/api/by-name/[name]/[startDate]/[endDate]` — returns filtered time entries by task name (used for VAB)
-- `/api/client-time-reporting/[startDate]/[endDate]` — fetches from PE Accounting (returns `{ entries: [] }` if `PE_ACCOUNTING_ACCOUNT_ID` not set)
+- `/api/client-time-reporting/[startDate]/[endDate]` — fetches from Kleer (returns `{ entries: [] }` if `KLEER_ACCOUNT_ID` not set)
 - `/api/auth` — returns 401 WWW-Authenticate (Basic Auth challenge target)
 
 ## Auth
@@ -52,7 +52,7 @@ harvest-report-api/
 hours/
   billable-hours-per-week.js        table: hours by week
   billable-hours-clipboard-button.js copy time report text to clipboard
-  client-time-reporting-entries.js   PE Accounting events table
+  client-time-reporting-entries.js   Kleer events table
   vab.js                            VAB (child sick leave) entries table
 layout/
   vertical-rhythm.js        all UI primitives with scoped JSX styles
@@ -73,7 +73,7 @@ vercel-utils.ts             getAbsoluteUrl() — handles browser / SSR / Vercel 
 ```
 USER_NAME, PASSWORD                    Basic Auth credentials
 HARVEST_ACCESS_TOKEN, HARVEST_ACCOUNT_ID, USER_AGENT_EMAIL
-PE_ACCOUNTING_ACCOUNT_ID (optional), PE_ACCOUNTING_TOKEN
+KLEER_ACCOUNT_ID (optional), KLEER_TOKEN
 VERCEL_URL                             auto-set by Vercel
 ```
 
@@ -100,6 +100,6 @@ VERCEL_URL                             auto-set by Vercel
 
 ## Planned (not yet built)
 
-- Money visualization via PE Accounting
+- Money visualization via Kleer
 - Harvest clock-in/out via portal
 - Slack status sync with Harvest state
