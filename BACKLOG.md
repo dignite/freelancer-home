@@ -75,12 +75,6 @@ Items marked _(non-production)_ touch only test files. Items without that note t
 
 ## Category D: CI / Dependencies
 
-### D7 — CI: Add `tsc --noEmit` type-check step
-
-**File**: `.github/workflows/continuous-integration.yml`
-**Problem**: The CI workflow runs `npm ci && npm run build && npm test` but no explicit TypeScript type-check. `next build` does run tsc internally, but TypeScript errors can go unreported if they're in files not imported by the build (e.g. test utilities, type-only declarations). Adding an explicit `tsc --noEmit` step makes type errors visible as a distinct CI failure.
-**Fix**: Add a `npm run type-check` script to `package.json` (`"type-check": "tsc --noEmit"`) and a CI step that runs it before `npm run build`.
-
 ### D5 — Upgrade TypeScript 4.9 → 5
 
 **Detail**: `BACKLOG/D5-typescript-5.md`
@@ -206,7 +200,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
 - **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
 - **T2** — Convert `middleware.js` to TypeScript
 - **T4** — Convert `pages/_app.js` to TypeScript
