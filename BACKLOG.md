@@ -14,11 +14,6 @@ The project's `modules/harvest-report-api/` is already fully TypeScript. All rem
 
 Items marked _(non-production)_ touch only test files. Items without that note touch production code.
 
-### T1 — Convert simple API routes to TypeScript _(production)_
-
-**Files**: `pages/api/auth.js` → `.ts`, `pages/api/summary/[startDate]/[endDate].js` → `.ts`, `pages/api/by-name/[name]/[startDate]/[endDate].js` → `.ts`
-**Changes**: Add `NextApiRequest, NextApiResponse` types to all three handlers. Rename files. `auth.js` becomes a typed `NextApiHandler`. The summary and by-name handlers gain typed `req.query` destructuring. No logic changes.
-
 ### T2 — Convert `middleware.js` to TypeScript _(production)_
 
 **File**: `middleware.js` → `middleware.ts`
@@ -200,7 +195,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **T1** — Convert simple API routes to TypeScript (auth, summary, by-name)
 - **T2** — Convert `middleware.js` to TypeScript
 - **T4** — Convert `pages/_app.js` to TypeScript
 - **T5** — Convert redirect pages and `pages/index.js` to TypeScript
