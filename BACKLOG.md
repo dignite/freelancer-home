@@ -9,11 +9,6 @@
 
 ## Category C: Test Coverage
 
-### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests
-**File**: `pages/api/by-name/[name]/[startDate]/[endDate].js`
-**Problem**: The by-name API route has zero test coverage.
-**Fix**: Add a test file covering: successful response and the 500 error path (Harvest API down).
-
 ### C4 — `billable-hours-per-week.js` + `billable-hours-clipboard-button.js`: Add component tests
 **Files**: `modules/hours/billable-hours-per-week.js`, `modules/hours/billable-hours-clipboard-button.js`
 **Problem**: Both components have zero test coverage. The clipboard state-reset fix (A13) cannot be verified without tests.
@@ -188,7 +183,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **C2** — Add integration tests for `/api/by-name` route
 - **C4** — Add component tests for billable-hours-per-week and clipboard button
 - **D8** — Add Prettier with commit hook and CI check
 - **D7** — Add `tsc --noEmit` type-check step to CI (do before D5 so upgrade errors are caught)
