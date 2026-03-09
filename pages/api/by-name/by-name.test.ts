@@ -1,7 +1,7 @@
 jest.mock("../../../modules/harvest-report-api/index");
 
-const { byName } = require("../../../modules/harvest-report-api/index");
-const handler = require("./[name]/[startDate]/[endDate]").default;
+import { byName } from "../../../modules/harvest-report-api/index";
+import handler from "./[name]/[startDate]/[endDate]";
 
 describe("GET /api/by-name/[name]/[startDate]/[endDate]", () => {
   const req = {
@@ -17,12 +17,12 @@ describe("GET /api/by-name/[name]/[startDate]/[endDate]", () => {
       totalBillableHours: 8.0,
       totalBillableHoursPerWeek: { "2024-w01": 8.0 },
     };
-    byName.mockResolvedValue(mockData);
+    jest.mocked(byName).mockResolvedValue(mockData as any);
 
     const json = jest.fn();
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(200);
     expect(json.mock.calls[0][0]).toEqual(mockData);
@@ -30,12 +30,12 @@ describe("GET /api/by-name/[name]/[startDate]/[endDate]", () => {
   });
 
   it("returns 500 with error message when byName rejects", async () => {
-    byName.mockRejectedValue(new Error("Harvest API unreachable"));
+    jest.mocked(byName).mockRejectedValue(new Error("Harvest API unreachable"));
 
     const json = jest.fn();
     const res = { status: jest.fn().mockReturnValue({ json }) };
 
-    await handler(req, res);
+    await handler(req as any, res as any);
 
     expect(res.status.mock.calls[0][0]).toBe(500);
     expect(json.mock.calls[0][0]).toEqual({
