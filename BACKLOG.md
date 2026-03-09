@@ -7,23 +7,6 @@
 
 ---
 
-## Category B: Code Quality / Small Cleanups
-
-### B3 — `jest.config.js`: Add coverage collection configuration
-**File**: `jest.config.js`
-**Problem**: Jest is not configured to collect or report coverage. Without `collectCoverageFrom`, running `npm test -- --coverage` reports on files that happen to be imported by tests, missing untested modules entirely. There are no coverage thresholds to prevent regressions.
-**Fix**: Add to `jest.config.js`:
-```js
-collectCoverageFrom: [
-  'modules/**/*.{ts,js}',
-  'pages/**/*.js',
-  '!**/*.test.{ts,js}',
-  '!modules/harvest-report-api/mock-service-worker/**',
-  '!modules/harvest-report-api/harvest-v2-types.ts',
-],
-```
-Do not set hard thresholds yet — let coverage reporting run first to establish a baseline.
-
 ## Category C: Test Coverage
 
 ### C2 — `pages/api/by-name/[name]/[startDate]/[endDate].js`: Add integration tests
@@ -205,7 +188,6 @@ Sourced from `pages/index.js` goals listed on the home page.
 
 ## Suggested Order
 
-- **B3** — Add coverage collection config to `jest.config.js`
 - **C2** — Add integration tests for `/api/by-name` route
 - **C4** — Add component tests for billable-hours-per-week and clipboard button
 - **D8** — Add Prettier with commit hook and CI check
