@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(git push:*)",
+      "Bash(gh:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)",
+      "Bash(npm ci:*)",
+      "Bash(npm i:*)",
+      "Bash(npm show:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx jest:*)",
+      "Skill(verify)",
+      "Skill(bluework)",
+      "Skill(bluework:*)",
+      "Skill(ship)",
+      "Skill(ship:*)",
+      "Skill(redwork)",
+      "Skill(redwork:*)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
