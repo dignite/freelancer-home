@@ -20,7 +20,10 @@
       "Skill(ship:*)",
       "Skill(redwork)",
       "Skill(redwork:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(npm install --save-dev prettier husky lint-staged)",
+      "Bash(npx husky init)",
+      "Bash(printf 'npx lint-staged\\\\n')"
     ]
   }
 }

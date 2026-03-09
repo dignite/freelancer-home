@@ -14,7 +14,7 @@ interface PrepareGetTimeEntriesSuccessConfig {
 
 export const prepareGetTimeEntriesSuccess = (
   config: PrepareGetTimeEntriesSuccessConfig,
-  customTimeEntries?: components["schemas"]["TimeEntry"][]
+  customTimeEntries?: components["schemas"]["TimeEntry"][],
 ): ReturnType<typeof rest.get> =>
   rest.get("https://api.harvestapp.com/v2/time_entries", (req, res, ctx) => {
     const {
@@ -70,15 +70,19 @@ export const prepareGetTimeEntriesSuccess = (
                 "https://api.harvestapp.com/v2/time_entries?page=1&per_page=100&ref=first",
               next: null,
               previous: null,
-              last:
-                "https://api.harvestapp.com/v2/time_entries?page=1&per_page=100&ref=last",
+              last: "https://api.harvestapp.com/v2/time_entries?page=1&per_page=100&ref=last",
             },
-          })
+          }),
         )
       : /* istanbul ignore next */
         /* This is here to catch programmer errors */ res(
           ctx.status(401),
-          ctx.json({ error: "Incorrect harvest config", expected, actual, req })
+          ctx.json({
+            error: "Incorrect harvest config",
+            expected,
+            actual,
+            req,
+          }),
         );
   });
 
@@ -91,9 +95,9 @@ export const getTimeEntriesError = rest.get(
         paths["/time_entries"]["get"]["responses"]["default"]["content"]["application/json"]
       >({
         message: "Error getting time entries, bad request",
-      })
+      }),
     );
-  }
+  },
 );
 
 const timeEntry1 = {

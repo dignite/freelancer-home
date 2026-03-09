@@ -10,7 +10,10 @@ describe("getAbsoluteUrl", () => {
   });
 
   describe("server: window is undefined", () => {
-    const originalDescriptor = Object.getOwnPropertyDescriptor(global, "window");
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      global,
+      "window",
+    );
 
     beforeEach(() => {
       jest.resetModules();

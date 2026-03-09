@@ -37,16 +37,40 @@ describe("getInvoiceSumExcludingVAT function", () => {
     const result = getInvoiceSumExcludingVAT(relevantTimeEntries);
 
     expect(result).toStrictEqual(
-      `3${nonBreakingSpace}514,30${nonBreakingSpace}kr`
+      `3${nonBreakingSpace}514,30${nonBreakingSpace}kr`,
     );
   });
 });
 
 describe("hoursMetaSlim function", () => {
   const entries = [
-    { id: 1, date: "2018-11-03", name: "Programming", billableHours: 3.1, hours: 3.1, cost: 964.1, comment: "" },
-    { id: 2, date: "2018-11-04", name: "Programming", billableHours: 4.1, hours: 4.1, cost: 1275.1, comment: "" },
-    { id: 3, date: "2018-11-06", name: "Programming", billableHours: 4.1, hours: 4.1, cost: 1275.1, comment: "" },
+    {
+      id: 1,
+      date: "2018-11-03",
+      name: "Programming",
+      billableHours: 3.1,
+      hours: 3.1,
+      cost: 964.1,
+      comment: "",
+    },
+    {
+      id: 2,
+      date: "2018-11-04",
+      name: "Programming",
+      billableHours: 4.1,
+      hours: 4.1,
+      cost: 1275.1,
+      comment: "",
+    },
+    {
+      id: 3,
+      date: "2018-11-06",
+      name: "Programming",
+      billableHours: 4.1,
+      hours: 4.1,
+      cost: 1275.1,
+      comment: "",
+    },
   ];
 
   it("should return totalBillableHours as the sum of all entries", () => {
@@ -59,6 +83,9 @@ describe("hoursMetaSlim function", () => {
     expect.assertions(1);
     const result = hoursMetaSlim(entries);
     // Nov 3+4 2018 are in ISO week 44; Nov 6 2018 is in ISO week 45
-    expect(result.totalBillableHoursPerWeek).toStrictEqual({ "2018-w44": 7.2, "2018-w45": 4.1 });
+    expect(result.totalBillableHoursPerWeek).toStrictEqual({
+      "2018-w44": 7.2,
+      "2018-w45": 4.1,
+    });
   });
 });

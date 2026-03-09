@@ -1,1 +1,1 @@
-declare module 'jest-when';
+declare module "jest-when";

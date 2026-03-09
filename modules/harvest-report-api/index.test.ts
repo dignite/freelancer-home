@@ -23,7 +23,7 @@ describe("summary function", () => {
         isBilledQueryParameter: "false",
         isFromQueryParameter: "2020-11-01",
         isToQueryParameter: "2020-11-30",
-      })
+      }),
     );
 
     const result = await summary("2020-11-01", "2020-11-30");
@@ -46,7 +46,7 @@ describe("summary function", () => {
     server.resetHandlers(getTimeEntriesError);
 
     await expect(summary("2020-11-01", "2020-11-30")).rejects.toThrow(
-      'Error getting time entries: 401 Unauthorized, {"message":"Error getting time entries, bad request"}'
+      'Error getting time entries: 401 Unauthorized, {"message":"Error getting time entries, bad request"}',
     );
   });
 });
@@ -65,10 +65,37 @@ describe("byName function", () => {
     expect.assertions(1);
     server.resetHandlers(
       prepareGetTimeEntriesSuccess(config, [
-        { id: 1, spent_date: "2020-11-05", task: { name: "Programming" }, is_billed: false, billable: true, billable_rate: 220, hours: 3.0, notes: null },
-        { id: 2, spent_date: "2020-11-06", task: { name: "Vacation" },    is_billed: false, billable: false, billable_rate: null, hours: 8.0, notes: null },
-        { id: 3, spent_date: "2020-11-07", task: { name: "Programming" }, is_billed: false, billable: true, billable_rate: 220, hours: 5.0, notes: null },
-      ])
+        {
+          id: 1,
+          spent_date: "2020-11-05",
+          task: { name: "Programming" },
+          is_billed: false,
+          billable: true,
+          billable_rate: 220,
+          hours: 3.0,
+          notes: null,
+        },
+        {
+          id: 2,
+          spent_date: "2020-11-06",
+          task: { name: "Vacation" },
+          is_billed: false,
+          billable: false,
+          billable_rate: null,
+          hours: 8.0,
+          notes: null,
+        },
+        {
+          id: 3,
+          spent_date: "2020-11-07",
+          task: { name: "Programming" },
+          is_billed: false,
+          billable: true,
+          billable_rate: 220,
+          hours: 5.0,
+          notes: null,
+        },
+      ]),
     );
 
     const result = await byName("2020-11-01", "2020-11-30", "Programming");
@@ -80,8 +107,17 @@ describe("byName function", () => {
     expect.assertions(1);
     server.resetHandlers(
       prepareGetTimeEntriesSuccess(config, [
-        { id: 1, spent_date: "2020-11-05", task: { name: "Vacation" }, is_billed: false, billable: false, billable_rate: null, hours: 8.0, notes: null },
-      ])
+        {
+          id: 1,
+          spent_date: "2020-11-05",
+          task: { name: "Vacation" },
+          is_billed: false,
+          billable: false,
+          billable_rate: null,
+          hours: 8.0,
+          notes: null,
+        },
+      ]),
     );
 
     const result = await byName("2020-11-01", "2020-11-30", "Programming");

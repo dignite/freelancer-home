@@ -1,4 +1,7 @@
-import { getWeekNumber, getWeekYear } from "../npm-package-encapsulation/date-info";
+import {
+  getWeekNumber,
+  getWeekYear,
+} from "../npm-package-encapsulation/date-info";
 import groupBy from "lodash.groupby";
 import mapValues from "lodash.mapvalues";
 import { HarvestReportLambdaTimeEntry } from "../time-entries";
@@ -12,13 +15,13 @@ export const totalSum = (timeEntries: BillableHoursOnTimeEntry[]): number =>
   timeEntries.reduce(
     (previous, timeEntry) =>
       sumPreservingOneDecimal(previous, timeEntry.billableHours),
-    0
+    0,
   );
 
 type BillableHoursByWeek = Record<string, number>;
 
 export const perWeek = (
-  timeEntries: HarvestReportLambdaTimeEntry[]
+  timeEntries: HarvestReportLambdaTimeEntry[],
 ): BillableHoursByWeek => {
   const hoursWithWeekNumber = timeEntries.map((timeEntry) => ({
     billableHours: timeEntry.billableHours,

@@ -46,7 +46,7 @@ export const ClientTimeReportingEntries = ({ entries }) => (
               {entries.reduce(
                 (accumulator, currentValue) =>
                   Math.round(accumulator * 10 + currentValue.hours * 10) / 10,
-                0
+                0,
               )}
             </TableData>
           </TableRow>

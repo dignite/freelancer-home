@@ -29,13 +29,13 @@ describe("getTimeEntriesForMonth function", () => {
           unbilledUnbillableNoTaskJanuary,
           unbilledUnbillableNoTaskNameJanuary,
           unbilledUnbillableNoDate, // <- Not going to happen in the real world
-        ]
-      )
+        ],
+      ),
     );
 
     const result = await getTimeEntriesForMonth(
       new Date(Date.parse("2022-01-01")),
-      new Date(Date.parse("2022-01-31"))
+      new Date(Date.parse("2022-01-31")),
     );
 
     const expected = [
@@ -88,9 +88,9 @@ describe("getTimeEntriesForMonth function", () => {
     server.resetHandlers(getTimeEntriesError);
 
     await expect(
-      getTimeEntriesForMonth(new Date(), new Date())
+      getTimeEntriesForMonth(new Date(), new Date()),
     ).rejects.toThrow(
-      'Error getting time entries: 401 Unauthorized, {"message":"Error getting time entries, bad request"}'
+      'Error getting time entries: 401 Unauthorized, {"message":"Error getting time entries, bad request"}',
     );
   });
 

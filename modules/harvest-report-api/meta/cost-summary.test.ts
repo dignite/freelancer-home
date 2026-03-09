@@ -25,7 +25,7 @@ describe("totalExcludingVAT function", () => {
     const result = totalExcludingVAT([novemberThird]);
 
     expect(result).toStrictEqual(
-      `1${nonBreakingSpace}000,00${nonBreakingSpace}kr`
+      `1${nonBreakingSpace}000,00${nonBreakingSpace}kr`,
     );
   });
 
@@ -66,7 +66,7 @@ describe("totalExcludingVAT function", () => {
     ]);
 
     expect(result).toStrictEqual(
-      `3${nonBreakingSpace}514,30${nonBreakingSpace}kr`
+      `3${nonBreakingSpace}514,30${nonBreakingSpace}kr`,
     );
   });
 });

@@ -87,7 +87,7 @@ describe("get function", () => {
     when(mocked(getTimeEntriesForMonth))
       .calledWith(
         new Date(Date.parse("2018-11-01")),
-        new Date(Date.parse("2018-11-30"))
+        new Date(Date.parse("2018-11-30")),
       )
       .mockResolvedValue(entries);
 });

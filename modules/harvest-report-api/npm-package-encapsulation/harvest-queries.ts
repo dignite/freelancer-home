@@ -14,7 +14,7 @@ export interface SimplifiedUnbilledTimeEntry {
 
 export const getTimeEntriesForMonth = async (
   from: Date,
-  to: Date
+  to: Date,
 ): Promise<SimplifiedUnbilledTimeEntry[]> => {
   const formattedFromDate =
     from.getFullYear() +
@@ -37,7 +37,7 @@ export const getTimeEntriesForMonth = async (
         "Harvest-Account-Id": `${get("HARVEST_ACCOUNT_ID")}`,
         "User-Agent": `harvest-report-lambda (${get("USER_AGENT_EMAIL")})`,
       },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -45,8 +45,8 @@ export const getTimeEntriesForMonth = async (
       new Error(
         `Error getting time entries: ${res.status} ${
           res.statusText
-        }, ${await res.text()}`
-      )
+        }, ${await res.text()}`,
+      ),
     );
   }
   const json: paths["/time_entries"]["get"]["responses"]["200"]["content"]["application/json"] =
@@ -66,6 +66,6 @@ export const getTimeEntriesForMonth = async (
             name: timeEntry.task?.name || "Unnamed",
           },
         ]
-      : []
+      : [],
   );
 };

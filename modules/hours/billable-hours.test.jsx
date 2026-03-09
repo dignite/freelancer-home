@@ -71,7 +71,7 @@ describe("BillableHoursClipboardButton", () => {
       fireEvent.click(screen.getByRole("button"));
     });
     expect(screen.getByRole("button")).toHaveTextContent(
-      "Copied to clipboard ✓"
+      "Copied to clipboard ✓",
     );
   });
 
@@ -82,7 +82,7 @@ describe("BillableHoursClipboardButton", () => {
       fireEvent.click(screen.getByRole("button"));
     });
     expect(screen.getByRole("button")).toHaveTextContent(
-      "Copied to clipboard ✓"
+      "Copied to clipboard ✓",
     );
     act(() => jest.advanceTimersByTime(2000));
     expect(screen.getByRole("button")).toHaveTextContent("Copy to clipboard");
@@ -103,7 +103,7 @@ describe("BillableHoursClipboardButton", () => {
       fireEvent.click(screen.getByRole("button"));
     });
     expect(writeText).toHaveBeenCalledWith(
-      "2024-01-01 - 2024-01-31\n2024-w01:  40.0h\nTotal: 40.0h"
+      "2024-01-01 - 2024-01-31\n2024-w01:  40.0h\nTotal: 40.0h",
     );
   });
 });

@@ -4,8 +4,7 @@ const {
 } = require("../../../modules/harvest-report-api/mock-service-worker/server");
 const handler = require("./[startDate]/[endDate]").default;
 
-const KLEER_URL =
-  "https://api.accounting.pe/v1/company/test-account-id/event";
+const KLEER_URL = "https://api.accounting.pe/v1/company/test-account-id/event";
 
 describe("GET /api/client-time-reporting — unconfigured (no KLEER_ACCOUNT_ID)", () => {
   let statusCode;
@@ -57,9 +56,9 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
                 comment: "Client meeting",
               },
             ],
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
 
     const json = jest.fn();
@@ -71,14 +70,19 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
     expect(res.status.mock.calls[0][0]).toBe(200);
     expect(json.mock.calls[0][0]).toEqual({
       entries: [
-        { id: "evt-1", date: "2024-01-15", hours: 8, comment: "Client meeting" },
+        {
+          id: "evt-1",
+          date: "2024-01-15",
+          hours: 8,
+          comment: "Client meeting",
+        },
       ],
     });
   });
 
   it("returns empty entries when event-readables is missing from response", async () => {
     server.resetHandlers(
-      rest.get(KLEER_URL, (_req, res, ctx) => res(ctx.json({})))
+      rest.get(KLEER_URL, (_req, res, ctx) => res(ctx.json({}))),
     );
 
     const json = jest.fn();
@@ -94,8 +98,8 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
   it("returns 502 when Kleer responds with a non-OK status", async () => {
     server.resetHandlers(
       rest.get(KLEER_URL, (_req, res, ctx) =>
-        res(ctx.status(503), ctx.json({ error: "Service unavailable" }))
-      )
+        res(ctx.status(503), ctx.json({ error: "Service unavailable" })),
+      ),
     );
 
     const json = jest.fn();
@@ -116,9 +120,9 @@ describe("GET /api/client-time-reporting — configured (KLEER_ACCOUNT_ID set)",
         res(
           ctx.status(200),
           ctx.set("Content-Type", "text/html"),
-          ctx.body("<html>Bad Gateway</html>")
-        )
-      )
+          ctx.body("<html>Bad Gateway</html>"),
+        ),
+      ),
     );
 
     const json = jest.fn();

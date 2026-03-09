@@ -8,13 +8,13 @@ export interface MetaSlim {
 }
 
 export const getInvoiceSumExcludingVAT = (
-  relevantTimeEntries: HarvestReportLambdaTimeEntry[]
+  relevantTimeEntries: HarvestReportLambdaTimeEntry[],
 ): ReturnType<typeof totalExcludingVAT> => {
   return totalExcludingVAT(relevantTimeEntries);
 };
 
 export const hoursMetaSlim = (
-  relevantTimeEntries: HarvestReportLambdaTimeEntry[]
+  relevantTimeEntries: HarvestReportLambdaTimeEntry[],
 ): MetaSlim => {
   return {
     totalBillableHours: totalSum(relevantTimeEntries),

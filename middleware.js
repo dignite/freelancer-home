@@ -13,7 +13,8 @@ export function middleware(req) {
       const authValue = basicAuth.split(" ")[1];
       if (!authValue) throw new Error("Missing auth value");
       const decoded = atob(authValue);
-      if (!decoded.includes(":")) throw new Error("Missing colon in decoded auth");
+      if (!decoded.includes(":"))
+        throw new Error("Missing colon in decoded auth");
       const [user, pwd] = decoded.split(":");
 
       if (user === process.env.USER_NAME && pwd === process.env.PASSWORD) {

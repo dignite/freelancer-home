@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  if(!process.env.KLEER_ACCOUNT_ID){
+  if (!process.env.KLEER_ACCOUNT_ID) {
     res.status(200).json({ entries: [] });
     return;
   }
@@ -20,10 +20,12 @@ export default async function handler(req, res) {
     });
     const response = await fetch(
       `https://api.accounting.pe/v1/company/${process.env.KLEER_ACCOUNT_ID}/event?${params}`,
-      requestOptions
+      requestOptions,
     );
     if (!response.ok) {
-      res.status(502).json({ error: `Kleer responded with ${response.status}` });
+      res
+        .status(502)
+        .json({ error: `Kleer responded with ${response.status}` });
       return;
     }
     const events = await response.json();
