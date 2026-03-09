@@ -8,12 +8,13 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "../modules/layout/vertical-rhythm";
+import type { AppProps } from "next/app";
 import Link from "next/link";
 import { useState } from "react";
 import { Hydrate, QueryClientProvider } from "react-query";
 import { createClient } from "../modules/react-query-client";
 
-export default function FreelancerHome({ Component, pageProps }) {
+export default function FreelancerHome({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(createClient);
 
   return (
