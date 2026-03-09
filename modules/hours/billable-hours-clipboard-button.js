@@ -20,7 +20,10 @@ export const BillableHoursClipboardButton = ({
       onClick={async () => {
         const allWeeks = Object.keys(hours.totalBillableHoursPerWeek)
           .sort()
-          .map((week) => `${week}:  ${hours.totalBillableHoursPerWeek[week].toFixed(1)}h`);
+          .map(
+            (week) =>
+              `${week}:  ${hours.totalBillableHoursPerWeek[week].toFixed(1)}h`,
+          );
         const lines = [
           `${formattedFirstDayOfMonth} - ${formattedLastDayOfMonth}`,
           ...allWeeks,

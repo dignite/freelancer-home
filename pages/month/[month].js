@@ -21,14 +21,14 @@ export default function MonthPage({
 }) {
   const monthName = useMonthName(month);
   const { data: summary, isSuccess: summarySuccess } = useQuery(
-    `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+    `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`,
   );
   const { data: clientTimeReporting, isSuccess: clientTimeReportingSuccess } =
     useQuery(
-      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`,
     );
   const { data: vab, isSuccess: vabSuccess } = useQuery(
-    `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
+    `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`,
   );
 
   if (!summarySuccess || !vabSuccess || !clientTimeReportingSuccess) {
@@ -75,30 +75,30 @@ export async function getServerSideProps(context) {
 
   const formattedFirstDayOfMonth = `${month}-01`;
   const formattedLastDayOfMonth = lastDayOfMonth(
-    new Date(Date.parse(formattedFirstDayOfMonth))
+    new Date(Date.parse(formattedFirstDayOfMonth)),
   )
     .toISOString()
     .slice(0, 10);
   const formattedFirstDayOfLastMonth = firstDayOfLastMonth(
-    new Date(Date.parse(formattedFirstDayOfMonth))
+    new Date(Date.parse(formattedFirstDayOfMonth)),
   )
     .toISOString()
     .slice(0, 10);
   const formattedLastDayOfLastMonth = lastDayOfMonth(
-    new Date(Date.parse(formattedFirstDayOfLastMonth))
+    new Date(Date.parse(formattedFirstDayOfLastMonth)),
   )
     .toISOString()
     .slice(0, 10);
 
   await Promise.all([
     queryClient.prefetchQuery(
-      `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+      `summary/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`,
     ),
     queryClient.prefetchQuery(
-      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`
+      `client-time-reporting/${formattedFirstDayOfMonth}/${formattedLastDayOfMonth}`,
     ),
     queryClient.prefetchQuery(
-      `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`
+      `by-name/VAB/${formattedFirstDayOfLastMonth}/${formattedLastDayOfLastMonth}`,
     ),
   ]);
 
@@ -117,7 +117,8 @@ export async function getServerSideProps(context) {
   };
 }
 
-export const isValidMonthSlug = (month) => /^\d{4}-(0[1-9]|1[0-2])$/.test(month);
+export const isValidMonthSlug = (month) =>
+  /^\d{4}-(0[1-9]|1[0-2])$/.test(month);
 
 export const getCurrentMonthRedirect = () => ({
   redirect: {
@@ -136,12 +137,12 @@ const useMonthName = (month) => {
 
 export const lastDayOfMonth = (dayInMonth) => {
   return new Date(
-    Date.UTC(dayInMonth.getFullYear(), dayInMonth.getMonth() + 1, 0)
+    Date.UTC(dayInMonth.getFullYear(), dayInMonth.getMonth() + 1, 0),
   );
 };
 
 export const firstDayOfLastMonth = (dayInNextMonth) => {
   return new Date(
-    Date.UTC(dayInNextMonth.getFullYear(), dayInNextMonth.getMonth() - 1, 1)
+    Date.UTC(dayInNextMonth.getFullYear(), dayInNextMonth.getMonth() - 1, 1),
   );
 };

@@ -17,12 +17,14 @@ Accepts optional argument `auto` — if passed, skip all confirmation prompts an
    - Has no unmet `Requires` — a dep is met if its ID is gone from BACKLOG.md
 
    **Non-auto**: show the task and ask:
+
    > I'll work on **<ID>**: <title>. Shall I proceed?
-   Wait for confirmation.
+   > Wait for confirmation.
 
    **Auto**: proceed immediately without asking.
 
 2. **Create branch**:
+
    ```
    git fetch origin
    git checkout -b backlog/<id>-<short-slug> origin/main

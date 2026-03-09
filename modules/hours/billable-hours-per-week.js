@@ -34,7 +34,9 @@ export const BillableHoursPerWeek = ({ hours }) => (
       <TableFooter>
         <TableRow>
           <TableData>Total</TableData>
-          <TableData alignRight>{hours.totalBillableHours.toFixed(1)}</TableData>
+          <TableData alignRight>
+            {hours.totalBillableHours.toFixed(1)}
+          </TableData>
         </TableRow>
       </TableFooter>
     </Table>

@@ -15,16 +15,41 @@
 
   --typography__h4FontSize: var(--rhythm1);
   --typography__h4LineHeight: var(--rhythm2);
-  --typography__h4Offset: calc((var(--typography__h4LineHeight) - (var(--typography__h4FontSize) * var(--typography__capHeight))) / 2);
+  --typography__h4Offset: calc(
+    (
+        var(--typography__h4LineHeight) -
+          (var(--typography__h4FontSize) * var(--typography__capHeight))
+      ) /
+      2
+  );
 
   --typography__pFontSize: var(--rhythm2);
   --typography__pLineHeight: var(--rhythm2);
-  --typography__pOffset: calc((var(--typography__pLineHeight) - (var(--typography__pFontSize) * var(--typography__capHeight))) / 2);
-
+  --typography__pOffset: calc(
+    (
+        var(--typography__pLineHeight) -
+          (var(--typography__pFontSize) * var(--typography__capHeight))
+      ) /
+      2
+  );
 }
 
-h1, h2, h3, h4, h5, h6, p, ul, ol {
-  --typography__offset: calc((var(--typography__lineHeight) - (var(--typography__fontSize) * var(--typography__capHeight))) / 2);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  --typography__offset: calc(
+    (
+        var(--typography__lineHeight) -
+          (var(--typography__fontSize) * var(--typography__capHeight))
+      ) /
+      2
+  );
   font-size: var(--typography__fontSize);
   line-height: var(--typography__lineHeight);
   padding-top: calc(var(--paddingTop) + var(--typography__offset));
@@ -75,7 +100,8 @@ p {
   margin-top: var(--rhythm2);
 }
 
-ul, ol {
+ul,
+ol {
   --typography__fontSize: var(--rhythm2);
   --typography__lineHeight: var(--rhythm3);
   --paddingTop: 0px;

@@ -16,11 +16,11 @@ export interface HarvestReportLambdaTimeEntry {
 
 export const get = async (
   startOfMonth: Date,
-  lastDayOfMonth: Date
+  lastDayOfMonth: Date,
 ): Promise<HarvestReportLambdaTimeEntry[]> => {
   const timeEntries = await getTimeEntriesForMonth(
     startOfMonth,
-    lastDayOfMonth
+    lastDayOfMonth,
   );
   const timeEntriesWithCost = timeEntries.map((timeEntry) => {
     const hours = timeEntry.hours

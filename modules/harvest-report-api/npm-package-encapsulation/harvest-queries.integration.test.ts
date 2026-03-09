@@ -21,12 +21,12 @@ describe("getTimeEntriesForMonth function", () => {
 
         const result = await getTimeEntriesForMonth(
           new Date(Date.parse("2022-10-01")),
-          new Date(Date.parse("2022-10-31"))
+          new Date(Date.parse("2022-10-31")),
         );
 
         expect(result.length).toBeGreaterThan(0);
       })
     : it.todo(
-        "should return all hours for month (not tested due to missing environment variables)"
+        "should return all hours for month (not tested due to missing environment variables)",
       );
 });

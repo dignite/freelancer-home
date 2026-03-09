@@ -42,6 +42,7 @@ Repeat the following cycle for a reasonable number of iterations (default: 10, o
 ## Output
 
 After all iterations, produce a summary:
+
 - How many mutations were caught vs survived
 - For each surviving mutation: the file, the change, and the recommended action (improve test / add test / remove dead code)
 - Prioritised list of recommended follow-up actions

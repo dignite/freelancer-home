@@ -40,21 +40,26 @@ Accepts optional argument `auto` — if passed, skip human discussion and act au
 ### Phase 4: Commit and PR (only if BACKLOG.md was changed)
 
 5. Create a branch and commit:
+
    ```
    git fetch origin
    git checkout -b bluework/<short-slug> origin/main
    ```
+
    Commit the changes with a clear message. No special annotation needed.
 
 6. Open a PR:
+
    ```
    gh pr create --title "..." --body "..."
    ```
 
 7. Wait for checks:
+
    ```
    gh pr checks --watch
    ```
+
    CI runs normally. Vercel will skip via `ignoreCommand`. The smoke test PR trigger passes immediately (scoped to BACKLOG.md changes). Once all checks are green or skipped, proceed.
 
 8. Merge:

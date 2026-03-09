@@ -38,7 +38,7 @@ describe("the SEK function", () => {
       const result = `${twoOhThree}`;
 
       expect(result).toStrictEqual(
-        `1${nonBreakingSpace}000${nonBreakingSpace}202,03${nonBreakingSpace}kr`
+        `1${nonBreakingSpace}000${nonBreakingSpace}202,03${nonBreakingSpace}kr`,
       );
     });
   });

@@ -37,11 +37,13 @@ export const VAB = ({ vab, startDate, endDate }) => (
           <TableRow>
             <TableData>Total</TableData>
             <TableData alignRight colSpan={2}>
-              {vab.reduce(
-                (accumulator, currentValue) =>
-                  Math.round(accumulator * 10 + currentValue.hours * 10) / 10,
-                0
-              ).toFixed(1)}
+              {vab
+                .reduce(
+                  (accumulator, currentValue) =>
+                    Math.round(accumulator * 10 + currentValue.hours * 10) / 10,
+                  0,
+                )
+                .toFixed(1)}
             </TableData>
           </TableRow>
         </TableFooter>

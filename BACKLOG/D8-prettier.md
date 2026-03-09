@@ -22,12 +22,14 @@ npm install --save-dev prettier husky lint-staged
 ### 2. Update `package.json`
 
 Add to `"scripts"`:
+
 ```json
 "format": "prettier --write .",
 "format:check": "prettier --check ."
 ```
 
 Add top-level `"lint-staged"` config:
+
 ```json
 "lint-staged": {
   "*.{js,ts,json,css,md}": "prettier --write"
@@ -39,10 +41,12 @@ No `.prettierrc` needed — use Prettier's defaults (single quotes, 80-char prin
 ### 3. Add `.prettierignore`
 
 Create `.prettierignore` at the repo root:
+
 ```
 .next
 coverage
 ```
+
 `node_modules` is ignored by Prettier automatically.
 
 ### 4. Initial formatting commit
@@ -61,6 +65,7 @@ This creates `.husky/pre-commit` which runs `lint-staged` on every `git commit`.
 ### 6. Add CI step
 
 In `.github/workflows/continuous-integration.yml`, add after `npm ci` and before `npm run build`:
+
 ```yaml
 - run: npm run format:check
 ```

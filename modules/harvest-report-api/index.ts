@@ -7,7 +7,7 @@ import {
 
 export const summary = async (
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<{
   hours: MetaSlim;
   invoice: {
@@ -29,7 +29,7 @@ export const summary = async (
 export const byName = async (
   startDate: string,
   endDate: string,
-  name: string
+  name: string,
 ): Promise<HarvestReportLambdaTimeEntry[]> => {
   const parsedStartDate = new Date(Date.parse(startDate));
   const parsedEndDate = new Date(Date.parse(endDate));
